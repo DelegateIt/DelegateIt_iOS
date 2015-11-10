@@ -7,6 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		373399331BF27598009B8B14 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 373399321BF27598009B8B14 /* Images.xcassets */; };
+		373399351BF27621009B8B14 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 373399341BF27621009B8B14 /* Default-736h@3x.png */; };
+		376584081BF2653C007DA8A7 /* reservation.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 376584071BF2653C007DA8A7 /* reservation.jpg */; };
+		3765840A1BF267DA007DA8A7 /* quickorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376584091BF267DA007DA8A7 /* quickorder.swift */; };
+		3765840C1BF26AC0007DA8A7 /* orders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3765840B1BF26AC0007DA8A7 /* orders.swift */; };
+		3765840E1BF26F0C007DA8A7 /* CustomOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3765840D1BF26F0C007DA8A7 /* CustomOrder.swift */; };
+		376584141BF271BC007DA8A7 /* tripplanning.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 376584131BF271BC007DA8A7 /* tripplanning.jpg */; };
+		376584161BF271C1007DA8A7 /* drycleaning.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 376584151BF271C1007DA8A7 /* drycleaning.jpg */; };
+		3765841A1BF2727A007DA8A7 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584171BF2727A007DA8A7 /* home.png */; };
+		3765841B1BF2727A007DA8A7 /* home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584181BF2727A007DA8A7 /* home@2x.png */; };
+		3765841C1BF2727A007DA8A7 /* home@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584191BF2727A007DA8A7 /* home@3x.png */; };
+		376584201BF272EF007DA8A7 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3765841D1BF272EF007DA8A7 /* plus.png */; };
+		376584211BF272EF007DA8A7 /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3765841E1BF272EF007DA8A7 /* plus@2x.png */; };
+		376584221BF272EF007DA8A7 /* plus@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3765841F1BF272EF007DA8A7 /* plus@3x.png */; };
+		376584261BF27369007DA8A7 /* orders.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584231BF27369007DA8A7 /* orders.png */; };
+		376584271BF27369007DA8A7 /* orders@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584241BF27369007DA8A7 /* orders@2x.png */; };
+		376584281BF27369007DA8A7 /* orders@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584251BF27369007DA8A7 /* orders@3x.png */; };
 		37E5E5CC1BF13099003111DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5E5CB1BF13099003111DD /* AppDelegate.swift */; };
 		37E5E5CE1BF13099003111DD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5E5CD1BF13099003111DD /* ViewController.swift */; };
 		37E5E5D11BF13099003111DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37E5E5CF1BF13099003111DD /* Main.storyboard */; };
@@ -34,6 +51,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		373399321BF27598009B8B14 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DelegateIt/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		373399341BF27621009B8B14 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
+		376584071BF2653C007DA8A7 /* reservation.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = reservation.jpg; sourceTree = "<group>"; };
+		376584091BF267DA007DA8A7 /* quickorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = quickorder.swift; sourceTree = "<group>"; };
+		3765840B1BF26AC0007DA8A7 /* orders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = orders.swift; sourceTree = "<group>"; };
+		3765840D1BF26F0C007DA8A7 /* CustomOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomOrder.swift; sourceTree = "<group>"; };
+		376584131BF271BC007DA8A7 /* tripplanning.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tripplanning.jpg; sourceTree = "<group>"; };
+		376584151BF271C1007DA8A7 /* drycleaning.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = drycleaning.jpg; sourceTree = "<group>"; };
+		376584171BF2727A007DA8A7 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
+		376584181BF2727A007DA8A7 /* home@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home@2x.png"; sourceTree = "<group>"; };
+		376584191BF2727A007DA8A7 /* home@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home@3x.png"; sourceTree = "<group>"; };
+		3765841D1BF272EF007DA8A7 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		3765841E1BF272EF007DA8A7 /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
+		3765841F1BF272EF007DA8A7 /* plus@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@3x.png"; sourceTree = "<group>"; };
+		376584231BF27369007DA8A7 /* orders.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orders.png; sourceTree = "<group>"; };
+		376584241BF27369007DA8A7 /* orders@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orders@2x.png"; sourceTree = "<group>"; };
+		376584251BF27369007DA8A7 /* orders@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orders@3x.png"; sourceTree = "<group>"; };
 		37E5E5C81BF13099003111DD /* DelegateIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DelegateIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37E5E5CB1BF13099003111DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37E5E5CD1BF13099003111DD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -97,12 +131,29 @@
 		37E5E5CA1BF13099003111DD /* DelegateIt */ = {
 			isa = PBXGroup;
 			children = (
+				373399341BF27621009B8B14 /* Default-736h@3x.png */,
+				376584231BF27369007DA8A7 /* orders.png */,
+				376584241BF27369007DA8A7 /* orders@2x.png */,
+				376584251BF27369007DA8A7 /* orders@3x.png */,
+				3765841D1BF272EF007DA8A7 /* plus.png */,
+				3765841E1BF272EF007DA8A7 /* plus@2x.png */,
+				3765841F1BF272EF007DA8A7 /* plus@3x.png */,
+				376584171BF2727A007DA8A7 /* home.png */,
+				376584181BF2727A007DA8A7 /* home@2x.png */,
+				376584191BF2727A007DA8A7 /* home@3x.png */,
+				376584071BF2653C007DA8A7 /* reservation.jpg */,
+				376584131BF271BC007DA8A7 /* tripplanning.jpg */,
+				376584151BF271C1007DA8A7 /* drycleaning.jpg */,
 				37E5E5CB1BF13099003111DD /* AppDelegate.swift */,
 				37E5E5CD1BF13099003111DD /* ViewController.swift */,
+				376584091BF267DA007DA8A7 /* quickorder.swift */,
 				37E5E5CF1BF13099003111DD /* Main.storyboard */,
+				3765840D1BF26F0C007DA8A7 /* CustomOrder.swift */,
+				3765840B1BF26AC0007DA8A7 /* orders.swift */,
 				37E5E5D21BF13099003111DD /* Assets.xcassets */,
 				37E5E5D41BF13099003111DD /* LaunchScreen.storyboard */,
 				37E5E5D71BF13099003111DD /* Info.plist */,
+				373399321BF27598009B8B14 /* Images.xcassets */,
 			);
 			name = DelegateIt;
 			path = "Learning UI";
@@ -231,8 +282,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				376584081BF2653C007DA8A7 /* reservation.jpg in Resources */,
+				373399331BF27598009B8B14 /* Images.xcassets in Resources */,
+				376584201BF272EF007DA8A7 /* plus.png in Resources */,
+				3765841B1BF2727A007DA8A7 /* home@2x.png in Resources */,
+				3765841C1BF2727A007DA8A7 /* home@3x.png in Resources */,
+				376584141BF271BC007DA8A7 /* tripplanning.jpg in Resources */,
+				376584261BF27369007DA8A7 /* orders.png in Resources */,
+				376584221BF272EF007DA8A7 /* plus@3x.png in Resources */,
+				376584271BF27369007DA8A7 /* orders@2x.png in Resources */,
+				3765841A1BF2727A007DA8A7 /* home.png in Resources */,
 				37E5E5D61BF13099003111DD /* LaunchScreen.storyboard in Resources */,
 				37E5E5D31BF13099003111DD /* Assets.xcassets in Resources */,
+				373399351BF27621009B8B14 /* Default-736h@3x.png in Resources */,
+				376584161BF271C1007DA8A7 /* drycleaning.jpg in Resources */,
+				376584281BF27369007DA8A7 /* orders@3x.png in Resources */,
+				376584211BF272EF007DA8A7 /* plus@2x.png in Resources */,
 				37E5E5D11BF13099003111DD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,6 +324,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				37E5E5CE1BF13099003111DD /* ViewController.swift in Sources */,
+				3765840A1BF267DA007DA8A7 /* quickorder.swift in Sources */,
+				3765840C1BF26AC0007DA8A7 /* orders.swift in Sources */,
+				3765840E1BF26F0C007DA8A7 /* CustomOrder.swift in Sources */,
 				37E5E5CC1BF13099003111DD /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -353,6 +421,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = DelegateIt;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -391,6 +460,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = DelegateIt;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -401,6 +471,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = "Learning UI/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.delegateit;
@@ -412,6 +483,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = "Learning UI/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.delegateit;
