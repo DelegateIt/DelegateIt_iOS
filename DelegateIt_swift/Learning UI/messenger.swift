@@ -1,17 +1,20 @@
 //
-//  CustomOrder.swift
+//  messenger.swift
 //  DelegateIt
 //
-//  Created by Ben Wernsman on 11/10/15.
+//  Created by Ben Wernsman on 11/26/15.
 //  Copyright © 2015 Ben Wernsman. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-class CustomOrder: JSQMessagesViewController {
+class messenger: JSQMessagesViewController {
     
-    @IBOutlet weak var orderBox: UITextField!
+    //var currentPhoto : Photo?
+    
+    @IBOutlet weak var myLabel: UILabel!
+    
+    var viaSegue = "";
     
     var userName = ""
     var messages = [JSQMessage]()
@@ -19,13 +22,10 @@ class CustomOrder: JSQMessagesViewController {
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
     
     override func viewDidLoad() {
+        print(viaSegue)
+        myLabel.text = viaSegue;
         super.viewDidLoad()
-        
-        self.keyboardController.textView!.becomeFirstResponder()
-        
-        //orderBox.becomeFirstResponder()
-        
-        navigationController?.navigationBar.topItem?.title = "NEW ORDER"
+        navigationController?.navigationBar.topItem?.title = "Logout"
         self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.1, 0.1);
         self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1);
         
@@ -41,8 +41,6 @@ class CustomOrder: JSQMessagesViewController {
         self.senderId = self.userName
         
         automaticallyScrollsToMostRecentMessage = true
-        
-        
     }
     
     override func didReceiveMemoryWarning() {

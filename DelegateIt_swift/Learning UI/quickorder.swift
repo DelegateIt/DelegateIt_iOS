@@ -19,7 +19,7 @@ class quickorder: UIViewController {
         
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         
-        let myImages = ["reservation.jpg","tripplanning.jpg","drycleaning.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg","reservation.jpg"]
+        let myImages = ["reservation.jpg","tripplanning.jpg","drycleaning.jpg","quick1.png","quick2.png","quick3.png"]
         
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
@@ -62,11 +62,24 @@ class quickorder: UIViewController {
             myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize)
         }
         
+        
+        //let mapViewControllerObejct = self.storyboard?.instantiateViewControllerWithIdentifier("MapViewControllerIdentifier") as? messenger
+        //self.navigationController?.pushViewController(mapViewControllerObejct!, animated: true)
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowCounterSegue" {
+            if let destinationVC = segue.destinationViewController as? CustomOrder{
+                //destinationVC.numberToDisplay = 2
+            }
+        }
+    }
+    
 }
 

@@ -35,9 +35,13 @@ class Orders: UIViewController,UITableViewDataSource {
         
         let (orderText,orderTime) = userOrders[indexPath.row]
         
+        //var image : UIImage = UIImage(named: "drycleaning.jpg")!
+        //cell.imageView!.image = image
+        
         cell.textLabel?.text = orderText
         return cell
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,5 +54,20 @@ class Orders: UIViewController,UITableViewDataSource {
     }
     
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+       // let path = self.tableView.indexPathForSelectedRow()!
+        //segue.destinationViewController.detail = self.detailForIndexPath(path)
+    }
+    
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("ashdjkfl")
+        _ = tableView.indexPathForSelectedRow!
+        if let _ = tableView.cellForRowAtIndexPath(indexPath) {
+            self.performSegueWithIdentifier("SendDataSegue", sender: self)
+        }
+        
+    }
+
 }
 
