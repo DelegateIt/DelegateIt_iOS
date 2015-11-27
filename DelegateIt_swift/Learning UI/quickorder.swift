@@ -59,14 +59,33 @@ class quickorder: UIViewController {
             yPosition += imageHeight
             scrollViewContentSize += imageHeight
             
+            let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
+            myImageView.userInteractionEnabled = true
+            myImageView.addGestureRecognizer(tapGestureRecognizer)
+            
             myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize)
         }
+        
+        //
         
         
         //let mapViewControllerObejct = self.storyboard?.instantiateViewControllerWithIdentifier("MapViewControllerIdentifier") as? messenger
         //self.navigationController?.pushViewController(mapViewControllerObejct!, animated: true)
         
     }
+    
+    func imageTapped(img: AnyObject)
+    {
+        // Your action
+        print("PRESSED")
+        self.performSegueWithIdentifier("showText", sender: nil)
+    }
+    
+    
+    func buttonPressed(sender: UIButton!) {
+        print("PRESSED")
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

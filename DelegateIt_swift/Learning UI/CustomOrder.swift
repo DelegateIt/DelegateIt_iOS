@@ -40,6 +40,10 @@ class CustomOrder: JSQMessagesViewController {
         self.senderDisplayName = self.userName
         self.senderId = self.userName
         
+        self.inputToolbar!.contentView!.textView!.placeHolder = "Make a new order";
+        
+        self.inputToolbar!.contentView!.textView!.text = "custom text here";
+        
         automaticallyScrollsToMostRecentMessage = true
         
         
