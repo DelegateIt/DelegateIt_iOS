@@ -15,8 +15,9 @@ class CustomOrder: JSQMessagesViewController {
     
     var userName = ""
     var messages = [JSQMessage]()
-    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 10/255, green: 180/255, blue: 230/255, alpha: 1.0))
-    let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
+    //let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 229/255, green: 229/255, blue: 234/255, alpha: 1.0))
+    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
+    let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +45,10 @@ class CustomOrder: JSQMessagesViewController {
         
         self.inputToolbar!.contentView!.textView!.text = "custom text here";
         
+        //self.messages. //textColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
+        
+        //self.inputToolbar!.contentView!.textView!.placeHolderTextColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
+        
         automaticallyScrollsToMostRecentMessage = true
         
         
@@ -58,6 +63,8 @@ class CustomOrder: JSQMessagesViewController {
         var data = self.messages[indexPath.row]
         return data
     }
+    
+    
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         var data = self.messages[indexPath.row]

@@ -29,8 +29,17 @@
 		376584261BF27369007DA8A7 /* orders.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584231BF27369007DA8A7 /* orders.png */; };
 		376584271BF27369007DA8A7 /* orders@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584241BF27369007DA8A7 /* orders@2x.png */; };
 		376584281BF27369007DA8A7 /* orders@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584251BF27369007DA8A7 /* orders@3x.png */; };
+		3766DFF21C0B0E6500D2044C /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3766DFF11C0B0E6500D2044C /* background.png */; };
+		3766DFF41C0B104800D2044C /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3766DFF31C0B104800D2044C /* logo.png */; };
 		37965A351C081797005DBF68 /* newOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37965A341C081797005DBF68 /* newOrder.swift */; };
 		37965A3E1C081E56005DBF68 /* messenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37965A3D1C081E56005DBF68 /* messenger.swift */; };
+		37DB5CA41C099EED0018F09C /* global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DB5CA31C099EED0018F09C /* global.swift */; };
+		37DB5CA61C09AACD0018F09C /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DB5CA51C09AACD0018F09C /* SwiftyJSON.swift */; };
+		37DB5CA81C09AAF10018F09C /* RestApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DB5CA71C09AAF10018F09C /* RestApiManager.swift */; };
+		37DC513A1C094F550082C4A7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37DC51381C094F550082C4A7 /* FBSDKCoreKit.framework */; };
+		37DC513B1C094F550082C4A7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37DC51391C094F550082C4A7 /* FBSDKLoginKit.framework */; };
+		37DC513D1C094F5F0082C4A7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37DC513C1C094F5F0082C4A7 /* FBSDKShareKit.framework */; };
+		37DC513F1C0952DA0082C4A7 /* loginWithFacebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DC513E1C0952DA0082C4A7 /* loginWithFacebook.swift */; };
 		37E5E5CC1BF13099003111DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5E5CB1BF13099003111DD /* AppDelegate.swift */; };
 		37E5E5CE1BF13099003111DD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5E5CD1BF13099003111DD /* ViewController.swift */; };
 		37E5E5D11BF13099003111DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37E5E5CF1BF13099003111DD /* Main.storyboard */; };
@@ -81,9 +90,18 @@
 		376584231BF27369007DA8A7 /* orders.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orders.png; sourceTree = "<group>"; };
 		376584241BF27369007DA8A7 /* orders@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orders@2x.png"; sourceTree = "<group>"; };
 		376584251BF27369007DA8A7 /* orders@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orders@3x.png"; sourceTree = "<group>"; };
+		3766DFF11C0B0E6500D2044C /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		3766DFF31C0B104800D2044C /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		37965A341C081797005DBF68 /* newOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newOrder.swift; sourceTree = "<group>"; };
 		37965A361C0817F4005DBF68 /* DelegateIt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DelegateIt-Bridging-Header.h"; sourceTree = "<group>"; };
 		37965A3D1C081E56005DBF68 /* messenger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = messenger.swift; sourceTree = "<group>"; };
+		37DB5CA31C099EED0018F09C /* global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = global.swift; path = ../global.swift; sourceTree = "<group>"; };
+		37DB5CA51C09AACD0018F09C /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		37DB5CA71C09AAF10018F09C /* RestApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestApiManager.swift; sourceTree = "<group>"; };
+		37DC51381C094F550082C4A7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		37DC51391C094F550082C4A7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		37DC513C1C094F5F0082C4A7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		37DC513E1C0952DA0082C4A7 /* loginWithFacebook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loginWithFacebook.swift; sourceTree = "<group>"; };
 		37E5E5C81BF13099003111DD /* DelegateIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DelegateIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37E5E5CB1BF13099003111DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37E5E5CD1BF13099003111DD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -107,7 +125,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37DC513D1C094F5F0082C4A7 /* FBSDKShareKit.framework in Frameworks */,
 				D998D3C2BF5C4738413AF5F1 /* libPods-DelegateIt.a in Frameworks */,
+				37DC513A1C094F550082C4A7 /* FBSDKCoreKit.framework in Frameworks */,
+				37DC513B1C094F550082C4A7 /* FBSDKLoginKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +174,11 @@
 		37E5E5CA1BF13099003111DD /* DelegateIt */ = {
 			isa = PBXGroup;
 			children = (
+				3766DFF31C0B104800D2044C /* logo.png */,
+				3766DFF11C0B0E6500D2044C /* background.png */,
+				37DB5CA51C09AACD0018F09C /* SwiftyJSON.swift */,
+				37DB5CA71C09AAF10018F09C /* RestApiManager.swift */,
+				37DB5CA31C099EED0018F09C /* global.swift */,
 				374EE0181BF2AC47000AECE1 /* quick1.png */,
 				374EE0161BF2AC3D000AECE1 /* quick2.png */,
 				374EE0141BF2AC36000AECE1 /* quick3.png */,
@@ -173,6 +199,7 @@
 				37E5E5CD1BF13099003111DD /* ViewController.swift */,
 				376584091BF267DA007DA8A7 /* quickorder.swift */,
 				37E5E5CF1BF13099003111DD /* Main.storyboard */,
+				37DC513E1C0952DA0082C4A7 /* loginWithFacebook.swift */,
 				37965A3D1C081E56005DBF68 /* messenger.swift */,
 				37965A341C081797005DBF68 /* newOrder.swift */,
 				374EE01A1BF2B248000AECE1 /* profile.swift */,
@@ -212,6 +239,9 @@
 		46FC9AF725CF97ECE9154FA2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37DC513C1C094F5F0082C4A7 /* FBSDKShareKit.framework */,
+				37DC51381C094F550082C4A7 /* FBSDKCoreKit.framework */,
+				37DC51391C094F550082C4A7 /* FBSDKLoginKit.framework */,
 				7A06EE733B95156658C18D20 /* libPods-DelegateIt.a */,
 			);
 			name = Frameworks;
@@ -336,12 +366,14 @@
 			files = (
 				376584081BF2653C007DA8A7 /* reservation.jpg in Resources */,
 				373399331BF27598009B8B14 /* Images.xcassets in Resources */,
+				3766DFF41C0B104800D2044C /* logo.png in Resources */,
 				376584201BF272EF007DA8A7 /* plus.png in Resources */,
 				374EE0191BF2AC47000AECE1 /* quick1.png in Resources */,
 				3765841B1BF2727A007DA8A7 /* home@2x.png in Resources */,
 				3765841C1BF2727A007DA8A7 /* home@3x.png in Resources */,
 				376584141BF271BC007DA8A7 /* tripplanning.jpg in Resources */,
 				376584261BF27369007DA8A7 /* orders.png in Resources */,
+				3766DFF21C0B0E6500D2044C /* background.png in Resources */,
 				376584221BF272EF007DA8A7 /* plus@3x.png in Resources */,
 				376584271BF27369007DA8A7 /* orders@2x.png in Resources */,
 				374EE0171BF2AC3D000AECE1 /* quick2.png in Resources */,
@@ -429,10 +461,14 @@
 				37E5E5CE1BF13099003111DD /* ViewController.swift in Sources */,
 				37965A3E1C081E56005DBF68 /* messenger.swift in Sources */,
 				3765840A1BF267DA007DA8A7 /* quickorder.swift in Sources */,
+				37DB5CA61C09AACD0018F09C /* SwiftyJSON.swift in Sources */,
+				37DC513F1C0952DA0082C4A7 /* loginWithFacebook.swift in Sources */,
 				3765840C1BF26AC0007DA8A7 /* orders.swift in Sources */,
+				37DB5CA41C099EED0018F09C /* global.swift in Sources */,
 				374EDFD91BF2A7C5000AECE1 /* TableViewCell.swift in Sources */,
 				374EE01B1BF2B248000AECE1 /* profile.swift in Sources */,
 				3765840E1BF26F0C007DA8A7 /* CustomOrder.swift in Sources */,
+				37DB5CA81C09AAF10018F09C /* RestApiManager.swift in Sources */,
 				37E5E5CC1BF13099003111DD /* AppDelegate.swift in Sources */,
 				37965A351C081797005DBF68 /* newOrder.swift in Sources */,
 			);
@@ -582,6 +618,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "Learning UI/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.delegateit;
@@ -599,6 +639,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "Learning UI/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.delegateit;

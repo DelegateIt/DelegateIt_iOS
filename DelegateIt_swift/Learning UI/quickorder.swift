@@ -14,8 +14,11 @@ class quickorder: UIViewController {
     @IBOutlet weak var myScrollView: UIScrollView!
     
     override func viewDidLoad() {
+        //print(yourVariable)
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        mainInstance.printHello()
         
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         
@@ -24,7 +27,6 @@ class quickorder: UIViewController {
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
         var scrollViewContentSize:CGFloat = 0;
-        
         
         
         for var index = 0; index < myImages.count; index++

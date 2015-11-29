@@ -6,7 +6,9 @@
 //  Copyright © 2015 Ben Wernsman. All rights reserved.
 //
 
-import UIKit
+
+import Foundation
+import FBSDKLoginKit
 
 class profile: UIViewController {
     
@@ -19,7 +21,23 @@ class profile: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        let loginView : FBSDKLoginButton = FBSDKLoginButton()
+        self.view.addSubview(loginView)
+        loginView.center = self.view.center
+        loginView.readPermissions = ["public_profile", "email", "user_friends"]
+        //loginView.delegate = self]
+        
+        logout()
     }
+    
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        print("User Logged Out")
+    }
+
+    func logout() {
+        FBSDKLoginManager().logOut()
+    }
+    
     
     
 }

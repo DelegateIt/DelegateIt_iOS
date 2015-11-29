@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4Bl-WG-sXP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="DEH-AZ-gkv">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -154,7 +154,7 @@
                                                 <animations/>
                                                 <state key="normal" title="BACK"/>
                                                 <connections>
-                                                    <segue destination="4Bl-WG-sXP" kind="show" id="d4z-BT-U36"/>
+                                                    <segue destination="4Bl-WG-sXP" kind="show" identifier="logoutSegue" id="d4z-BT-U36"/>
                                                 </connections>
                                             </button>
                                         </barButtonItem>
@@ -179,6 +179,14 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XSk-LT-be7">
+                                <rect key="frame" x="208" y="390" width="48" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Logout"/>
+                                <connections>
+                                    <segue destination="DEH-AZ-gkv" kind="show" identifier="logoutSegue" id="nli-o3-qQV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -214,6 +222,62 @@
             </objects>
             <point key="canvasLocation" x="386" y="132"/>
         </scene>
+        <!--Login With Facebook-->
+        <scene sceneID="tVB-ej-d9F">
+            <objects>
+                <viewController id="DEH-AZ-gkv" customClass="loginWithFacebook" customModule="DelegateIt" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5Vo-KS-2Rd"/>
+                        <viewControllerLayoutGuide type="bottom" id="Lpx-ZE-zde"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LeQ-8l-DMu">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="VZn-aC-Jwn">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6BB-L9-v1i">
+                                <rect key="frame" x="197" y="483" width="207" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Login With Facebook"/>
+                                <connections>
+                                    <segue destination="4Bl-WG-sXP" kind="show" identifier="loginSegue2" id="ibg-nE-lxJ"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="sIH-2g-e6I">
+                                <rect key="frame" x="180" y="89" width="240" height="128"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="8jw-CX-CdJ"/>
+                                    <constraint firstAttribute="height" constant="128" id="UfK-He-HZb"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="VZn-aC-Jwn" firstAttribute="top" secondItem="LeQ-8l-DMu" secondAttribute="top" id="8EQ-lj-sbk"/>
+                            <constraint firstItem="Lpx-ZE-zde" firstAttribute="top" secondItem="6BB-L9-v1i" secondAttribute="bottom" constant="226" id="Aly-Nz-5t1"/>
+                            <constraint firstItem="6BB-L9-v1i" firstAttribute="centerX" secondItem="VZn-aC-Jwn" secondAttribute="centerX" id="QLH-Pd-Ofn"/>
+                            <constraint firstItem="sIH-2g-e6I" firstAttribute="centerX" secondItem="6BB-L9-v1i" secondAttribute="centerX" id="VU9-sb-ob3"/>
+                            <constraint firstItem="VZn-aC-Jwn" firstAttribute="bottom" secondItem="Lpx-ZE-zde" secondAttribute="top" id="Wtr-sO-yT1"/>
+                            <constraint firstItem="VZn-aC-Jwn" firstAttribute="leading" secondItem="LeQ-8l-DMu" secondAttribute="leading" id="bek-qw-hah"/>
+                            <constraint firstAttribute="trailing" secondItem="VZn-aC-Jwn" secondAttribute="trailing" id="h0e-Gt-Ms2"/>
+                            <constraint firstItem="sIH-2g-e6I" firstAttribute="top" secondItem="5Vo-KS-2Rd" secondAttribute="bottom" constant="69" id="sgt-ee-ewf"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bg" destination="VZn-aC-Jwn" id="XDR-E1-z2l"/>
+                        <segue destination="4Bl-WG-sXP" kind="show" identifier="moveToApp" id="a4v-gk-nIc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rOr-kV-nXb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-401" y="132"/>
+        </scene>
         <!--HOME-->
         <scene sceneID="UDA-2g-Adh">
             <objects>
@@ -247,7 +311,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="w5C-vO-Yzg" kind="relationship" relationship="rootViewController" id="VPV-8Q-vid"/>
+                        <segue destination="w5C-vO-Yzg" kind="relationship" relationship="rootViewController" id="Avs-ew-Yaq"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x8D-wn-gVE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -371,7 +435,7 @@
                                 <rect key="frame" x="85" y="289" width="42" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -408,13 +472,15 @@
         </scene>
     </scenes>
     <resources>
+        <image name="background.png" width="2484" height="4416"/>
         <image name="home.png" width="26" height="23"/>
+        <image name="logo.png" width="1962" height="1773"/>
         <image name="orders.png" width="26" height="18"/>
         <image name="plus.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bfJ-9W-mVO"/>
+        <segue reference="a4v-gk-nIc"/>
+        <segue reference="c3P-jI-MCT"/>
         <segue reference="hAG-97-tgW"/>
-        <segue reference="yda-4P-RmZ"/>
     </inferredMetricsTieBreakers>
 </document>

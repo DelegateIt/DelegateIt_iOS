@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class Orders: UIViewController,UITableViewDataSource {
+class Orders: UIViewController,UITableViewDataSource, UITableViewDelegate {
     let userOrders = [
         ("Order1","Tuesday"),
         ("Order2","Tuesday"),
