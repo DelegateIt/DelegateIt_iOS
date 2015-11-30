@@ -10,6 +10,7 @@ import Foundation
 
 
 class Main {
+    //User info
     var first_name:String = ""
     var last_name:String = ""
     var name:String = ""
@@ -18,6 +19,11 @@ class Main {
     var uuid:String = ""
     var activeCount:Int = 0
     var active_transaction_uuids:[String] = []
+    
+    //Facebook info
+    var fbID:String = ""
+    var fbToken:String = ""
+    
     init() {
     }
     
@@ -25,10 +31,20 @@ class Main {
         print("Hello")
     }
     
-    func setValues(first_name:String,last_name:String,uuid:String) {
+    func loadFB(fbID:String,fbToken:String){
+        self.fbID = fbID
+        self.fbToken = fbToken
+        
+        print("Check Values")
+        print(self.fbID)
+        print(self.fbToken)
+    }
+    
+    func setValues(first_name:String,last_name:String,uuid:String,active_transaction_uuids:[String],activeCount:Int) {
         self.uuid = uuid
         self.first_name = first_name
         self.last_name = last_name
+        print(active_transaction_uuids)
     }
 
     

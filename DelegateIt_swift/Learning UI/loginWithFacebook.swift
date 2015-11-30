@@ -15,20 +15,10 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
-        if (FBSDKAccessToken.currentAccessToken() != nil)
-        {
-            // User is already logged in, do work such as go to next view controller.
-            print("login")
-            self.returnUserData()
-            //self.performSegueWithIdentifier("moveToApp", sender: nil)
-            print("Move")
-            
-            
-        }
-        else
-        {
+        if (FBSDKAccessToken.currentAccessToken() != nil){
+            dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("loginSegue2", sender: self) })
+        }else{
             let loginView : FBSDKLoginButton = FBSDKLoginButton()
             self.view.addSubview(loginView)
             loginView.center = self.view.center
@@ -40,15 +30,13 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    func getData() {
-        //RestApiManager.sharedInstance.createUser()
-        RestApiManager.sharedInstance.getUser()
-        print("printing")
-
+    func getData(fbID:String,fbToken:String) {
+        RestApiManager.sharedInstance.loginUser(fbID,fbToken: fbToken)
+        //RestApiManager.sharedInstance.getUser()
         
+        print("printing")
         print("Getting user")
     }
     
@@ -71,10 +59,8 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
             // should check if specific permissions missing
             if result.grantedPermissions.contains("email")
             {
-                // Do work
+                // Get user info and go to main app
                 self.returnUserData()
-                self.performSegueWithIdentifier("loginSegue2", sender: nil)
-                print("Move")
             }
         }
     }
@@ -86,7 +72,7 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
     
     func returnUserData()
     {
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me?fields=id,first_name,last_name,email,picture", parameters: nil)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             if ((error) != nil)
@@ -97,7 +83,10 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
             else
             {
                 print("fetched user: \(result)")
-                let userName : NSString = result.valueForKey("name") as! NSString
+                let userName : NSString = result.valueForKey("first_name") as! NSString
+                let fbID : NSString = result.valueForKey("id") as! NSString
+                print(fbID)
+                print(result)
                 print("User Name is: \(userName)")
                 print("FB token: \(FBSDKAccessToken.currentAccessToken().tokenString)")
                 if(result.valueForKey("email") != nil) {
@@ -105,10 +94,13 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
                     print("User Email is: \(userEmail)")
                 }
                 
-                self.getData()
+                let fbToken = FBSDKAccessToken.currentAccessToken().tokenString
+                
+                self.getData(fbID as String,fbToken: fbToken)
+                
+                
                 
             }
-            
         })
     }
     

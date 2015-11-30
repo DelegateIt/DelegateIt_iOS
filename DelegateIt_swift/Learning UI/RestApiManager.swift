@@ -17,12 +17,19 @@ class RestApiManager: NSObject {
     let baseURL = "http://test-gator-api.elasticbeanstalk.com/"
     
     
-    func createUser() {
+    func loginUser(fbID:String,fbToken:String) {
         // Setup the session to make REST POST call
         let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/login/customer"
         let url = NSURL(string: postEndpoint)!
         let session = NSURLSession.sharedSession()
-        let postParams : [String: AnyObject] = ["fbuser_id": "1237026922980425","fbuser_token": "CAANG1yne7NcBAIedDLJel0nmQ7dDVlcdy0w3AOlMyjmdO8cf60zx4MVLHYZATpZCZBdRxYzRhpodMjAsOliPr9Y6sMDnsSpNZBKvfwjg8lcJLmNGJlHVbsgdbZCvSCV6jaJIbKe1SnmslZAhX5ZAwMhnbZB9JMaNDLgiZByKQl9sp8672GZCFBKyKP2ErjNfcT4wsa7jesguTUYViB5wPLYTXu5vBZCclffpSsxRXwqoVZAvugZDZD","first_name":"Ben","last_name":"Wernsman","phone_number":"2144787761","email":"ben.wernsman@me.com"]
+        print("----------")
+        print(fbID)
+        print(fbToken)
+        let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
+        
+        //let postParams : [String: String] = ["fbuser_id":"1237026922980425","fbuser_token":"CAANG1yne7NcBAGBhyP5GzsZAsaoLRHUehrUv4hIVsttZBTZC4TTvJIPUizPUZBPjZA4f30fHe2PzDvEXNzgNBj3WQPziHb10dCsPGiQVoxQECIhjFC2H2JtRW376Q4H5QiTLM2ZAoZAZAFlJmiGsnLiZCTPVbATBZCbgjy9vqQdZAoC30mIoU0BR1WC4xwqPhZAhnexOI1Te5HzPuju9v4DHq3FwgmoXvPpqQSFgOvEH0slXRQZDZD"]
+        
+        //let postParams : [String: AnyObject] = ["fbuser_id": "1237026922980425","fbuser_token": "CAANG1yne7NcBAIedDLJel0nmQ7dDVlcdy0w3AOlMyjmdO8cf60zx4MVLHYZATpZCZBdRxYzRhpodMjAsOliPr9Y6sMDnsSpNZBKvfwjg8lcJLmNGJlHVbsgdbZCvSCV6jaJIbKe1SnmslZAhX5ZAwMhnbZB9JMaNDLgiZByKQl9sp8672GZCFBKyKP2ErjNfcT4wsa7jesguTUYViB5wPLYTXu5vBZCclffpSsxRXwqoVZAvugZDZD","first_name":"Ben","last_name":"Wernsman","phone_number":"2144787761","email":"ben.wernsman@me.com"]
         
         // Create the request
         let request = NSMutableURLRequest(URL: url)
@@ -30,7 +37,7 @@ class RestApiManager: NSObject {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         do {
             request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
-            //print(postParams)
+            print(postParams)
         } catch {
             print("bad things happened")
         }
@@ -54,9 +61,8 @@ class RestApiManager: NSObject {
     }
     
     func getUser() {
-        
         // Setup the session to make REST GET call.  Notice the URL is https NOT http!!
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/customer/12492214829628214231?token=MTI0OTIyMTQ4Mjk2MjgyMTQyMzE6Y3VzdG9tZXI6MTQ0ODc5NjIwNDpLL0srV2pLNUNsenppMnIrdUZ5SzNLb1l4WmdUQ3lVc2ZERGdFZVQzSm9BPQ=="
+        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/customer/12492214829628214231?token=MTI0OTIyMTQ4Mjk2MjgyMTQyMzE6Y3VzdG9tZXI6MTQ0ODkzNDQ2Njp0czhIUExwS3M1QWUraW95N1JCZURjK0xFVlRBNG9xcTMzNGxvVTU0d1dNPQ=="
         let session = NSURLSession.sharedSession()
         let url = NSURL(string: postEndpoint)!
         
@@ -84,7 +90,10 @@ class RestApiManager: NSObject {
                     let active_transaction_uuids = jsonDictionary["active_transaction_uuids"] as! [String]
                     let activeCount = active_transaction_uuids.count
                     
-                    mainInstance.setValues(first_name,last_name:last_name,uuid:uuid)
+                    
+                    mainInstance.setValues(first_name,last_name:last_name,uuid:uuid,active_transaction_uuids:active_transaction_uuids,activeCount:activeCount)
+                    
+                    print("Got data")
                     
                     // Update the label
                     //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)

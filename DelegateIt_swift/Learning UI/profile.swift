@@ -12,22 +12,19 @@ import FBSDKLoginKit
 
 class profile: UIViewController {
     
+    @IBOutlet weak var image: UIImageView!
+    
+    @IBAction func LogoutUser(sender: AnyObject) {
+        FBSDKLoginManager().logOut()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Hello")
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        let loginView : FBSDKLoginButton = FBSDKLoginButton()
-        self.view.addSubview(loginView)
-        loginView.center = self.view.center
-        loginView.readPermissions = ["public_profile", "email", "user_friends"]
-        //loginView.delegate = self]
         
-        logout()
     }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {

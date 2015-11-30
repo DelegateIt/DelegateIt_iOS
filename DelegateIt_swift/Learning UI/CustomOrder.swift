@@ -18,7 +18,8 @@ class CustomOrder: JSQMessagesViewController {
     //let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 229/255, green: 229/255, blue: 234/255, alpha: 1.0))
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0))
-    
+    let paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0))
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,9 +35,15 @@ class CustomOrder: JSQMessagesViewController {
         self.userName = "iPhone"
         for i in 1...10 {
             var sender = (i%2 == 0) ? "Syncano" : self.userName
-            var message = JSQMessage(senderId: sender, displayName: sender, text: "Text")
+            var message = JSQMessage(senderId: sender, displayName: sender, text: "htts:www.apple.com")
             self.messages += [message]
         }
+        
+        var sender = (4%2 == 0) ? "Syncano" : self.userName
+        var message = JSQMessage(senderId: sender, displayName: sender, text: "ACCEPT ORDER")
+        self.messages += [message]
+        
+        
         self.collectionView!.reloadData()
         self.senderDisplayName = self.userName
         self.senderId = self.userName
@@ -68,10 +75,18 @@ class CustomOrder: JSQMessagesViewController {
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         var data = self.messages[indexPath.row]
+        print(data.text)
         if (data.senderId == self.senderId) {
             return self.outgoingBubble
         } else {
-            return self.incomingBubble
+            if(data.text == "ACCEPT ORDER"){
+                //data.text = "HEYYYY"
+                return self.paymentBubble
+            }
+            else{
+                return self.incomingBubble
+            }
+            
         }
     }
     
@@ -87,9 +102,11 @@ class CustomOrder: JSQMessagesViewController {
         var newMessage = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text);
         messages += [newMessage]
         self.finishSendingMessage()
+
     }
     
     override func didPressAccessoryButton(sender: UIButton!) {
+        print("button pressed")
     }
     
     

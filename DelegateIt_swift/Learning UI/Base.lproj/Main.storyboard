@@ -133,7 +133,7 @@
         <!--PROFILE-->
         <scene sceneID="uFe-bU-xrA">
             <objects>
-                <viewController id="R4y-L4-fxB" sceneMemberID="viewController">
+                <viewController id="R4y-L4-fxB" customClass="profile" customModule="DelegateIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pnY-ft-4zN"/>
                         <viewControllerLayoutGuide type="bottom" id="VrJ-qw-rvn"/>
@@ -184,9 +184,14 @@
                                 <animations/>
                                 <state key="normal" title="Logout"/>
                                 <connections>
+                                    <action selector="LogoutUser:" destination="R4y-L4-fxB" eventType="touchUpInside" id="sKx-fb-QaO"/>
                                     <segue destination="DEH-AZ-gkv" kind="show" identifier="logoutSegue" id="nli-o3-qQV"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cJT-0F-7Ca">
+                                <rect key="frame" x="302" y="129" width="152" height="129"/>
+                                <animations/>
+                            </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -197,6 +202,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="PROFILE" id="RHk-qE-Qd3"/>
+                    <connections>
+                        <outlet property="image" destination="cJT-0F-7Ca" id="KPE-ny-sFY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JSI-us-PUR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -344,7 +352,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="76" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bja-BD-WDf" customClass="orders">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="76" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bja-BD-WDf" customClass="orders">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -479,7 +487,7 @@
         <image name="plus.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="a4v-gk-nIc"/>
+        <segue reference="d4z-BT-U36"/>
         <segue reference="c3P-jI-MCT"/>
         <segue reference="hAG-97-tgW"/>
     </inferredMetricsTieBreakers>
