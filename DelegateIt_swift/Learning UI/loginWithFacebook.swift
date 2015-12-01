@@ -16,6 +16,19 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("View loaded")
+        
+        //dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("loginSegue2", sender: self) })
+        
+        if(FBSDKAccessToken.currentAccessToken() != nil){
+            self.returnUserData()
+        }
+        
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         if (FBSDKAccessToken.currentAccessToken() != nil){
             dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("loginSegue2", sender: self) })
         }else{
@@ -32,12 +45,11 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
         super.didReceiveMemoryWarning()
     }
     
-    func getData(fbID:String,fbToken:String) {
-        RestApiManager.sharedInstance.loginUser(fbID,fbToken: fbToken)
-        //RestApiManager.sharedInstance.getUser()
+    func getData(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
+        RestApiManager.sharedInstance.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email)
         
-        print("printing")
-        print("Getting user")
+        //dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("loginSegue2", sender: self) })
+        //self.performSegueWithIdentifier("loginSegue2", sender: self)
     }
     
     
@@ -82,24 +94,27 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
             }
             else
             {
+                print("-----------")
                 print("fetched user: \(result)")
-                let userName : NSString = result.valueForKey("first_name") as! NSString
-                let fbID : NSString = result.valueForKey("id") as! NSString
-                print(fbID)
-                print(result)
-                print("User Name is: \(userName)")
-                print("FB token: \(FBSDKAccessToken.currentAccessToken().tokenString)")
+                let first_name : String = result.valueForKey("first_name") as! String
+                let last_name : String = result.valueForKey("last_name") as! String
+                var fbID : String = result.valueForKey("id") as! String
+                var email = ""
                 if(result.valueForKey("email") != nil) {
-                    let userEmail : NSString = result.valueForKey("email") as! NSString
-                    print("User Email is: \(userEmail)")
+                    email = result.valueForKey("email") as! String
+                    print("User Email is: \(email)")
                 }
                 
-                let fbToken = FBSDKAccessToken.currentAccessToken().tokenString
-                
-                self.getData(fbID as String,fbToken: fbToken)
                 
                 
+                var fbToken = FBSDKAccessToken.currentAccessToken().tokenString
                 
+                //Test mode
+                //fbID = "130017354031600"
+                //fbToken = "CAANG1yne7NcBAILZBiFlfkwa7DoxJm5mc6yRQdqyWFyzHN6jRn5KtJKEHTZAZADmFZAsBnankuKFYpV0OBEZBym0QTXYNBEZA6rkQIQZAJuW3MJwnm9DDmqsrvOHnsI2I6t7wQSLXnoy4xrhehbeuMVkhsPqZBL2kZCSiviRva63NxKplge8f3GXGaIeeK0JUCQ8wDvSakBvhuSrGJg0IYMNB"
+                
+                
+                self.getData(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
             }
         })
     }

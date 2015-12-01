@@ -13,15 +13,18 @@ class CustomOrder: JSQMessagesViewController {
     
     @IBOutlet weak var orderBox: UITextField!
     
+    var orderText:String = ""
+    
     var userName = ""
     var messages = [JSQMessage]()
-    //let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 229/255, green: 229/255, blue: 234/255, alpha: 1.0))
+
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0))
     let paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0))
         
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         self.keyboardController.textView!.becomeFirstResponder()
         
@@ -32,6 +35,7 @@ class CustomOrder: JSQMessagesViewController {
         self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1);
         
         // Do any additional setup after loading the view, typically from a nib.
+        /*
         self.userName = "iPhone"
         for i in 1...10 {
             var sender = (i%2 == 0) ? "Syncano" : self.userName
@@ -42,7 +46,7 @@ class CustomOrder: JSQMessagesViewController {
         var sender = (4%2 == 0) ? "Syncano" : self.userName
         var message = JSQMessage(senderId: sender, displayName: sender, text: "ACCEPT ORDER")
         self.messages += [message]
-        
+        */
         
         self.collectionView!.reloadData()
         self.senderDisplayName = self.userName
@@ -50,13 +54,17 @@ class CustomOrder: JSQMessagesViewController {
         
         self.inputToolbar!.contentView!.textView!.placeHolder = "Make a new order";
         
-        self.inputToolbar!.contentView!.textView!.text = "custom text here";
+        self.inputToolbar!.contentView!.textView!.text = orderText;
         
         //self.messages. //textColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
         
         //self.inputToolbar!.contentView!.textView!.placeHolderTextColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
         
         automaticallyScrollsToMostRecentMessage = true
+        
+        //self.inputToolbar!.contentView!.rightBarButtonItem?.
+        
+        self.inputToolbar!.contentView!.leftBarButtonItem = nil
         
         
     }

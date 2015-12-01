@@ -12,6 +12,10 @@ import FBSDKLoginKit
 
 class profile: UIViewController {
     
+    @IBOutlet weak var lastName_input: UITextField!
+    @IBOutlet weak var firstName_input: UITextField!
+    @IBOutlet weak var phoneNumber_input: UITextField!
+    @IBOutlet weak var emailInput: UITextField!
     @IBOutlet weak var image: UIImageView!
     
     @IBAction func LogoutUser(sender: AnyObject) {
@@ -19,6 +23,10 @@ class profile: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        firstName_input.text = mainInstance.first_name
+        lastName_input.text = mainInstance.last_name
+        phoneNumber_input.text = mainInstance.phone_number
+        emailInput.text = mainInstance.email
     }
     
     override func didReceiveMemoryWarning() {

@@ -12,6 +12,9 @@ import UIKit
 class quickorder: UIViewController {
     
     @IBOutlet weak var myScrollView: UIScrollView!
+    var descriptions:[String] = ["1","2","3","4","5","6"] //change
+    var descrionChosen = ""
+    
     
     override func viewDidLoad() {
         //print(yourVariable)
@@ -37,9 +40,9 @@ class quickorder: UIViewController {
             
             myImageView.image = myImage
             
-            print(screenSize.width)
+            //print(screenSize.width)
             
-            print(myImage.size); //print width and height
+            //print(myImage.size); //print width and height
             
             let imageHeight2:CGFloat = myImage.size.height
             let imageWidth2:CGFloat = myImage.size.width
@@ -54,6 +57,7 @@ class quickorder: UIViewController {
             //myImageView.frame.origin.x = 10
             myImageView.center = self.view.center
             myImageView.frame.origin.y = yPosition
+            myImageView.tag = index
             
             myScrollView.addSubview(myImageView)
             
@@ -62,6 +66,7 @@ class quickorder: UIViewController {
             scrollViewContentSize += imageHeight
             
             let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
+            tapGestureRecognizer
             myImageView.userInteractionEnabled = true
             myImageView.addGestureRecognizer(tapGestureRecognizer)
             
@@ -76,16 +81,16 @@ class quickorder: UIViewController {
         
     }
     
-    func imageTapped(img: AnyObject)
-    {
-        // Your action
-        print("PRESSED")
+    func imageTapped(img: AnyObject?)    {
+        let iv : UIView! = img!.view
+        //print(iv.tag)
+        descrionChosen = descriptions[iv.tag]
         self.performSegueWithIdentifier("showText", sender: nil)
     }
     
     
     func buttonPressed(sender: UIButton!) {
-        print("PRESSED")
+        //print("Moving scene")
     }
     
     
@@ -95,10 +100,9 @@ class quickorder: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ShowCounterSegue" {
-            if let destinationVC = segue.destinationViewController as? CustomOrder{
-                //destinationVC.numberToDisplay = 2
-            }
+        if segue.identifier == "showText" {
+            var secondVC: CustomOrder = segue.destinationViewController as! CustomOrder
+            secondVC.orderText = descrionChosen
         }
     }
     

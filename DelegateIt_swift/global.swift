@@ -40,12 +40,21 @@ class Main {
         print(self.fbToken)
     }
     
-    func setValues(first_name:String,last_name:String,uuid:String,active_transaction_uuids:[String],activeCount:Int) {
+    func setValues(first_name:String,last_name:String,uuid:String,active_transaction_uuids:[String],activeCount:Int,email:String,phone_number:String) {
         self.uuid = uuid
         self.first_name = first_name
         self.last_name = last_name
+        self.active_transaction_uuids = active_transaction_uuids
+        self.activeCount = activeCount
+        self.email = email
+        self.phone_number = phone_number
         print(active_transaction_uuids)
+        print(activeCount)
+        print(first_name)
+        print(last_name)
     }
+    
+    
 
     
     /*

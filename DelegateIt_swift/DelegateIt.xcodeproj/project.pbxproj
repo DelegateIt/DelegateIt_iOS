@@ -174,11 +174,11 @@
 		37E5E5CA1BF13099003111DD /* DelegateIt */ = {
 			isa = PBXGroup;
 			children = (
+				37DB5CA31C099EED0018F09C /* global.swift */,
 				37E5E5CB1BF13099003111DD /* AppDelegate.swift */,
 				37E5E5CD1BF13099003111DD /* ViewController.swift */,
 				37DB5CA51C09AACD0018F09C /* SwiftyJSON.swift */,
 				37DB5CA71C09AAF10018F09C /* RestApiManager.swift */,
-				37DB5CA31C099EED0018F09C /* global.swift */,
 				376584091BF267DA007DA8A7 /* quickorder.swift */,
 				37DC513E1C0952DA0082C4A7 /* loginWithFacebook.swift */,
 				37965A3D1C081E56005DBF68 /* messenger.swift */,
