@@ -19,6 +19,11 @@ class Main {
     var uuid:String = ""
     var activeCount:Int = 0
     var active_transaction_uuids:[String] = []
+    var token:String = ""
+    var currentMessage:Int = -1
+    
+    var currentTransaction:String = ""
+    var messageQue:[String] = []
     
     //Facebook info
     var fbID:String = ""
@@ -54,6 +59,33 @@ class Main {
         print(last_name)
     }
     
+    func addtoQue(message:String){
+        self.messageQue.append(message)
+    }
+    
+    func getMessages() -> String{
+        if(self.currentMessage < self.messageQue.count){
+            return self.messageQue[self.currentMessage]
+        }
+        return ""
+    }
+    
+    
+    func setToken(token:String) {
+        self.token = token
+    }
+    
+    func setCurrentTransaction(currentTransaction:String){
+        self.currentTransaction = currentTransaction
+    }
+    
+    func setMessageCount(currentMessage:Int){
+        self.currentMessage = currentMessage
+    }
+    
+    func addMessage(){
+        self.currentMessage = self.currentMessage + 1
+    }
     
 
     

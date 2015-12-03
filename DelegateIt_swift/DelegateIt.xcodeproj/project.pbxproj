@@ -33,6 +33,8 @@
 		3766DFF41C0B104800D2044C /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3766DFF31C0B104800D2044C /* logo.png */; };
 		37965A351C081797005DBF68 /* newOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37965A341C081797005DBF68 /* newOrder.swift */; };
 		37965A3E1C081E56005DBF68 /* messenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37965A3D1C081E56005DBF68 /* messenger.swift */; };
+		37BDBDC61C0E7841006E545A /* SecondTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BDBDC51C0E7841006E545A /* SecondTableViewController.swift */; };
+		37BDBDC81C0E788B006E545A /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BDBDC71C0E788B006E545A /* ViewController2.swift */; };
 		37DB5CA41C099EED0018F09C /* global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DB5CA31C099EED0018F09C /* global.swift */; };
 		37DB5CA61C09AACD0018F09C /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DB5CA51C09AACD0018F09C /* SwiftyJSON.swift */; };
 		37DB5CA81C09AAF10018F09C /* RestApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DB5CA71C09AAF10018F09C /* RestApiManager.swift */; };
@@ -95,6 +97,8 @@
 		37965A341C081797005DBF68 /* newOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newOrder.swift; sourceTree = "<group>"; };
 		37965A361C0817F4005DBF68 /* DelegateIt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DelegateIt-Bridging-Header.h"; sourceTree = "<group>"; };
 		37965A3D1C081E56005DBF68 /* messenger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = messenger.swift; sourceTree = "<group>"; };
+		37BDBDC51C0E7841006E545A /* SecondTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondTableViewController.swift; sourceTree = "<group>"; };
+		37BDBDC71C0E788B006E545A /* ViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 		37DB5CA31C099EED0018F09C /* global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = global.swift; path = ../global.swift; sourceTree = "<group>"; };
 		37DB5CA51C09AACD0018F09C /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		37DB5CA71C09AAF10018F09C /* RestApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestApiManager.swift; sourceTree = "<group>"; };
@@ -174,6 +178,8 @@
 		37E5E5CA1BF13099003111DD /* DelegateIt */ = {
 			isa = PBXGroup;
 			children = (
+				37BDBDC71C0E788B006E545A /* ViewController2.swift */,
+				37BDBDC51C0E7841006E545A /* SecondTableViewController.swift */,
 				37DB5CA31C099EED0018F09C /* global.swift */,
 				37E5E5CB1BF13099003111DD /* AppDelegate.swift */,
 				37E5E5CD1BF13099003111DD /* ViewController.swift */,
@@ -463,12 +469,14 @@
 				3765840A1BF267DA007DA8A7 /* quickorder.swift in Sources */,
 				37DB5CA61C09AACD0018F09C /* SwiftyJSON.swift in Sources */,
 				37DC513F1C0952DA0082C4A7 /* loginWithFacebook.swift in Sources */,
+				37BDBDC81C0E788B006E545A /* ViewController2.swift in Sources */,
 				3765840C1BF26AC0007DA8A7 /* orders.swift in Sources */,
 				37DB5CA41C099EED0018F09C /* global.swift in Sources */,
 				374EDFD91BF2A7C5000AECE1 /* TableViewCell.swift in Sources */,
 				374EE01B1BF2B248000AECE1 /* profile.swift in Sources */,
 				3765840E1BF26F0C007DA8A7 /* CustomOrder.swift in Sources */,
 				37DB5CA81C09AAF10018F09C /* RestApiManager.swift in Sources */,
+				37BDBDC61C0E7841006E545A /* SecondTableViewController.swift in Sources */,
 				37E5E5CC1BF13099003111DD /* AppDelegate.swift in Sources */,
 				37965A351C081797005DBF68 /* newOrder.swift in Sources */,
 			);

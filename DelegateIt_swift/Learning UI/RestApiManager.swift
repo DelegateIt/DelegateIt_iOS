@@ -58,7 +58,8 @@ class RestApiManager: NSObject {
                     //print(uuidTotal)
                     let token = jsonDictionary["token"] as! String
                     self.getUser("12492214829628214231", token: token) //CHANGE
-                    //save data
+                    mainInstance.setToken(token)
+                    //save data (token)
                     
                 }
                 else if(result == 10){
@@ -193,4 +194,143 @@ class RestApiManager: NSObject {
             }
         }).resume()
     }
+    
+    
+
+    func createTransaction(uuid:String,token:String,newMessage:String) -> String {
+        // Setup the session to make REST POST call
+        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/transaction?token=" + token
+        let url = NSURL(string: postEndpoint)!
+        let session = NSURLSession.sharedSession()
+        //let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
+        
+        var result:Int = -1
+        var transactionUUID:String = ""
+        
+        //Actual User
+        let postParams : [String: String] = ["customer_uuid":uuid,"token":token]
+        
+        
+        // Create the request
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
+            print(postParams)
+        } catch {
+            print("bad things happened")
+        }
+        // Make the POST call and handle it in a completion handler
+        session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+            
+            // Read the JSON
+            do {
+                if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
+                    // Print what we got from the call
+                    print(output)
+                    
+                    // Parse the JSON to get the IP
+                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                    result = jsonDictionary["result"] as! Int
+                    
+                    if(result == 0){
+                        print("Transaction created")
+                        transactionUUID = jsonDictionary["uuid"] as! String
+                        mainInstance.setCurrentTransaction(transactionUUID)
+                        print(transactionUUID)
+                        self.sendMessage(mainInstance.currentTransaction,token: mainInstance.token,message: newMessage)
+                    }
+                    print("Got data")
+                    
+                    // Update the label
+                    //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
+                }
+            } catch {
+                print("bad things happened")
+            }
+            
+            //Result 10 means to create a new user
+            //Result 0 is good
+            
+            
+        }).resume()
+        
+        if(result == 0){
+            return transactionUUID
+        }
+        return ""
+    }
+    
+    
+    func sendMessage(transactionUUID:String,token:String,message:String) -> Int {
+        // Setup the session to make REST POST call
+        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/send_message/" + transactionUUID + "?token=" + token
+        let url = NSURL(string: postEndpoint)!
+        let session = NSURLSession.sharedSession()
+        //let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
+        
+        var result:Int = -1
+        
+        //Actual User
+        let postParams : [String: String] = ["platform_type":"IOS","content":message,"from_customer":"true"]
+        
+        
+        // Create the request
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
+            print(postParams)
+        } catch {
+            print("bad things happened")
+        }
+        // Make the POST call and handle it in a completion handler
+        session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+            
+            // Read the JSON
+            do {
+                if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
+                    // Print what we got from the call
+                    print(output)
+                    
+                    // Parse the JSON to get the IP
+                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                    result = jsonDictionary["result"] as! Int
+                    
+                    if(result == 0){
+                        print("Message Sent")
+                        mainInstance.addMessage()
+                        var nextMessage:String = mainInstance.getMessages()
+                        if(nextMessage != ""){
+                            self.sendMessage(mainInstance.currentTransaction,token: mainInstance.token,message: nextMessage)
+                        }
+                    }
+                    print("Got data")
+                    
+                    // Update the label
+                    //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
+                }
+            } catch {
+                print("bad things happened")
+            }
+            
+            //Result 10 means to create a new user
+            //Result 0 is good
+            
+            
+        }).resume()
+        
+        if(result == 0){
+            return 1
+        }
+        return 0
+    }
+    
+    
+    func plusOne() -> Int{
+        return 1
+    }
+    
 }

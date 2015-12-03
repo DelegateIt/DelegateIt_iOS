@@ -21,10 +21,19 @@ class CustomOrder: JSQMessagesViewController {
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0))
     let paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0))
+    
+    var counter:Int = 0
+    var transactionUUID:String = ""
+    var messageQue:[String] = []
+    // -1 means no messages sent
+    
+    
         
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        
+        mainInstance.setMessageCount(0)
         
         self.keyboardController.textView!.becomeFirstResponder()
         
@@ -35,6 +44,7 @@ class CustomOrder: JSQMessagesViewController {
         self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1);
         
         // Do any additional setup after loading the view, typically from a nib.
+        
         /*
         self.userName = "iPhone"
         for i in 1...10 {
@@ -83,6 +93,7 @@ class CustomOrder: JSQMessagesViewController {
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         var data = self.messages[indexPath.row]
+        
         print(data.text)
         if (data.senderId == self.senderId) {
             return self.outgoingBubble
@@ -108,9 +119,24 @@ class CustomOrder: JSQMessagesViewController {
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         var newMessage = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text);
+        var index: Int
+        counter++
+        print(counter)
+        if(counter == 1){
+           print("create new transaction")
+            //create new transaction
+            transactionUUID = RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
+            mainInstance.addMessage()
+        }
+        if(mainInstance.currentTransaction == ""){
+            mainInstance.addtoQue(newMessage.text)
+        } else{
+            
+            RestApiManager.sharedInstance.sendMessage(mainInstance.currentTransaction,token: mainInstance.token,message: newMessage.text)
+        }
+        
         messages += [newMessage]
         self.finishSendingMessage()
-
     }
     
     override func didPressAccessoryButton(sender: UIButton!) {
