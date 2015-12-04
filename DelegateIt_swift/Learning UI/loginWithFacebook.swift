@@ -98,7 +98,7 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
                 print("fetched user: \(result)")
                 let first_name : String = result.valueForKey("first_name") as! String
                 let last_name : String = result.valueForKey("last_name") as! String
-                var fbID : String = result.valueForKey("id") as! String
+                let fbID : String = result.valueForKey("id") as! String
                 var email = ""
                 if(result.valueForKey("email") != nil) {
                     email = result.valueForKey("email") as! String
@@ -107,7 +107,7 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
                 
                 
                 
-                var fbToken = FBSDKAccessToken.currentAccessToken().tokenString
+                let fbToken = FBSDKAccessToken.currentAccessToken().tokenString
                 
                 //Test mode
                 //fbID = "130017354031600"

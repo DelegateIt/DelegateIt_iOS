@@ -25,7 +25,7 @@ class SecondTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var Cell = self.tableView.dequeueReusableCellWithIdentifier("SecondCell", forIndexPath: indexPath) as UITableViewCell
+        let Cell = self.tableView.dequeueReusableCellWithIdentifier("SecondCell", forIndexPath: indexPath) as UITableViewCell
         
         
         Cell.textLabel?.text = "Hello"
@@ -37,9 +37,9 @@ class SecondTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        var indexPath : NSIndexPath = (self.tableView?.indexPathForSelectedRow)!
+        let indexPath : NSIndexPath = (self.tableView?.indexPathForSelectedRow)!
         
-        var DestViewController = segue.destinationViewController as! ViewController2
+        let DestViewController = segue.destinationViewController as! ViewController2
         
         DestViewController.FirstString = SecondAnswerArray[indexPath.row]
         

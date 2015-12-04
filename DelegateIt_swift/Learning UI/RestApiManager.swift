@@ -302,7 +302,7 @@ class RestApiManager: NSObject {
                     if(result == 0){
                         print("Message Sent")
                         mainInstance.addMessage()
-                        var nextMessage:String = mainInstance.getMessages()
+                        let nextMessage:String = mainInstance.getMessages()
                         if(nextMessage != ""){
                             self.sendMessage(mainInstance.currentTransaction,token: mainInstance.token,message: nextMessage)
                         }

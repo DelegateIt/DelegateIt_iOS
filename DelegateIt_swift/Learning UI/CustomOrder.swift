@@ -85,14 +85,14 @@ class CustomOrder: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
-        var data = self.messages[indexPath.row]
+        let data = self.messages[indexPath.row]
         return data
     }
     
     
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
-        var data = self.messages[indexPath.row]
+        let data = self.messages[indexPath.row]
         
         print(data.text)
         if (data.senderId == self.senderId) {
@@ -118,8 +118,7 @@ class CustomOrder: JSQMessagesViewController {
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        var newMessage = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text);
-        var index: Int
+        let newMessage = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text);
         counter++
         print(counter)
         if(counter == 1){

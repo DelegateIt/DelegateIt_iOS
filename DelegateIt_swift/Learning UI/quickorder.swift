@@ -101,7 +101,7 @@ class quickorder: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showText" {
-            var secondVC: CustomOrder = segue.destinationViewController as! CustomOrder
+            let secondVC: CustomOrder = segue.destinationViewController as! CustomOrder
             secondVC.orderText = descrionChosen
         }
     }
