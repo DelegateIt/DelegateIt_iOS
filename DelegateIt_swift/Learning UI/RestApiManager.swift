@@ -91,7 +91,7 @@ class RestApiManager: NSObject {
         //let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
         
         //Actual User
-        let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken,"first_name":first_name,"last_name":last_name,"email":email,"phone_number":"1111111111"]
+        let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken,"first_name":first_name,"last_name":last_name,"email":email,"phone_number":"15555555551"]
         
         
         //Test User
