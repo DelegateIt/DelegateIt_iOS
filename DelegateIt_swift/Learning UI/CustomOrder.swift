@@ -128,7 +128,32 @@ class CustomOrder: JSQMessagesViewController {
     
     override func didPressAccessoryButton(sender: UIButton!) {
         print("button pressed")
+        //Create the AlertController
+        let actionSheetController: UIAlertController = UIAlertController(title: "Send a picture or your location", message: "", preferredStyle: .ActionSheet)
+        
+        //Create and add the Cancel action
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+            //Just dismiss the action sheet
+        }
+        actionSheetController.addAction(cancelAction)
+        //Create and add first option action
+        let takePictureAction: UIAlertAction = UIAlertAction(title: "Take Picture", style: .Default) { action -> Void in
+            //Code for launching the camera goes here
+        }
+        actionSheetController.addAction(takePictureAction)
+        //Create and add a second option action
+        let choosePictureAction: UIAlertAction = UIAlertAction(title: "Choose From Camera Roll", style: .Default) { action -> Void in
+            //Code for picking from camera roll goes here
+        }
+        actionSheetController.addAction(choosePictureAction)
+        
+        let chooseLocationAction: UIAlertAction = UIAlertAction(title: "Send Location", style: .Default) { action -> Void in
+            //Code for picking from camera roll goes here
+        }
+        actionSheetController.addAction(chooseLocationAction)
+        
+        //Present the AlertController
+        self.presentViewController(actionSheetController, animated: true, completion: nil)
     }
-    
     
 }
