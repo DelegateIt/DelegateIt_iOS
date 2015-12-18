@@ -27,14 +27,10 @@ class CustomOrder: JSQMessagesViewController {
     var messageQue:[String] = []
     // -1 means no messages sent
     
-    
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         mainInstance.setMessageCount(0)
-        
         self.keyboardController.textView!.becomeFirstResponder()
         
         //orderBox.becomeFirstResponder()
@@ -61,22 +57,15 @@ class CustomOrder: JSQMessagesViewController {
         self.collectionView!.reloadData()
         self.senderDisplayName = self.userName
         self.senderId = self.userName
-        
         self.inputToolbar!.contentView!.textView!.placeHolder = "Make a new order";
-        
         self.inputToolbar!.contentView!.textView!.text = orderText;
         
         //self.messages. //textColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
         
         //self.inputToolbar!.contentView!.textView!.placeHolderTextColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
-        
         automaticallyScrollsToMostRecentMessage = true
-        
         //self.inputToolbar!.contentView!.rightBarButtonItem?.
-        
-        self.inputToolbar!.contentView!.leftBarButtonItem = nil
-        
-        
+        //self.inputToolbar!.contentView!.leftBarButtonItem = nil
     }
     
     override func didReceiveMemoryWarning() {
@@ -105,7 +94,6 @@ class CustomOrder: JSQMessagesViewController {
             else{
                 return self.incomingBubble
             }
-            
         }
     }
     
