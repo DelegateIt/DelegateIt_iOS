@@ -31,6 +31,11 @@
 		376584281BF27369007DA8A7 /* orders@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376584251BF27369007DA8A7 /* orders@3x.png */; };
 		3766DFF21C0B0E6500D2044C /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3766DFF11C0B0E6500D2044C /* background.png */; };
 		3766DFF41C0B104800D2044C /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3766DFF31C0B104800D2044C /* logo.png */; };
+		37791DE91C2987180082693C /* editUserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37791DE81C2987180082693C /* editUserProfile.swift */; };
+		37791DEB1C298BAD0082693C /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37791DEA1C298BAD0082693C /* DetailTableViewController.swift */; };
+		37791DED1C299B340082693C /* about.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37791DEC1C299B340082693C /* about.swift */; };
+		377AF8D11C28FFD3009028EA /* editProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377AF8D01C28FFD3009028EA /* editProfile.swift */; };
+		377AF90F1C292665009028EA /* BlogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377AF90E1C292665009028EA /* BlogViewController.swift */; };
 		37965A351C081797005DBF68 /* newOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37965A341C081797005DBF68 /* newOrder.swift */; };
 		37965A3E1C081E56005DBF68 /* messenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37965A3D1C081E56005DBF68 /* messenger.swift */; };
 		37BDBDC61C0E7841006E545A /* SecondTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BDBDC51C0E7841006E545A /* SecondTableViewController.swift */; };
@@ -94,6 +99,11 @@
 		376584251BF27369007DA8A7 /* orders@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orders@3x.png"; sourceTree = "<group>"; };
 		3766DFF11C0B0E6500D2044C /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		3766DFF31C0B104800D2044C /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		37791DE81C2987180082693C /* editUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = editUserProfile.swift; sourceTree = "<group>"; };
+		37791DEA1C298BAD0082693C /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
+		37791DEC1C299B340082693C /* about.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = about.swift; sourceTree = "<group>"; };
+		377AF8D01C28FFD3009028EA /* editProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = editProfile.swift; sourceTree = "<group>"; };
+		377AF90E1C292665009028EA /* BlogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlogViewController.swift; path = "../../../../Desktop/Segue/Table Segue/Table Segue/BlogViewController.swift"; sourceTree = "<group>"; };
 		37965A341C081797005DBF68 /* newOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newOrder.swift; sourceTree = "<group>"; };
 		37965A361C0817F4005DBF68 /* DelegateIt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DelegateIt-Bridging-Header.h"; sourceTree = "<group>"; };
 		37965A3D1C081E56005DBF68 /* messenger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = messenger.swift; sourceTree = "<group>"; };
@@ -178,6 +188,10 @@
 		37E5E5CA1BF13099003111DD /* DelegateIt */ = {
 			isa = PBXGroup;
 			children = (
+				377AF90E1C292665009028EA /* BlogViewController.swift */,
+				377AF8D01C28FFD3009028EA /* editProfile.swift */,
+				37791DEC1C299B340082693C /* about.swift */,
+				37791DE81C2987180082693C /* editUserProfile.swift */,
 				37BDBDC71C0E788B006E545A /* ViewController2.swift */,
 				37BDBDC51C0E7841006E545A /* SecondTableViewController.swift */,
 				37DB5CA31C099EED0018F09C /* global.swift */,
@@ -212,6 +226,7 @@
 				376584131BF271BC007DA8A7 /* tripplanning.jpg */,
 				376584151BF271C1007DA8A7 /* drycleaning.jpg */,
 				37E5E5CF1BF13099003111DD /* Main.storyboard */,
+				37791DEA1C298BAD0082693C /* DetailTableViewController.swift */,
 				37E5E5D21BF13099003111DD /* Assets.xcassets */,
 				37E5E5D41BF13099003111DD /* LaunchScreen.storyboard */,
 				37E5E5D71BF13099003111DD /* Info.plist */,
@@ -467,15 +482,20 @@
 				37E5E5CE1BF13099003111DD /* ViewController.swift in Sources */,
 				37965A3E1C081E56005DBF68 /* messenger.swift in Sources */,
 				3765840A1BF267DA007DA8A7 /* quickorder.swift in Sources */,
+				377AF8D11C28FFD3009028EA /* editProfile.swift in Sources */,
 				37DB5CA61C09AACD0018F09C /* SwiftyJSON.swift in Sources */,
+				37791DED1C299B340082693C /* about.swift in Sources */,
 				37DC513F1C0952DA0082C4A7 /* loginWithFacebook.swift in Sources */,
 				37BDBDC81C0E788B006E545A /* ViewController2.swift in Sources */,
+				377AF90F1C292665009028EA /* BlogViewController.swift in Sources */,
 				3765840C1BF26AC0007DA8A7 /* orders.swift in Sources */,
 				37DB5CA41C099EED0018F09C /* global.swift in Sources */,
 				374EDFD91BF2A7C5000AECE1 /* TableViewCell.swift in Sources */,
 				374EE01B1BF2B248000AECE1 /* profile.swift in Sources */,
 				3765840E1BF26F0C007DA8A7 /* CustomOrder.swift in Sources */,
 				37DB5CA81C09AAF10018F09C /* RestApiManager.swift in Sources */,
+				37791DE91C2987180082693C /* editUserProfile.swift in Sources */,
+				37791DEB1C298BAD0082693C /* DetailTableViewController.swift in Sources */,
 				37BDBDC61C0E7841006E545A /* SecondTableViewController.swift in Sources */,
 				37E5E5CC1BF13099003111DD /* AppDelegate.swift in Sources */,
 				37965A351C081797005DBF68 /* newOrder.swift in Sources */,

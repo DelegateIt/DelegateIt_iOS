@@ -11,14 +11,12 @@ import UIKit
 
 
 class SecondTableViewController: UITableViewController {
-    
     var SecondArray = [String]()
     var SecondAnswerArray = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        }
+    }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
@@ -26,11 +24,7 @@ class SecondTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let Cell = self.tableView.dequeueReusableCellWithIdentifier("SecondCell", forIndexPath: indexPath) as UITableViewCell
-        
-        
         Cell.textLabel?.text = "Hello"
-        
-        
         return Cell
     }
     

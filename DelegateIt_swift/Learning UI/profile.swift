@@ -10,30 +10,76 @@
 import Foundation
 import FBSDKLoginKit
 
-class profile: UIViewController {
+class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    @IBOutlet weak var lastName_input: UITextField!
-    @IBOutlet weak var firstName_input: UITextField!
-    @IBOutlet weak var phoneNumber_input: UITextField!
-    @IBOutlet weak var emailInput: UITextField!
-    @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var tableView: UITableView!
+    let textCellIdentifier = "TextCell"
+    
+    let blogSegueIdentifier = "ShowBlogSegue"   //New
+    
+    let swiftBlogs = ["EDIT PROFILE", "WORK WITH US", "ABOUT"]
+    
+    var choosenRow = ""
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "SETTINGS"
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    //New
+    // MARK: - Navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print(swiftBlogs[(tableView.indexPathForSelectedRow?.row)!])
+        if swiftBlogs[(tableView.indexPathForSelectedRow?.row)!] == "ABOUT" {
+            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("showAbout") as? about
+            self.presentViewController(vc!, animated: true, completion: nil)
+        }
+        else if segue.identifier == blogSegueIdentifier {
+            if let destination = segue.destinationViewController as? BlogViewController {
+                if let blogIndex = tableView.indexPathForSelectedRow {
+                    destination.blogName = swiftBlogs[(tableView.indexPathForSelectedRow?.row)!]
+                }
+            }
+        }
+    }
+    
+    // MARK: - UITextFieldDelegate Methods
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return swiftBlogs.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath) as UITableViewCell
+        
+        let row = indexPath.row
+        cell.textLabel?.text = swiftBlogs[row]
+        
+        return cell
+    }
+    
+    // MARK: - UITableViewDelegate Methods
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        let row = indexPath.row
+        print("--")
+        //print(swiftBlogs[row])
+        choosenRow = swiftBlogs[row]
+        print("--")
+    }
+    
     
     @IBAction func LogoutUser(sender: AnyObject) {
         FBSDKLoginManager().logOut()
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        firstName_input.text = mainInstance.first_name
-        lastName_input.text = mainInstance.last_name
-        phoneNumber_input.text = mainInstance.phone_number
-        emailInput.text = mainInstance.email
-    }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-        
-    }
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         print("User Logged Out")
