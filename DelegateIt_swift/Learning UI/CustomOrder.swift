@@ -30,12 +30,16 @@ class CustomOrder: JSQMessagesViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        
         mainInstance.setMessageCount(0)
         self.keyboardController.textView!.becomeFirstResponder()
         
         //orderBox.becomeFirstResponder()
         
-        navigationController?.navigationBar.topItem?.title = "NEW ORDER"
+        //navigationController?.navigationBar.topItem?.title = "NEW ORDER"
+        self.title = "ORDER"
+        
         self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.1, 0.1);
         self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1);
         
@@ -66,6 +70,29 @@ class CustomOrder: JSQMessagesViewController {
         automaticallyScrollsToMostRecentMessage = true
         //self.inputToolbar!.contentView!.rightBarButtonItem?.
         //self.inputToolbar!.contentView!.leftBarButtonItem = nil
+    
+        
+        var leftBtn = UIBarButtonItem(title: "CANCLE", style: .Plain, target: self, action: "sayHello2:")
+       
+        var b = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+
+        
+        //var leftNavBarButton = UIBarButtonItem(customView:b)
+        self.navigationItem.rightBarButtonItem = b
+        self.navigationItem.leftBarButtonItem = leftBtn
+        
+        //print(self.inputToolbar?.si)
+    }
+    
+    
+    func sayHello(sender: UIBarButtonItem) {
+        print("test22")
+        //backToOrder
+        self.performSegueWithIdentifier("acceptOrder", sender: self);
+    }
+    
+    func sayHello2(sender: UIBarButtonItem) {
+        self.performSegueWithIdentifier("cancleOrder", sender: self);
     }
     
     override func didReceiveMemoryWarning() {

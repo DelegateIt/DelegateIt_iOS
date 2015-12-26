@@ -32,8 +32,25 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     //New
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        print(swiftBlogs[(tableView.indexPathForSelectedRow?.row)!])
-        if swiftBlogs[(tableView.indexPathForSelectedRow?.row)!] == "ABOUT" {
+        //print(swiftBlogs[(tableView.indexPathForSelectedRow?.row)!])
+        //print(segue.identifier)
+        
+        print(choosenRow)
+        
+        if(segue.identifier == "sample2"){
+            let destination = segue.destinationViewController as! about
+            destination.blogName = choosenRow
+        }
+        
+        /*
+        if segue.identifier == "sample2" {
+            if let destination = segue.destinationViewController as? about {
+                if let blogIndex = tableView.indexPathForSelectedRow {
+                    destination.blogName = swiftBlogs[(tableView.indexPathForSelectedRow?.row)!]
+                }
+            }
+        }
+        else if swiftBlogs[(tableView.indexPathForSelectedRow?.row)!] == "ABOUT2" {
             let vc = self.storyboard!.instantiateViewControllerWithIdentifier("showAbout") as? about
             self.presentViewController(vc!, animated: true, completion: nil)
         }
@@ -44,6 +61,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 }
             }
         }
+        */
     }
     
     // MARK: - UITextFieldDelegate Methods
@@ -73,6 +91,15 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         //print(swiftBlogs[row])
         choosenRow = swiftBlogs[row]
         print("--")
+        
+        if(choosenRow == "ABOUT" || choosenRow == "WORK WITH US") {
+            self.performSegueWithIdentifier("sample2", sender: self);
+        }
+        else {
+            self.performSegueWithIdentifier("ShowBlogSegue", sender: self);
+        }
+        
+        
     }
     
     

@@ -19,6 +19,7 @@ class quickorder: UIViewController {
     override func viewDidLoad() {
         //print(yourVariable)
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view, typically from a nib.
         
         mainInstance.printHello()

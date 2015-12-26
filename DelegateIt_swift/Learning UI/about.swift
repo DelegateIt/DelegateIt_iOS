@@ -9,7 +9,9 @@
 import Foundation
 import UIKit
 
-class about: UITableViewController {
+class about: UIViewController {
+    
+    var blogName:String?
     
     override func viewWillAppear(animated: Bool) {
         
@@ -17,6 +19,9 @@ class about: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("----")
+        print(blogName)
+        self.title = blogName
         print("ABOUTasdf")
     }
 }
