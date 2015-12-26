@@ -55,7 +55,6 @@
         <!--ORDER-->
         <scene sceneID="9hB-8G-aUc">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZAc-mq-HBb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController hidesBottomBarWhenPushed="YES" id="P4g-hU-bqS" customClass="CustomOrder" customModule="DelegateIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ag4-96-IBi"/>
@@ -77,6 +76,7 @@
                         <segue destination="Lkx-5x-v4k" kind="show" identifier="acceptOrder" id="eoD-qJ-jAY"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZAc-mq-HBb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1478" y="898"/>
         </scene>
@@ -450,7 +450,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="TextCell" textLabel="zcj-5r-KXN" detailTextLabel="CxN-iZ-GJC" style="IBUITableViewCellStyleValue1" id="1PU-Mm-HdQ">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1PU-Mm-HdQ" id="bY7-Vd-zUO">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>

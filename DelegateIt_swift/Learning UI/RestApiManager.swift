@@ -9,8 +9,6 @@
 import Foundation
 
 
-typealias ServiceResponse = (JSON, NSError?) -> Void
-
 class RestApiManager: NSObject {
     static let sharedInstance = RestApiManager()
     

@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '61494ACBE324221E5FE40886'
+               BlueprintIdentifier = '86ED24255EE11F7340D5B6DE'
                BlueprintName = 'JSQMessagesViewController'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libJSQMessagesViewController.a'>

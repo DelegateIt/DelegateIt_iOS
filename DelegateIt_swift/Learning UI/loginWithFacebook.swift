@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 
 class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
@@ -104,8 +105,6 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
                     email = result.valueForKey("email") as! String
                     print("User Email is: \(email)")
                 }
-                
-                
                 
                 let fbToken = FBSDKAccessToken.currentAccessToken().tokenString
                 
