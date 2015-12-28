@@ -102,7 +102,7 @@
 		37791DEA1C298BAD0082693C /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		37791DEC1C299B340082693C /* about.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = about.swift; sourceTree = "<group>"; };
 		377AF8D01C28FFD3009028EA /* editProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = editProfile.swift; sourceTree = "<group>"; };
-		377AF90E1C292665009028EA /* BlogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlogViewController.swift; path = "../../../../Desktop/Segue/Table Segue/Table Segue/BlogViewController.swift"; sourceTree = "<group>"; };
+		377AF90E1C292665009028EA /* BlogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogViewController.swift; sourceTree = "<group>"; };
 		37965A341C081797005DBF68 /* newOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newOrder.swift; sourceTree = "<group>"; };
 		37965A361C0817F4005DBF68 /* DelegateIt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DelegateIt-Bridging-Header.h"; sourceTree = "<group>"; };
 		37965A3D1C081E56005DBF68 /* messenger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = messenger.swift; sourceTree = "<group>"; };
