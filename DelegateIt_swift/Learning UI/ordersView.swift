@@ -10,10 +10,9 @@ import Foundation
 import UIKit
 
 class ordersView: UITableViewController {
+    var tableData = mainInstance.active_transaction_uuids //["Order1", "Order2", "Order3", "Order4"]
     
-    var tableData = ["Order1", "Order2", "Order3", "Order4"]
-    
-    var detailData = ["Dec 21", "Dec 21", "Dec 21", "Dec 21"]
+    var detailData = mainInstance.active_transaction_uuids //["Dec 21", "Dec 21", "Dec 21", "Dec 21"]
     
     @IBAction func saveToMainViewController (segue:UIStoryboardSegue) {
         let detailViewController = segue.sourceViewController as! DetailTableViewController
@@ -25,6 +24,9 @@ class ordersView: UITableViewController {
     
     
     override func viewDidLoad() {
+        tableData = mainInstance.active_transaction_uuids
+        detailData = mainInstance.active_transaction_uuids
+        print(mainInstance.active_transaction_uuids)
         super.viewDidLoad()
         self.title = "ORDERS"
         self.tabBarController?.tabBar.hidden = false

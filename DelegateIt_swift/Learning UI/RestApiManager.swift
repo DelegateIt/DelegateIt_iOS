@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 
 class RestApiManager: NSObject {
@@ -14,7 +15,7 @@ class RestApiManager: NSObject {
     
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
         // Setup the session to make REST POST call
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/login/customer"
+        let postEndpoint: String = "http://192.168.99.100:8000/core/login/customer"
         let url = NSURL(string: postEndpoint)!
         let session = NSURLSession.sharedSession()
         let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
@@ -32,58 +33,117 @@ class RestApiManager: NSObject {
         } catch {
             print("bad things happened")
         }
-        // Make the POST call and handle it in a completion handler
+        
+        
         session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
             
-        // Read the JSON
-        do {
-            if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
-                // Print what we got from the call
-                print("--a----")
-                print(output)
+            // Read the JSON
+            do {
+                if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
+                    // Print what we got from the call
+                    print(output)
                     
-                // Parse the JSON to get the IP
-                let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                let result = jsonDictionary["result"] as! Int
-                print(jsonDictionary)
-                
-                if(result == 0){
-                    print("User is ballin")
-                    //var getUUID:[NSString] = output
-                    //print(getUUID)
+                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
                     
-                    //var uuidTotal = jsonDictionary['uuid'] as! String
-                    //print(uuidTotal)
-                    let token = jsonDictionary["token"] as! String
-                    self.getUser("12492214829628214231", token: token) //CHANGE
-                    mainInstance.setToken(token)
-                    //save data (token)
+                    print("-----")
+                    let json = JSON(jsonDictionary)
+                    let result = json["result"].stringValue
+                    print(json)
                     
+                    
+                    // Parse the JSON to get the IP
+                    //let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                    //let result = jsonDictionary["result"] as! Int
+                    
+                    //print(jsonDictionary)
+                    
+                    print(json["result"].stringValue)
+                    print(json["customer"]["uuid"].stringValue)
+                    print(first_name)
+                    print(last_name)
+                    
+                    if(result == "0"){
+                        print("User is ballin")
+                        //var getUUID:[NSString] = output
+                        //print(getUUID)
+                        
+                        print("-----A------")
+                        
+                        let uuidTotal = json["customer"]["uuid"].stringValue  //jsonDictionary['uuid'] as! String
+                        print(uuidTotal)
+                        let token = json["token"].stringValue //jsonDictionary["token"] as! String
+                        print(token)
+                        self.getUser(uuidTotal, token: token) //CHANGE
+                        mainInstance.setToken(token)
+                        //save data (token)
+                        
+                    }
+                    else if(result == "10"){
+                        print("User is not created")
+                        self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
+                    }
                 }
-                else if(result == 10){
-                    print("User is not created")
-                    self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
-                }
-                
-                print("Got data")
-                    
-                // Update the label
-                //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
+            } catch {
+                print("bad things happened")
             }
-        } catch {
-            print("bad things happened")
-        }
             
-        //Result 10 means to create a new user
-        //Result 0 is good
-        
+            //Result 10 means to create a new user
+            //Result 0 is good
+            
             
         }).resume()
+        
+        
+        
+        
+        // Make the POST call and handle it in a completion handler
+        /*
+        session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+        
+            //let output = NSString(data:data!, encoding: NSUTF8StringEncoding)
+            print("-----")
+            print(data)
+            
+        // Read the JSO
+            
+        let json = JSON(postParams)
+        let result = json["result"].intValue
+        print(json["uuid"].stringValue)
+        print("-------")
+            
+            
+        // Print what we got from the call
+        // Parse the JSON to get the IP
+        //let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+        //let result = jsonDictionary["result"] as! Int
+            
+        if(result == 0){
+            print("User is ballin")
+            //var getUUID:[NSString] = output
+            //print(getUUID)
+                
+            let uuidTotal = json["uuid"].stringValue  //jsonDictionary['uuid'] as! String
+            //print(uuidTotal)
+            let token = json["result"].stringValue //jsonDictionary["token"] as! String
+            //self.getUser(uuidTotal, token: token) //CHANGE
+            //mainInstance.setToken(token)
+            //save data (token)
+                
+        }
+        else if(result == 10){
+            print("User is not created")
+            self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
+            }
+        print("Got data")
+        //Result 10 means to create a new user
+        //Result 0 is good
+        }).resume()
+        */
     }
     
     func createUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
         // Setup the session to make REST POST call
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/customer"
+        let postEndpoint: String = "http://192.168.99.100:8000/core/customer"
         let url = NSURL(string: postEndpoint)!
         let session = NSURLSession.sharedSession()
         //let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
@@ -128,9 +188,6 @@ class RestApiManager: NSObject {
                     }
                     
                     print("Got data")
-                    
-                    // Update the label
-                    //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
                 }
             } catch {
                 print("bad things happened")
@@ -138,8 +195,6 @@ class RestApiManager: NSObject {
             
             //Result 10 means to create a new user
             //Result 0 is good
-            
-            
         }).resume()
     }
     
@@ -149,7 +204,7 @@ class RestApiManager: NSObject {
         // Setup the session to make REST GET call.  Notice the URL is https NOT http!!
         print(uuid)
         print(token)
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/customer/" + uuid + "?token=" + token
+        let postEndpoint: String = "http://192.168.99.100:8000/core/customer/" + uuid + "?token=" + token
         print(postEndpoint)
         let session = NSURLSession.sharedSession()
         let url = NSURL(string: postEndpoint)!
@@ -164,23 +219,39 @@ class RestApiManager: NSObject {
                     // Print what we got from the call
                     print(output)
                     
-                    // Parse the JSON to get the IP
                     let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                    print(jsonDictionary)
-                    let first_name = jsonDictionary["first_name"] as! String
+                    
+                    print("-----")
+                    let json = JSON(jsonDictionary)
+                    let result = json["result"].stringValue
+                    print(json)
+                
+                    let first_name = json["customer"]["first_name"].stringValue
                     var email = ""
-                    if(jsonDictionary["email"] != nil){
-                        email = jsonDictionary["email"] as! String
+                    if(json["customer"]["email"] != nil){
+                        email = json["customer"]["email"].stringValue
                     }
                     
-                    let last_name = jsonDictionary["last_name"] as! String
-                    let phone_number = jsonDictionary["phone_number"] as! String
-                    let uuid = jsonDictionary["uuid"] as! String
-                    let active_transaction_uuids = jsonDictionary["active_transaction_uuids"] as! [String]
-                    let activeCount = active_transaction_uuids.count
+                    let last_name = json["customer"]["last_name"].stringValue
+                    let phone_number = json["customer"]["phone_number"].stringValue
+                    let uuid = json["customer"]["uuid"].stringValue
+                    var active_transaction_uuids = json["customer"]["active_transaction_uuids"].arrayValue.map { $0.string!}
+                    print(active_transaction_uuids)
+                    //let active_transaction_uuids = ["Hello"]
+                    let activeCount = 0 // active_transaction_uuids.count
                     
                     
                     mainInstance.setValues(first_name,last_name:last_name,uuid:uuid,active_transaction_uuids:active_transaction_uuids,activeCount:activeCount,email:email,phone_number:phone_number)
+                    
+                    var index:Int
+                    
+                    for index = 0; index < active_transaction_uuids.count; index++ {
+                        self.getTransaction(active_transaction_uuids[index], token: mainInstance.token)
+                    }
+
+                    
+                    
+                    
                     
                     print("Got data")
                     
@@ -197,7 +268,7 @@ class RestApiManager: NSObject {
 
     func createTransaction(uuid:String,token:String,newMessage:String) -> String {
         // Setup the session to make REST POST call
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/transaction?token=" + token
+        let postEndpoint: String = "http://192.168.99.100:8000/core/transaction?token=" + token
         let url = NSURL(string: postEndpoint)!
         let session = NSURLSession.sharedSession()
         //let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
@@ -206,7 +277,7 @@ class RestApiManager: NSObject {
         var transactionUUID:String = ""
         
         //Actual User
-        let postParams : [String: String] = ["customer_uuid":uuid,"token":token]
+        let postParams : [String: String] = ["customer_uuid":uuid,"customer_platform_type":"ios"]
         
         
         // Create the request
@@ -261,9 +332,49 @@ class RestApiManager: NSObject {
     }
     
     
+    func getTransaction(transactionUUID:String,token:String) {
+        // Setup the session to make REST GET call.  Notice the URL is https NOT http!!
+        print(token)
+        let postEndpoint: String = "http://192.168.99.100:8000/core/transaction/" + transactionUUID + "?token=" + token
+        print(postEndpoint)
+        let session = NSURLSession.sharedSession()
+        let url = NSURL(string: postEndpoint)!
+        
+        // Make the POST call and handle it in a completion handler
+        session.dataTaskWithURL(url, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+            // Make sure we get an OK response
+            
+            // Read the JSON
+            do {
+                if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
+                    // Print what we got from the call
+                    print(output)
+                    
+                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                    
+                    print("-----")
+                    let json = JSON(jsonDictionary)
+                    let result = json["result"].stringValue
+                    print(json)
+
+
+                    
+                    
+                    print("Got data")
+                    
+                    // Update the label
+                    //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
+                }
+            } catch {
+                print("bad things happened")
+            }
+        }).resume()
+    }
+    
+    
     func sendMessage(transactionUUID:String,token:String,message:String) -> Int {
         // Setup the session to make REST POST call
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/send_message/" + transactionUUID + "?token=" + token
+        let postEndpoint: String = "http://192.168.99.100:8000/core/send_message/" + transactionUUID + "?token=" + token
         let url = NSURL(string: postEndpoint)!
         let session = NSURLSession.sharedSession()
         //let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
@@ -271,7 +382,7 @@ class RestApiManager: NSObject {
         var result:Int = -1
         
         //Actual User
-        let postParams : [String: String] = ["platform_type":"IOS","content":message,"from_customer":"true"]
+        let postParams : [String: String] = ["type":"text","content":message,"from_customer":"true"]
         
         
         // Create the request

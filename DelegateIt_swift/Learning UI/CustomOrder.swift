@@ -72,14 +72,14 @@ class CustomOrder: JSQMessagesViewController {
         //self.inputToolbar!.contentView!.leftBarButtonItem = nil
     
         
-        var leftBtn = UIBarButtonItem(title: "CANCEL", style: .Plain, target: self, action: "sayHello2:")
+        //var leftBtn = UIBarButtonItem(title: "CANCEL", style: .Plain, target: self, action: "sayHello2:")
        
         var b = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
 
         
         //var leftNavBarButton = UIBarButtonItem(customView:b)
         self.navigationItem.rightBarButtonItem = b
-        self.navigationItem.leftBarButtonItem = leftBtn
+        //self.navigationItem.leftBarButtonItem = leftBtn
         
         //print(self.inputToolbar?.si)
     }
@@ -140,7 +140,7 @@ class CustomOrder: JSQMessagesViewController {
            print("create new transaction")
             //create new transaction
             //
-            //uncomment this transactionUUID = RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
+            transactionUUID = RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
             mainInstance.addMessage()
         }
         if(mainInstance.currentTransaction == ""){
