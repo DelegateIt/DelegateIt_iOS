@@ -8,10 +8,13 @@
 
 import Foundation
 import SwiftyJSON
+import Socket_IO_Client_Swift
+import CWStatusBarNotification
 
 
 class RestApiManager: NSObject {
     static let sharedInstance = RestApiManager()
+    let notification = CWStatusBarNotification()
     
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
         // Setup the session to make REST POST call
@@ -33,12 +36,13 @@ class RestApiManager: NSObject {
         } catch {
             print("bad things happened")
         }
-        
-        
+        // Make the POST call and handle it in a completion handler
         session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
             
             // Read the JSON
             do {
+                print("---A---")
+                print(data)
                 if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
                     // Print what we got from the call
                     print(output)
@@ -248,6 +252,7 @@ class RestApiManager: NSObject {
                     for index = 0; index < active_transaction_uuids.count; index++ {
                         self.getTransaction(active_transaction_uuids[index], token: mainInstance.token)
                     }
+                    self.startSockets()
 
                     
                     
@@ -435,6 +440,36 @@ class RestApiManager: NSObject {
             return 1
         }
         return 0
+    }
+    
+    
+    
+    func startSockets() {
+        let socket = SocketIOClient(socketURL: "192.168.99.100:8060", options: [.Log(true), .ForcePolling(false)])
+        
+        socket.on("connect") {data, ack in
+            print("socket connected")
+            var index = 0
+            for index = 0; index < mainInstance.active_transaction_uuids.count; index++ {
+                socket.on(mainInstance.active_transaction_uuids[index]) {data, ack in
+                    let json = JSON(data)
+                    var messageContent = json[0]["messages"][json[0]["messages"].count - 1]["content"]
+                    
+                    print(messageContent)
+                    
+                    //self.notification.notificationStyle = .NavigationBarNotification
+                    
+                    self.notification.notificationTappedBlock = {
+                        print("notification tapped")
+                        // more code here
+                    }
+                    self.notification.notificationLabelBackgroundColor = UIColor.blueColor()
+                    self.notification.displayNotificationWithMessage("NEW MESSAGE: \(messageContent)", completion: nil)
+                }
+                socket.emit("register_transaction", ["transaction_uuid": mainInstance.active_transaction_uuids[index]])
+            }
+        }
+        socket.connect()
     }
     
     

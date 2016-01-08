@@ -1,17 +1,9 @@
-# Uncomment this line to define a global platform for your project
-# platform :ios, '8.0'
-# Uncomment this line if you're using Swift
-# use_frameworks!
+platform :ios, '8.0'
+use_frameworks!
 
 target 'DelegateIt' do
-    pod 'JSQMessagesViewController'
+  pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+  pod 'Socket.IO-Client-Swift', '~> 4.1.6' # Or latest version
+  pod 'JSQMessagesViewController' 
+  pod 'CWStatusBarNotification', '~> 2.3.3'
 end
-
-target 'DelegateItTests' do
-
-end
-
-target 'DelegateItUITests' do
-
-end
-

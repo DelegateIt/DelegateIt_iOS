@@ -1,13 +1,31 @@
 PODS:
+  - CWStatusBarNotification (2.3.3)
   - JSQMessagesViewController (7.2.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
+  - Socket.IO-Client-Swift (4.1.6)
+  - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
+  - CWStatusBarNotification (~> 2.3.3)
   - JSQMessagesViewController
+  - Socket.IO-Client-Swift (~> 4.1.6)
+  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`)
+
+EXTERNAL SOURCES:
+  SwiftyJSON:
+    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
+
+CHECKOUT OPTIONS:
+  SwiftyJSON:
+    :commit: 5f59648a6e9356b26c5cb698ab924fa7d750b6c9
+    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 SPEC CHECKSUMS:
+  CWStatusBarNotification: 2349142e97c9f16fb8247ed3c00308cd355d334b
   JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  Socket.IO-Client-Swift: 5e8aa2961d1f32e5c0e104c00c9f192133a92d11
+  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
 COCOAPODS: 0.39.0

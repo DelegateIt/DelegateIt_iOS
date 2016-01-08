@@ -53,7 +53,7 @@
 		37E5E5D61BF13099003111DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37E5E5D41BF13099003111DD /* LaunchScreen.storyboard */; };
 		37E5E5E11BF13099003111DD /* DelegateIt_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5E5E01BF13099003111DD /* DelegateIt_UITests.swift */; };
 		37E5E5EC1BF13099003111DD /* Learning_UIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E5E5EB1BF13099003111DD /* Learning_UIUITests.swift */; };
-		3FA81BE9840DEFD59865F305 /* libPods-DelegateIt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDCB08A8E659D7B819DB11C6 /* libPods-DelegateIt.a */; };
+		AB6AC8D9AECFADB3F8547313 /* Pods_DelegateIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57965458214B63A6E7A5B9E8 /* Pods_DelegateIt.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,9 +129,9 @@
 		37E5E5E71BF13099003111DD /* DelegateIt.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DelegateIt.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		37E5E5EB1BF13099003111DD /* Learning_UIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Learning_UIUITests.swift; sourceTree = "<group>"; };
 		37E5E5ED1BF13099003111DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		57965458214B63A6E7A5B9E8 /* Pods_DelegateIt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DelegateIt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A3A138A15A569F58672964A /* Pods-DelegateIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DelegateIt.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DelegateIt/Pods-DelegateIt.debug.xcconfig"; sourceTree = "<group>"; };
 		9C12BA6238E1F541F3BCE1A4 /* Pods-DelegateIt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DelegateIt.release.xcconfig"; path = "Pods/Target Support Files/Pods-DelegateIt/Pods-DelegateIt.release.xcconfig"; sourceTree = "<group>"; };
-		FDCB08A8E659D7B819DB11C6 /* libPods-DelegateIt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DelegateIt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +142,7 @@
 				37DC513D1C094F5F0082C4A7 /* FBSDKShareKit.framework in Frameworks */,
 				37DC513A1C094F550082C4A7 /* FBSDKCoreKit.framework in Frameworks */,
 				37DC513B1C094F550082C4A7 /* FBSDKLoginKit.framework in Frameworks */,
-				3FA81BE9840DEFD59865F305 /* libPods-DelegateIt.a in Frameworks */,
+				AB6AC8D9AECFADB3F8547313 /* Pods_DelegateIt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +264,7 @@
 				37DC513C1C094F5F0082C4A7 /* FBSDKShareKit.framework */,
 				37DC51381C094F550082C4A7 /* FBSDKCoreKit.framework */,
 				37DC51391C094F550082C4A7 /* FBSDKLoginKit.framework */,
-				FDCB08A8E659D7B819DB11C6 /* libPods-DelegateIt.a */,
+				57965458214B63A6E7A5B9E8 /* Pods_DelegateIt.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
