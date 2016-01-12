@@ -126,6 +126,7 @@ class DetailTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "save" {
             priceString = priceTextField.text
+            print(priceTextField.text)
         }
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.

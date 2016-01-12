@@ -19,6 +19,7 @@ class Main {
     var uuid:String = ""
     var activeCount:Int = 0
     var active_transaction_uuids:[String] = []
+    var active_transaction_uuids2:[transaction] = []
     var token:String = ""
     var currentMessage:Int = -1
     

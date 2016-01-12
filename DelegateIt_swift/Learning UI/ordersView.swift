@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 
 class ordersView: UITableViewController {
-    var tableData = mainInstance.active_transaction_uuids //["Order1", "Order2", "Order3", "Order4"]
+    var tableData:[String] = []//mainInstance.active_transaction_uuids //["Order1", "Order2", "Order3", "Order4"]
     
-    var detailData = mainInstance.active_transaction_uuids //["Dec 21", "Dec 21", "Dec 21", "Dec 21"]
+    var detailData:[String] = []//mainInstance.active_transaction_uuids //["Dec 21", "Dec 21", "Dec 21", "Dec 21"]
     
     @IBAction func saveToMainViewController (segue:UIStoryboardSegue) {
         let detailViewController = segue.sourceViewController as! DetailTableViewController
@@ -24,9 +24,14 @@ class ordersView: UITableViewController {
     
     
     override func viewDidLoad() {
-        tableData = mainInstance.active_transaction_uuids
-        detailData = mainInstance.active_transaction_uuids
-        print(mainInstance.active_transaction_uuids)
+        var index = 0
+        for (index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
+            tableData.append(mainInstance.active_transaction_uuids2[index].lastMessage)
+            detailData.append(mainInstance.active_transaction_uuids2[index].lastTimeStamp)
+        }
+        
+        //tableData = mainInstance.active_transaction_uuids
+        //detailData = mainInstance.active_transaction_uuids
         super.viewDidLoad()
         self.title = "ORDERS"
         self.tabBarController?.tabBar.hidden = false
@@ -61,9 +66,8 @@ class ordersView: UITableViewController {
         if segue.identifier == "gotoOrder" {
             
             let path = tableView.indexPathForSelectedRow
-            //sdfgsdfglet destination = segue.destinationViewController as! CustomOrder
-            //destination.index = path?.row
-            //destination.data = tableData
+            let destination = segue.destinationViewController as! CustomOrder
+            destination.data = (path?.row)!
             //destination.price = detailData
             
         }

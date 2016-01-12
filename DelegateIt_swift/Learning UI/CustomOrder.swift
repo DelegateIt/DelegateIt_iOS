@@ -9,12 +9,15 @@
 import Foundation
 import UIKit
 import JSQMessagesViewController
+import SwiftyJSON
 
 class CustomOrder: JSQMessagesViewController {
     
     @IBOutlet weak var orderBox: UITextField!
     
     var orderText:String = ""
+    
+    var data:Int = -1
     
     var userName = ""
     var messages = [JSQMessage]()
@@ -31,6 +34,8 @@ class CustomOrder: JSQMessagesViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(data)
 
         
         mainInstance.setMessageCount(0)
@@ -46,18 +51,30 @@ class CustomOrder: JSQMessagesViewController {
         
         // Do any additional setup after loading the view, typically from a nib.
         
-        /*
-        self.userName = "iPhone"
-        for i in 1...10 {
-            var sender = (i%2 == 0) ? "Syncano" : self.userName
-            var message = JSQMessage(senderId: sender, displayName: sender, text: "htts:www.apple.com")
-            self.messages += [message]
+        mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[data].transactionUUID
+        
+        self.userName = "customer"
+        var messageCount = mainInstance.active_transaction_uuids2[data].messageCount
+        var messagesJSON = mainInstance.active_transaction_uuids2[data].messages
+        var index = 0
+        for (index = 0; index < messageCount; index++){
+            if(messagesJSON[index]["from_customer"].boolValue){
+                var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
+                messages += [message]
+            }
+            else{
+                var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
+                messages += [message]
+            }
+            counter++
         }
         
-        var sender = (4%2 == 0) ? "Syncano" : self.userName
-        var message = JSQMessage(senderId: sender, displayName: sender, text: "ACCEPT ORDER")
-        self.messages += [message]
-        */
+        addMessages()
+        
+        //var sender = (4%2 == 0) ? "Syncano" : self.userName
+        //var message = JSQMessage(senderId: sender, displayName: sender, text: "ACCEPT ORDER")
+        //self.messages += [message]
+        
         
         self.collectionView!.reloadData()
         self.senderDisplayName = self.userName
@@ -83,6 +100,20 @@ class CustomOrder: JSQMessagesViewController {
         //self.navigationItem.leftBarButtonItem = leftBtn
         
         //print(self.inputToolbar?.si)
+    }
+    
+    func addMessages(){
+        print("New message")
+        print(messages)
+        let message = JSQMessage(senderId: "sender", displayName: "sender", text: "2222222")
+        //messages += [message]
+        self.messages.append(message)
+        self.reloadMessagesView()
+        //collectionView!.reloadData()
+    }
+    
+    func reloadMessagesView() {
+        self.collectionView?.reloadData()
     }
     
     
@@ -144,10 +175,10 @@ class CustomOrder: JSQMessagesViewController {
             transactionUUID = RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
             mainInstance.addMessage()
         }
+        print(mainInstance.currentTransaction)
         if(mainInstance.currentTransaction == ""){
             mainInstance.addtoQue(newMessage.text)
         } else{
-            
             RestApiManager.sharedInstance.sendMessage(mainInstance.currentTransaction,token: mainInstance.token,message: newMessage.text)
         }
         

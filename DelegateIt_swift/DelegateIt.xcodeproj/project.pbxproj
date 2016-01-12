@@ -14,6 +14,8 @@
 		374EE0171BF2AC3D000AECE1 /* quick2.png in Resources */ = {isa = PBXBuildFile; fileRef = 374EE0161BF2AC3D000AECE1 /* quick2.png */; };
 		374EE0191BF2AC47000AECE1 /* quick1.png in Resources */ = {isa = PBXBuildFile; fileRef = 374EE0181BF2AC47000AECE1 /* quick1.png */; };
 		374EE01B1BF2B248000AECE1 /* profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374EE01A1BF2B248000AECE1 /* profile.swift */; };
+		3758E8B31C45926C00B8D974 /* transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3758E8B21C45926C00B8D974 /* transaction.swift */; };
+		3758E8B51C4597A900B8D974 /* notificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3758E8B41C4597A900B8D974 /* notificationHandler.swift */; };
 		376584081BF2653C007DA8A7 /* reservation.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 376584071BF2653C007DA8A7 /* reservation.jpg */; };
 		3765840A1BF267DA007DA8A7 /* quickorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376584091BF267DA007DA8A7 /* quickorder.swift */; };
 		3765840C1BF26AC0007DA8A7 /* orders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3765840B1BF26AC0007DA8A7 /* orders.swift */; };
@@ -81,6 +83,8 @@
 		374EE0161BF2AC3D000AECE1 /* quick2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quick2.png; sourceTree = "<group>"; };
 		374EE0181BF2AC47000AECE1 /* quick1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quick1.png; sourceTree = "<group>"; };
 		374EE01A1BF2B248000AECE1 /* profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = profile.swift; sourceTree = "<group>"; };
+		3758E8B21C45926C00B8D974 /* transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = transaction.swift; path = ../DelegateIt/transaction.swift; sourceTree = "<group>"; };
+		3758E8B41C4597A900B8D974 /* notificationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = notificationHandler.swift; sourceTree = "<group>"; };
 		376584071BF2653C007DA8A7 /* reservation.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = reservation.jpg; sourceTree = "<group>"; };
 		376584091BF267DA007DA8A7 /* quickorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = quickorder.swift; sourceTree = "<group>"; };
 		3765840B1BF26AC0007DA8A7 /* orders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = orders.swift; sourceTree = "<group>"; };
@@ -188,6 +192,9 @@
 		37E5E5CA1BF13099003111DD /* DelegateIt */ = {
 			isa = PBXGroup;
 			children = (
+				3758E8B41C4597A900B8D974 /* notificationHandler.swift */,
+				3758E8B21C45926C00B8D974 /* transaction.swift */,
+				37E5E5CF1BF13099003111DD /* Main.storyboard */,
 				377AF90E1C292665009028EA /* BlogViewController.swift */,
 				377AF8D01C28FFD3009028EA /* editProfile.swift */,
 				37791DEC1C299B340082693C /* about.swift */,
@@ -206,6 +213,7 @@
 				37CFB6DA1C2B6F2800CCE0A6 /* payment.swift */,
 				3765840B1BF26AC0007DA8A7 /* orders.swift */,
 				37CFB6D81C2B1A5400CCE0A6 /* ordersView.swift */,
+				37791DEA1C298BAD0082693C /* DetailTableViewController.swift */,
 				3766DFF31C0B104800D2044C /* logo.png */,
 				3766DFF11C0B0E6500D2044C /* background.png */,
 				374EE0181BF2AC47000AECE1 /* quick1.png */,
@@ -224,8 +232,6 @@
 				376584071BF2653C007DA8A7 /* reservation.jpg */,
 				376584131BF271BC007DA8A7 /* tripplanning.jpg */,
 				376584151BF271C1007DA8A7 /* drycleaning.jpg */,
-				37E5E5CF1BF13099003111DD /* Main.storyboard */,
-				37791DEA1C298BAD0082693C /* DetailTableViewController.swift */,
 				37E5E5D21BF13099003111DD /* Assets.xcassets */,
 				37E5E5D41BF13099003111DD /* LaunchScreen.storyboard */,
 				37E5E5D71BF13099003111DD /* Info.plist */,
@@ -489,11 +495,13 @@
 				377AF90F1C292665009028EA /* BlogViewController.swift in Sources */,
 				3765840C1BF26AC0007DA8A7 /* orders.swift in Sources */,
 				37DB5CA41C099EED0018F09C /* global.swift in Sources */,
+				3758E8B51C4597A900B8D974 /* notificationHandler.swift in Sources */,
 				37CFB6DB1C2B6F2800CCE0A6 /* payment.swift in Sources */,
 				374EDFD91BF2A7C5000AECE1 /* TableViewCell.swift in Sources */,
 				374EE01B1BF2B248000AECE1 /* profile.swift in Sources */,
 				3765840E1BF26F0C007DA8A7 /* CustomOrder.swift in Sources */,
 				37CFB6D91C2B1A5400CCE0A6 /* ordersView.swift in Sources */,
+				3758E8B31C45926C00B8D974 /* transaction.swift in Sources */,
 				37DB5CA81C09AAF10018F09C /* RestApiManager.swift in Sources */,
 				37791DE91C2987180082693C /* editUserProfile.swift in Sources */,
 				37791DEB1C298BAD0082693C /* DetailTableViewController.swift in Sources */,

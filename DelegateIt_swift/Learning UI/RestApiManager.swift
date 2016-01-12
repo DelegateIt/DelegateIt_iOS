@@ -361,11 +361,20 @@ class RestApiManager: NSObject {
                     let json = JSON(jsonDictionary)
                     let result = json["result"].stringValue
                     print(json)
-
-
-                    
-                    
                     print("Got data")
+                    
+                    print("--------")
+                    
+                    
+                    mainInstance.active_transaction_uuids2.append(transaction(dataInput: json))
+                    
+                    
+                    print("--------")
+                
+                    
+                    
+                    
+                    //print(mainInstance.active_transaction_uuids2[0].first_name)
                     
                     // Update the label
                     //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
@@ -445,7 +454,7 @@ class RestApiManager: NSObject {
     
     
     func startSockets() {
-        let socket = SocketIOClient(socketURL: "192.168.99.100:8060", options: [.Log(true), .ForcePolling(false)])
+        let socket = SocketIOClient(socketURL: "192.168.99.100:8060", options: [.Log(false), .ForcePolling(false)])
         
         socket.on("connect") {data, ack in
             print("socket connected")
@@ -456,6 +465,8 @@ class RestApiManager: NSObject {
                     var messageContent = json[0]["messages"][json[0]["messages"].count - 1]["content"]
                     
                     print(messageContent)
+                    
+                    CustomOrder().addMessages()
                     
                     //self.notification.notificationStyle = .NavigationBarNotification
                     
