@@ -12,8 +12,11 @@ import JSQMessagesViewController
 import SwiftyJSON
 
 class CustomOrder: JSQMessagesViewController {
+    static let sharedInstance2 = CustomOrder()
     
     @IBOutlet weak var orderBox: UITextField!
+    
+    var timer: NSTimer = NSTimer()
     
     var orderText:String = ""
     
@@ -34,9 +37,7 @@ class CustomOrder: JSQMessagesViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         print(data)
-
         
         mainInstance.setMessageCount(0)
         self.keyboardController.textView!.becomeFirstResponder()
@@ -76,7 +77,7 @@ class CustomOrder: JSQMessagesViewController {
         //self.messages += [message]
         
         
-        self.collectionView!.reloadData()
+        self.reloadMessagesView()
         self.senderDisplayName = self.userName
         self.senderId = self.userName
         self.inputToolbar!.contentView!.textView!.placeHolder = "Make a new order";
@@ -100,17 +101,17 @@ class CustomOrder: JSQMessagesViewController {
         //self.navigationItem.leftBarButtonItem = leftBtn
         
         //print(self.inputToolbar?.si)
+        
+        //timer = NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: "loadMessages", userInfo: nil, repeats: true)
     }
     
-    func addMessages(){
-        print("New message")
-        print(messages)
-        let message = JSQMessage(senderId: "sender", displayName: "sender", text: "2222222")
-        //messages += [message]
-        self.messages.append(message)
+    func loadMessages(){
+        print("loading")
+        addMessages()
         self.reloadMessagesView()
-        //collectionView!.reloadData()
     }
+    
+    
     
     func reloadMessagesView() {
         self.collectionView?.reloadData()
@@ -219,5 +220,18 @@ class CustomOrder: JSQMessagesViewController {
     func printData() {
         print("Hey");
     }
-    
+}
+
+
+
+extension CustomOrder {
+    func addMessages(){
+        print("New message")
+        print(messages)
+        let message = JSQMessage(senderId: "sender", displayName: "sender", text: "2222222")
+        //messages += [message]
+        self.messages.append(message)
+        self.reloadMessagesView()
+        //collectionView!.reloadData()
+    }
 }

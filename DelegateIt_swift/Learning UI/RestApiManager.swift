@@ -466,7 +466,8 @@ class RestApiManager: NSObject {
                     
                     print(messageContent)
                     
-                    CustomOrder().addMessages()
+                    
+                    CustomOrder.sharedInstance2.loadMessages()
                     
                     //self.notification.notificationStyle = .NavigationBarNotification
                     
