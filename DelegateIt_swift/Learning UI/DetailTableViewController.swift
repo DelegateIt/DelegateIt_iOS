@@ -127,6 +127,8 @@ class DetailTableViewController: UITableViewController {
         if segue.identifier == "save" {
             priceString = priceTextField.text
             print(priceTextField.text)
+            print(data[index!])
+            RestApiManager.sharedInstance.updateUser(data[index!],updatedInformation: priceTextField.text!)
         }
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.

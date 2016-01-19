@@ -13,12 +13,12 @@ class transaction {
     var paymentURL:String = ""
     var paymentStatus:String = ""
     var transactionUUID:String = ""
-    var timeStamp:String = ""
+    var timeStamp:Double = 0.0
     var messageCount:Int = 0
     var messages:JSON
     
     var lastMessage:String = "No messages"
-    var lastTimeStamp:String = ""
+    var lastTimeStamp:Double = 0.0
     
     
     
@@ -26,7 +26,7 @@ class transaction {
         self.paymentStatus = dataInput["transaction"]["status"].stringValue
         self.paymentURL = dataInput["transaction"]["payment_url"].stringValue
         self.transactionUUID = dataInput["transaction"]["uuid"].stringValue
-        self.timeStamp = dataInput["transaction"]["timestamp"].stringValue
+        self.timeStamp = dataInput["transaction"]["timestamp"].doubleValue
         self.messageCount = dataInput["transaction"]["messages"].count
         self.messages = dataInput["transaction"]["messages"]
         
@@ -48,7 +48,7 @@ class transaction {
     
     func getLastMessage(){
         self.lastMessage = messages[messageCount-1]["content"].stringValue
-        self.lastTimeStamp = messages[messageCount-1]["timestamp"].stringValue
+        self.lastTimeStamp = messages[messageCount-1]["timestamp"].doubleValue
     }
     
     

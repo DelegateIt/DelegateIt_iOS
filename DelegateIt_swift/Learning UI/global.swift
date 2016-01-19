@@ -23,7 +23,7 @@ class Main {
     var token:String = ""
     var currentMessage:Int = -1
     
-    var currentTransaction:String = ""
+    var currentTransaction:transaction = transaction(dataInput: "")
     var messageQue:[String] = []
     
     //Facebook info
@@ -76,16 +76,32 @@ class Main {
         self.token = token
     }
     
-    func setCurrentTransaction(currentTransaction:String){
-        self.currentTransaction = currentTransaction
-    }
-    
     func setMessageCount(currentMessage:Int){
         self.currentMessage = currentMessage
     }
     
     func addMessage(){
         self.currentMessage = self.currentMessage + 1
+    }
+    
+    func findTransaction(UUID:String) -> transaction {
+        var index = 0
+        for(index = 0; index < activeCount; index++){
+            if(active_transaction_uuids2[index].transactionUUID == UUID){
+                return active_transaction_uuids2[index]
+            }
+        }
+        return active_transaction_uuids2[0]
+    }
+    
+    func getIndex(UUID:String) -> Int {
+        var index = 0
+        for(index = 0; index < activeCount; index++){
+            if(active_transaction_uuids2[index].transactionUUID == UUID){
+                return index
+            }
+        }
+        return 0
     }
     
 

@@ -11,11 +11,19 @@ import UIKit;
 
 class payment: UIViewController {
 
+    @IBOutlet weak var paymentWebView: UIWebView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Loading payment")
         self.title = "CONFIRM PAYMENT"
+        var b = UIBarButtonItem(title: "CONFIRM", style: .Plain, target: self, action: "sayHello:")
+        self.navigationItem.rightBarButtonItem = b
         // Do any additional setup after loading the view, typically from a nib.
+        
+        let url = NSURL (string: mainInstance.currentTransaction.paymentURL);
+        let requestObj = NSURLRequest(URL: url!);
+        paymentWebView.loadRequest(requestObj);
     }
     
     override func didReceiveMemoryWarning() {
@@ -23,6 +31,11 @@ class payment: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func sayHello(sender: UIBarButtonItem) {
+        print("test22")
+        //backToOrder
+        self.performSegueWithIdentifier("CompleteOrder", sender: self);
+    }
     
 }
 

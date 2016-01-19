@@ -15,6 +15,9 @@ class quickorder: UIViewController {
     var descriptions:[String] = ["1","2","3","4","5","6"] //change
     var descrionChosen = ""
     
+    var timer: NSTimer = NSTimer()
+    
+    
     
     override func viewDidLoad() {
         //print(yourVariable)
@@ -31,6 +34,8 @@ class quickorder: UIViewController {
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
         var scrollViewContentSize:CGFloat = 0;
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: "loadbadge", userInfo: nil, repeats: true)
         
         
         for var index = 0; index < myImages.count; index++
@@ -80,6 +85,15 @@ class quickorder: UIViewController {
         //let mapViewControllerObejct = self.storyboard?.instantiateViewControllerWithIdentifier("MapViewControllerIdentifier") as? messenger
         //self.navigationController?.pushViewController(mapViewControllerObejct!, animated: true)
         
+    }
+    
+    func loadbadge() {
+        if(mainInstance.first_name != ""){
+            let tabItem = self.tabBarController?.tabBar.items![2]
+            var myString = String(mainInstance.activeCount)
+            tabItem?.badgeValue = myString
+            timer.invalidate()
+        }
     }
     
     func imageTapped(img: AnyObject?)    {

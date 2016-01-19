@@ -37,9 +37,30 @@ class CustomOrder: JSQMessagesViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(data)
+        var messageCount = 0
+        var messagesJSON:JSON = ""
+        if(data == -1){
+            //new order
+            mainInstance.setMessageCount(0)
+            var leftBtn = UIBarButtonItem(title: "CANCLE", style: .Plain, target: self, action: "sayHello2:")
+            self.navigationItem.leftBarButtonItem = leftBtn
+            
+        }
+        else{
+            //already created
+            mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[data]
+            transactionUUID = mainInstance.currentTransaction.transactionUUID
+            messageCount = mainInstance.active_transaction_uuids2[data].messageCount
+            messagesJSON = mainInstance.active_transaction_uuids2[data].messages
+            
+            if(mainInstance.currentTransaction.paymentStatus == "proposed" || mainInstance.currentTransaction.paymentStatus == "pending") {
+                var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+                self.navigationItem.rightBarButtonItem = rightBtn
+            }
+        }
+
         
-        mainInstance.setMessageCount(0)
+        
         self.keyboardController.textView!.becomeFirstResponder()
         
         //orderBox.becomeFirstResponder()
@@ -52,11 +73,9 @@ class CustomOrder: JSQMessagesViewController {
         
         // Do any additional setup after loading the view, typically from a nib.
         
-        mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[data].transactionUUID
+        
         
         self.userName = "customer"
-        var messageCount = mainInstance.active_transaction_uuids2[data].messageCount
-        var messagesJSON = mainInstance.active_transaction_uuids2[data].messages
         var index = 0
         for (index = 0; index < messageCount; index++){
             if(messagesJSON[index]["from_customer"].boolValue){
@@ -69,12 +88,6 @@ class CustomOrder: JSQMessagesViewController {
             }
             counter++
         }
-        
-        addMessages()
-        
-        //var sender = (4%2 == 0) ? "Syncano" : self.userName
-        //var message = JSQMessage(senderId: sender, displayName: sender, text: "ACCEPT ORDER")
-        //self.messages += [message]
         
         
         self.reloadMessagesView()
@@ -93,22 +106,57 @@ class CustomOrder: JSQMessagesViewController {
         
         //var leftBtn = UIBarButtonItem(title: "CANCEL", style: .Plain, target: self, action: "sayHello2:")
        
-        var b = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
-
+        
         
         //var leftNavBarButton = UIBarButtonItem(customView:b)
-        self.navigationItem.rightBarButtonItem = b
+        
         //self.navigationItem.leftBarButtonItem = leftBtn
         
         //print(self.inputToolbar?.si)
         
-        //timer = NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: "loadMessages", userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "loadMessages", userInfo: nil, repeats: true)
     }
     
     func loadMessages(){
-        print("loading")
-        addMessages()
-        self.reloadMessagesView()
+        print("Checking")
+        if(mainInstance.currentTransaction.paymentStatus == "proposed" || mainInstance.currentTransaction.paymentStatus == "pending" && mainInstance.currentTransaction.paymentStatus != mainInstance.active_transaction_uuids2[data].paymentStatus){
+            var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+            self.navigationItem.rightBarButtonItem = rightBtn
+        }
+        if(mainInstance.currentTransaction.messageCount == mainInstance.active_transaction_uuids2[data].messageCount){
+            //do nothing
+            
+        }else{
+            /*
+            self.userName = "customer"
+            var index = 0
+            for (index = mainInstance.currentTransaction.messageCount; index < mainInstance.active_transaction_uuids2[data].messageCount; index++){
+                if(mainInstance.active_transaction_uuids2[data].messages[index]["from_customer"].boolValue){
+                    var message = JSQMessage(senderId: "customer", displayName: "customer", text:mainInstance.active_transaction_uuids2[data].messages[index]["content"].stringValue)
+                    messages += [message]
+                }
+                else{
+                    var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:mainInstance.active_transaction_uuids2[data].messages[index]["content"].stringValue)
+                    messages += [message]
+                }
+                counter++
+            }
+            //self.reloadMessagesView()
+            mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[data]
+            */
+            print("----")
+            print(transactionUUID)
+            print(data)
+            print(mainInstance.active_transaction_uuids2[mainInstance.getIndex(transactionUUID)].messages)
+            var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:mainInstance.active_transaction_uuids2[mainInstance.getIndex(transactionUUID)].lastMessage)
+            messages += [message]
+            
+            print("------")
+            print(mainInstance.active_transaction_uuids2[0].messages)
+        }
+        
+
+        
     }
     
     
@@ -171,16 +219,14 @@ class CustomOrder: JSQMessagesViewController {
         print(counter)
         if(counter == 1){
            print("create new transaction")
-            //create new transaction
-            //
             transactionUUID = RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
             mainInstance.addMessage()
         }
         print(mainInstance.currentTransaction)
-        if(mainInstance.currentTransaction == ""){
+        if(mainInstance.currentTransaction.transactionUUID == ""){
             mainInstance.addtoQue(newMessage.text)
         } else{
-            RestApiManager.sharedInstance.sendMessage(mainInstance.currentTransaction,token: mainInstance.token,message: newMessage.text)
+            RestApiManager.sharedInstance.sendMessage(mainInstance.currentTransaction.transactionUUID,token: mainInstance.token,message: newMessage.text)
         }
         
         messages += [newMessage]
@@ -217,21 +263,11 @@ class CustomOrder: JSQMessagesViewController {
         self.presentViewController(actionSheetController, animated: true, completion: nil)
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        timer.invalidate()
+    }
+    
     func printData() {
         print("Hey");
-    }
-}
-
-
-
-extension CustomOrder {
-    func addMessages(){
-        print("New message")
-        print(messages)
-        let message = JSQMessage(senderId: "sender", displayName: "sender", text: "2222222")
-        //messages += [message]
-        self.messages.append(message)
-        self.reloadMessagesView()
-        //collectionView!.reloadData()
     }
 }

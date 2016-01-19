@@ -24,10 +24,62 @@ class ordersView: UITableViewController {
     
     
     override func viewDidLoad() {
+        //let date = NSDate().timeIntervalSince1970
+        //var date = NSDate()
+        
+        //var timestamp = UInt64(floor(date.timeIntervalSince1970 * 1000))
+        
+       // print((date * 1000000)-1453158484569111)
+        
+       // let day = NSDate(timeIntervalSince1970: date)
+       // print(day)
+        
+        /*
+        
+        let morningOfChristmasComponents = NSDateComponents()
+        morningOfChristmasComponents.year = 2014
+        morningOfChristmasComponents.month = 12
+        morningOfChristmasComponents.day = 25
+        morningOfChristmasComponents.hour = 7
+        morningOfChristmasComponents.minute = 0
+        morningOfChristmasComponents.second = 0
+        
+        let morningOfChristmas = NSCalendar.currentCalendar().dateFromComponents(morningOfChristmasComponents)!
+
+        */
+        
+        
+        
+        
+        let date = NSDate()
+        //let formatter = NSDateFormatter()
+        //formatter.dateStyle = NSDateFormatterStyle.LongStyle
+        //formatter.timeStyle = .MediumStyle
+        
+        //let dateString = formatter.stringFromDate(date)
+        
+
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.dateFormat = "MMM d"
+        
+        let dateString = dayTimePeriodFormatter.stringFromDate(date)
+        
+        print(dateString)
+        
+        //print(dateString.d)
+        
+        
+        
         var index = 0
         for (index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
             tableData.append(mainInstance.active_transaction_uuids2[index].lastMessage)
-            detailData.append(mainInstance.active_transaction_uuids2[index].lastTimeStamp)
+            
+            
+            let day = NSDate(timeIntervalSince1970:mainInstance.active_transaction_uuids2[index].lastTimeStamp/1000000)
+            
+            let dateString = dayTimePeriodFormatter.stringFromDate(day)
+            
+            detailData.append(dateString)
         }
         
         //tableData = mainInstance.active_transaction_uuids

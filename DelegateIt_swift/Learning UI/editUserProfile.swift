@@ -10,9 +10,9 @@ import UIKit
 
 class editUserProfile: UITableViewController {
 
-    var tableData = ["FIRST NAME", "LAST NAME", "EMAIL", "PHONE NUMBER"]
+    var tableData = ["FIRST NAME", "LAST NAME", "EMAIL"]
     
-    var detailData = ["Ben", "Wernsman", "ben.wernsman@me.com", "214-478-7761"]
+    var detailData = [mainInstance.first_name, mainInstance.last_name, mainInstance.email]
     
     @IBAction func saveToMainViewController (segue:UIStoryboardSegue) {
         let detailViewController = segue.sourceViewController as! DetailTableViewController
