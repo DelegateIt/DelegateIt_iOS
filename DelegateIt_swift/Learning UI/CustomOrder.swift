@@ -25,7 +25,7 @@ class CustomOrder: JSQMessagesViewController {
     var userName = ""
     var messages = [JSQMessage]()
 
-    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
+    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0)) //JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0))
     let paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0))
     
@@ -119,6 +119,7 @@ class CustomOrder: JSQMessagesViewController {
     
     func loadMessages(){
         print("Checking")
+        /*
         if(mainInstance.currentTransaction.paymentStatus == "proposed" || mainInstance.currentTransaction.paymentStatus == "pending" && mainInstance.currentTransaction.paymentStatus != mainInstance.active_transaction_uuids2[data].paymentStatus){
             var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
             self.navigationItem.rightBarButtonItem = rightBtn
@@ -154,8 +155,7 @@ class CustomOrder: JSQMessagesViewController {
             print("------")
             print(mainInstance.active_transaction_uuids2[0].messages)
         }
-        
-
+        */
         
     }
     

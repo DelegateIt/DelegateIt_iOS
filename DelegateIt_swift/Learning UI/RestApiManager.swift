@@ -16,15 +16,20 @@ class RestApiManager: NSObject {
     static let sharedInstance = RestApiManager()
     let notification = CWStatusBarNotification()
     
+    //var localTestServerURL:String = "http://192.168.99.100:8000"
+    //var testServerURL:String = "http://test-gator-api.elasticbeanstalk.com"
+    
+    //Change URL FOR Testing
+    //var RESTURL:String = localTestServerURL
+    
+    
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
         // Setup the session to make REST POST call
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/login/customer"
+        print("logging in")
+        let postEndpoint: String = "http://192.168.99.100:8000/core/login/customer"
         let url = NSURL(string: postEndpoint)!
         let session = NSURLSession.sharedSession()
         let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
-        
-        //Test User
-        //let postParams : [String: String] = ["fbuser_id":"123413948026148","fbuser_token":"CAANG1yne7NcBAFWZCQ1YMudJZBQeOLMaY8YQ28aQrYfPksmXSCFIavQ0vjRbywpqtioW6zvkJX57PFKimGHnOCuu3BD9yXCQTogfYHcGR3qvg8bpCxYodKkZAB4hnQ0m8scmmeHl4qSym9AGZBxo3jVKTuH7c9JXcrnXJ3FobVZBhab0tVnt4H3kTBNip51o1tOY3IOZChSOATsRGQcsqU"]
     
         // Create the request
         let request = NSMutableURLRequest(URL: url)
@@ -38,7 +43,6 @@ class RestApiManager: NSObject {
         }
         // Make the POST call and handle it in a completion handler
         session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-            
             // Read the JSON
             do {
                 print("---A---")
@@ -150,7 +154,7 @@ class RestApiManager: NSObject {
     
     func createUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
         // Setup the session to make REST POST call
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/customer"
+        let postEndpoint: String = "http://192.168.99.100:8000" + "/core/customer"
         let url = NSURL(string: postEndpoint)!
         let session = NSURLSession.sharedSession()
         //let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
@@ -211,7 +215,7 @@ class RestApiManager: NSObject {
         // Setup the session to make REST GET call.  Notice the URL is https NOT http!!
         print(uuid)
         print(token)
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/customer/" + uuid + "?token=" + token
+        let postEndpoint: String = "http://192.168.99.100:8000/core/customer/" + uuid + "?token=" + token
         print(postEndpoint)
         let session = NSURLSession.sharedSession()
         let url = NSURL(string: postEndpoint)!
@@ -343,7 +347,7 @@ class RestApiManager: NSObject {
     func getTransaction(transactionUUID:String,token:String) {
         // Setup the session to make REST GET call.  Notice the URL is https NOT http!!
         print(token)
-        let postEndpoint: String = "http://test-gator-api.elasticbeanstalk.com/core/transaction/" + transactionUUID + "?token=" + token
+        let postEndpoint: String = "http://192.168.99.100:8000/core/transaction/" + transactionUUID + "?token=" + token
         print(postEndpoint)
         let session = NSURLSession.sharedSession()
         let url = NSURL(string: postEndpoint)!
