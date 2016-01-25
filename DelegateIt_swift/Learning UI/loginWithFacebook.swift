@@ -14,20 +14,19 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
 
     @IBOutlet weak var bg: UIImageView!
     
+    //Check if the user is already logged in
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Check if the user is already logged in
+        print("view loaded")
         if(FBSDKAccessToken.currentAccessToken() != nil){
            self.returnUserData()
         }
     }
     
+    //load if the user is not logged in
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if (FBSDKAccessToken.currentAccessToken() != nil){
-            dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
-        }else{
+        if (FBSDKAccessToken.currentAccessToken() == nil){
             let loginView : FBSDKLoginButton = FBSDKLoginButton()
             self.view.addSubview(loginView)
             loginView.center = self.view.center
@@ -36,31 +35,24 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
         }
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
     // Facebook Delegate Methods
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
-        if ((error) != nil)
-        {
-            // Process error
+        if ((error) != nil){
             let alertController = UIAlertController(title: "Login Error", message:"Please login with Facebook to continue", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
             self.presentViewController(alertController, animated: true, completion: nil)
         }
         else if result.isCancelled {
-            // Handle cancellations
             let alertController = UIAlertController(title: "Login Cancelled", message:"Please login with Facebook to continue", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
             self.presentViewController(alertController, animated: true, completion: nil)
         }
         else {
-            // If you ask for multiple permissions at once, you
-            // should check if specific permissions missing
             if result.grantedPermissions.contains("email"){
-                // Get user info and go to main app
                 self.returnUserData()
             }
         }
@@ -71,19 +63,36 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
         print("User Logged Out")
     }
     
+    //Return data collected from Facebook
     func returnUserData(){
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me?fields=id,first_name,last_name,email,picture", parameters: nil)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
-            if ((error) != nil) 
-            {
-                // Process error
+            //Error With logging into Facebook
+            if ((error) != nil){
+                if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
+                    notificationH.printHello("No Internet Connection")
+                }
+                
                 let alertController = UIAlertController(title: "Login Error", message:"Please login with Facebook to continue", preferredStyle: UIAlertControllerStyle.Alert)
-                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+                
+                let Dismiss = UIAlertAction(title: "Dismiss", style: .Default) { (action) in
+                    self.loadRetryButton()
+                }
+                
+                alertController.addAction(Dismiss)
+                
+                let tryAgain = UIAlertAction(title: "Try Again", style: .Default) { (action) in
+                    self.dismissViewControllerAnimated(false, completion: nil)
+                    self.returnUserData()
+                }
+                
+                alertController.addAction(tryAgain)
                 self.presentViewController(alertController, animated: true, completion: nil)
             }
             else
             {
+                print("No error")
                 let first_name : String = result.valueForKey("first_name") as! String
                 let last_name : String = result.valueForKey("last_name") as! String
                 let fbID : String = result.valueForKey("id") as! String
@@ -94,9 +103,50 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
                 }
                 
                 let fbToken = FBSDKAccessToken.currentAccessToken().tokenString
-                RestApiManager.sharedInstance.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email)
+                
+                RestApiManager.sharedInstance.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
+                    if(response == 1){
+                        dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
+                    }else{
+                        //Error With logging into Server
+                        let alertController = UIAlertController(title: "Login Error", message:"Connection to server Failed", preferredStyle: UIAlertControllerStyle.Alert)
+                        
+                        let Dismiss = UIAlertAction(title: "Dismiss", style: .Default) { (action) in
+                            self.loadRetryButton()
+                        }
+                        
+                        alertController.addAction(Dismiss)
+                        
+                        let tryAgain = UIAlertAction(title: "Try Again", style: .Default) { (action) in
+                            self.dismissViewControllerAnimated(false, completion: nil)
+                            self.returnUserData()
+                        }
+                        alertController.addAction(tryAgain)
+                        
+                        self.presentViewController(alertController, animated: true, completion: nil)
+                        
+                        if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
+                            notificationH.printHello("No Internet Connection")
+                        }
+                    }
+                }
             }
         })
     }
     
+    func loadRetryButton(){
+        let retrybutton = UIButton(type: UIButtonType.System) as UIButton
+        retrybutton.frame = CGRectMake(100, 100, 100, 50)
+        retrybutton.backgroundColor = UIColor.redColor()
+        retrybutton.setTitle("Retry", forState: UIControlState.Normal)
+        retrybutton.titleLabel!.textColor = UIColor.blackColor()
+        retrybutton.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        retrybutton.center = self.view.center
+        self.view.addSubview(retrybutton)
+    }
+    
+    func buttonAction(sender:UIButton!){
+        self.dismissViewControllerAnimated(false, completion: nil)
+        self.returnUserData()
+    }
 }

@@ -10,6 +10,7 @@ import Foundation
 import SwiftyJSON
 import Socket_IO_Client_Swift
 import CWStatusBarNotification
+import SystemConfiguration
 
 
 class RestApiManager: NSObject {
@@ -19,83 +20,59 @@ class RestApiManager: NSObject {
     var testURL = "http://192.168.99.100:8000";
     var socketURL = "http://192.168.99.100:8060"
     
-    func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
+    func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String,callback: (Int) -> ()) {
         let URLCALL = "/core/login/customer";
         let parameters:[String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
-        var output:JSON = restAPICALL(URLCALL,paramaters: parameters,callType: "POST")
+        var output:JSON = nil
         
-        let result = output["result"].stringValue
-        
-        if(result == "0"){
-            print("User Login Successful")
+        restAPICALL(URLCALL,paramaters: parameters,callType: "POST") { (response) in
+            output = response
             
-            let uuidTotal = output["customer"]["uuid"].stringValue
-            let token = output["token"].stringValue
-            self.getUser(uuidTotal, token: token)
-            mainInstance.setToken(token)
+            let result = output["result"].stringValue
+            
+            if(result == "0"){
+                print("User Login Successful")
+                let uuidTotal = output["customer"]["uuid"].stringValue
+                let token = output["token"].stringValue
+                self.getUser(uuidTotal, token: token)
+                mainInstance.setToken(token)
+                callback(1)
+            }
+            else if(result == "10"){
+                print("User is not created")
+                self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
+            }
+            else{
+                //login failed
+                //return 0
+            }
+            //Result 10 means to create a new user
+            //Result 0 is good
         }
-        else if(result == "10"){
-            print("User is not created")
-            self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
-        }
-        
-        //Result 10 means to create a new user
-        //Result 0 is good
     }
     
     func createUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
-
-        let postEndpoint: String = testURL + "/core/customer"
-        let url = NSURL(string: postEndpoint)!
-        let session = NSURLSession.sharedSession()
-        
-        let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken,"first_name":first_name,"last_name":last_name,"email":email,"phone_number":"15555555551"]
-        
-        
-        // Create the request
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        do {
-            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
-            print(postParams)
-        } catch {
-            print("bad things happened")
+        let URLCALL: String = "/core/customer"
+        let parameters : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken,"first_name":first_name,"last_name":last_name,"email":email,"phone_number":"15555555551"]
+        //var output:JSON = restAPICALL(URLCALL,paramaters: parameters,callType: "POST")
+        var output:JSON = nil
+        restAPICALL(URLCALL,paramaters: parameters,callType: "POST") { (response) in
+            output = response
         }
-        // Make the POST call and handle it in a completion handler
-        session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-            
-            // Read the JSON
-            do {
-                if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
-                    // Print what we got from the call
-                    print(output)
-                    
-                    // Parse the JSON to get the IP
-                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                    let result = jsonDictionary["result"] as! Int
-                    
-                    if(result == 0){
-                        print("User created")
-                        self.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email)
-                    }
-                    else if(result == 2){
-                        print("User alread exists")
-                    }
-                    
-                    print("Got data")
-                }
-            } catch {
-                print("bad things happened")
-            }
-            
-            //Result 10 means to create a new user
-            //Result 0 is good
-        }).resume()
+        
+        let result = output["result"].intValue
+        
+        if(result == 0){
+            print("User created")
+            //self.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email)
+        }
+        else if(result == 2){
+            print("User alread exists")
+        }
     }
     
     
-    func restAPICALL(URLCALL:String,paramaters:[String: String],callType:String) -> JSON{
+    func restAPICALL(URLCALL:String,paramaters:[String: String],callType:String,callback: (JSON) -> ()){
         let postEndpoint: String = testURL + URLCALL
         let url = NSURL(string: postEndpoint)!
         let session = NSURLSession.sharedSession()
@@ -108,18 +85,18 @@ class RestApiManager: NSObject {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         do {
             request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
-            print(postParams)
         } catch {
             print("parameters are wrong")
         }
         // Make the POST call and handle it in a completion handler
-        session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+        session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) in
             // Read the JSON
             do {
                 if(data != nil){
                     if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
                         let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
                         json = JSON(jsonDictionary)
+                        callback(json)
                     }
                 } else{
                     print("Error no responce")
@@ -129,8 +106,6 @@ class RestApiManager: NSObject {
                 print("No responce, check URL")
             }
         }).resume()
-        
-        return json
     }
     
     
@@ -496,6 +471,7 @@ class RestApiManager: NSObject {
     }
     
     
+    //SocketIO
     func startSockets() {
         let socket = SocketIOClient(socketURL: socketURL, options: [.Log(false), .ForcePolling(false)])
         
@@ -528,6 +504,23 @@ class RestApiManager: NSObject {
             }
         }
         socket.connect()
+    }
+    
+    //Check For Internet Connection
+    func isConnectedToNetwork() -> Bool {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        let defaultRouteReachability = withUnsafePointer(&zeroAddress) {
+            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+        }
+        var flags = SCNetworkReachabilityFlags()
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+            return false
+        }
+        let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
+        let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
+        return (isReachable && !needsConnection)
     }
     
 }
