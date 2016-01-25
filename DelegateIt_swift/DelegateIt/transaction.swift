@@ -21,7 +21,6 @@ class transaction {
     var lastTimeStamp:Double = 0.0
     
     
-    
     init(dataInput:JSON){
         self.paymentStatus = dataInput["transaction"]["status"].stringValue
         self.paymentURL = dataInput["transaction"]["payment_url"].stringValue
@@ -35,15 +34,6 @@ class transaction {
         if(self.messageCount > 0){
            getLastMessage()
         }
-        
-        
-        /*
-        print(paymentStatus)
-        print(paymentURL)
-        print(transactionUUID)
-        print(messageCount)
-        print(messages[1]["content"])
-        */
     }
     
     func getLastMessage(){

@@ -14,7 +14,6 @@ class notificationHandler {
     func printHello(name:String){
         print("Hello")
         self.notification.displayNotificationWithMessage(name, completion: nil)
-        
     }
 }
 

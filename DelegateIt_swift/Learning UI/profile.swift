@@ -24,7 +24,6 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "SETTINGS"
-        
         tableView.delegate = self
         tableView.dataSource = self
     }

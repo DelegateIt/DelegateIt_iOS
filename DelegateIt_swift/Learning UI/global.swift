@@ -26,12 +26,14 @@ class Main {
     var currentTransaction:transaction = transaction(dataInput: "")
     var messageQue:[String] = []
     
+    
     //Facebook info
     var fbID:String = ""
     var fbToken:String = ""
     
     init() {
     }
+    
     
     func printHello(){
         print("Hello")

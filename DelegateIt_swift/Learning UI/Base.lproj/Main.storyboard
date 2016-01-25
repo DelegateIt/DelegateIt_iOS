@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="DEH-AZ-gkv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="DEH-AZ-gkv">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -107,7 +107,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="TextCell" id="R1w-Lt-P6S">
-                                        <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R1w-Lt-P6S" id="JgO-ku-Pu9">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -261,41 +261,27 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="VZn-aC-Jwn">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6BB-L9-v1i">
-                                <rect key="frame" x="197" y="483" width="207" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="207" id="I8n-g8-l3d"/>
-                                    <constraint firstAttribute="height" constant="30" id="pLJ-YY-xyI"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Login With Facebook"/>
-                                <connections>
-                                    <segue destination="4Bl-WG-sXP" kind="show" identifier="loginSegue2" id="ibg-nE-lxJ"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="sIH-2g-e6I">
                                 <rect key="frame" x="180" y="89" width="240" height="128"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="8jw-CX-CdJ"/>
-                                    <constraint firstAttribute="height" constant="128" id="UfK-He-HZb"/>
+                                    <constraint firstAttribute="width" constant="240" id="Lq9-zQ-bI5"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Lpx-ZE-zde" firstAttribute="top" secondItem="sIH-2g-e6I" secondAttribute="bottom" constant="383" id="68f-qi-rpE"/>
                             <constraint firstItem="VZn-aC-Jwn" firstAttribute="top" secondItem="LeQ-8l-DMu" secondAttribute="top" id="8EQ-lj-sbk"/>
-                            <constraint firstItem="6BB-L9-v1i" firstAttribute="centerX" secondItem="sIH-2g-e6I" secondAttribute="centerX" id="Twf-ed-fwu"/>
-                            <constraint firstItem="6BB-L9-v1i" firstAttribute="centerX" secondItem="VZn-aC-Jwn" secondAttribute="centerX" id="VyR-pa-sbs"/>
+                            <constraint firstItem="sIH-2g-e6I" firstAttribute="centerX" secondItem="VZn-aC-Jwn" secondAttribute="centerX" id="FWW-7v-vID"/>
                             <constraint firstItem="VZn-aC-Jwn" firstAttribute="bottom" secondItem="Lpx-ZE-zde" secondAttribute="top" id="Wtr-sO-yT1"/>
                             <constraint firstItem="VZn-aC-Jwn" firstAttribute="leading" secondItem="LeQ-8l-DMu" secondAttribute="leading" id="bek-qw-hah"/>
                             <constraint firstAttribute="trailing" secondItem="VZn-aC-Jwn" secondAttribute="trailing" id="h0e-Gt-Ms2"/>
-                            <constraint firstItem="Lpx-ZE-zde" firstAttribute="top" secondItem="6BB-L9-v1i" secondAttribute="bottom" constant="87" id="ph9-6k-uEs"/>
-                            <constraint firstItem="sIH-2g-e6I" firstAttribute="top" secondItem="5Vo-KS-2Rd" secondAttribute="bottom" constant="69" id="sgt-ee-ewf"/>
+                            <constraint firstItem="sIH-2g-e6I" firstAttribute="top" secondItem="5Vo-KS-2Rd" secondAttribute="bottom" constant="69" id="pFf-Fj-you"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="bg" destination="VZn-aC-Jwn" id="XDR-E1-z2l"/>
-                        <segue destination="4Bl-WG-sXP" kind="show" identifier="moveToApp" id="a4v-gk-nIc"/>
+                        <segue destination="4Bl-WG-sXP" kind="show" identifier="login" id="a4v-gk-nIc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rOr-kV-nXb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -514,8 +500,8 @@
         <image name="plus.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cGU-U0-1GM"/>
+        <segue reference="a4v-gk-nIc"/>
+        <segue reference="4JS-ob-VsK"/>
         <segue reference="hAG-97-tgW"/>
-        <segue reference="mWy-JL-R1S"/>
     </inferredMetricsTieBreakers>
 </document>

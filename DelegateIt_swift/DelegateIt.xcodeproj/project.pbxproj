@@ -196,11 +196,11 @@
 			isa = PBXGroup;
 			children = (
 				37E5E5CB1BF13099003111DD /* AppDelegate.swift */,
+				37DC513E1C0952DA0082C4A7 /* loginWithFacebook.swift */,
 				37DB5CA31C099EED0018F09C /* global.swift */,
 				3758E8B21C45926C00B8D974 /* transaction.swift */,
 				3758E8B41C4597A900B8D974 /* notificationHandler.swift */,
 				37DB5CA71C09AAF10018F09C /* RestApiManager.swift */,
-				37DC513E1C0952DA0082C4A7 /* loginWithFacebook.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";

@@ -5,5 +5,6 @@ target 'DelegateIt' do
   pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
   pod 'Socket.IO-Client-Swift', '~> 4.1.6' # Or latest version
   pod 'JSQMessagesViewController' 
+  pod 'Stripe'
   pod 'CWStatusBarNotification', '~> 2.3.3'
 end

@@ -11,7 +11,6 @@ import UIKit
 class editUserProfile: UITableViewController {
 
     var tableData = ["FIRST NAME", "LAST NAME", "EMAIL"]
-    
     var detailData = [mainInstance.first_name, mainInstance.last_name, mainInstance.email]
     
     @IBAction func saveToMainViewController (segue:UIStoryboardSegue) {
