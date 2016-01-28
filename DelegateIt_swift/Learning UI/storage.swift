@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 
 class Main {
@@ -99,11 +100,32 @@ class Main {
     func getIndex(UUID:String) -> Int {
         var index = 0
         for(index = 0; index < activeCount; index++){
+            print(active_transaction_uuids2[index].transactionUUID)
             if(active_transaction_uuids2[index].transactionUUID == UUID){
+                print("Found")
                 return index
             }
         }
-        return 0
+        return -1
+    }
+    
+    func updateTransaction(newTransaction:JSON){
+        print(newTransaction[0]["uuid"].stringValue)
+        let currentUUID = newTransaction[0]["uuid"].stringValue
+        var index = 0
+        for(index = 0; index < active_transaction_uuids2.count; index++){
+            if(active_transaction_uuids2[index].transactionUUID == currentUUID){
+                print(index)
+                print("Found --> Updating Info")
+                print(newTransaction[0]["messages"])
+                active_transaction_uuids2[index].messages = newTransaction[0]["messages"]
+                active_transaction_uuids2[index].getLastMessage()
+                print(active_transaction_uuids2[index].messages)
+                NSNotificationCenter.defaultCenter().postNotificationName("load", object: nil)
+            }
+        }
+        
+        
     }
     
 

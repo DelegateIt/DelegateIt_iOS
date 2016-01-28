@@ -37,6 +37,7 @@ class transaction {
     }
     
     func getLastMessage(){
+        messageCount = messages.count
         self.lastMessage = messages[messageCount-1]["content"].stringValue
         self.lastTimeStamp = messages[messageCount-1]["timestamp"].doubleValue
     }

@@ -10,23 +10,16 @@ import Foundation
 import SwiftyJSON
 
 
-class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
+class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
 
     @IBOutlet weak var bg: UIImageView!
-    
-    //Check if the user is already logged in
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print("view loaded")
-        if(FBSDKAccessToken.currentAccessToken() != nil){
-           self.returnUserData()
-        }
-    }
     
     //load if the user is not logged in
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if (FBSDKAccessToken.currentAccessToken() == nil){
+        if(FBSDKAccessToken.currentAccessToken() != nil){
+            self.returnUserData()
+        }else{
             let loginView : FBSDKLoginButton = FBSDKLoginButton()
             self.view.addSubview(loginView)
             loginView.center = self.view.center
@@ -92,7 +85,6 @@ class loginWithFacebook: UIViewController,FBSDKLoginButtonDelegate {
             }
             else
             {
-                print("No error")
                 let first_name : String = result.valueForKey("first_name") as! String
                 let last_name : String = result.valueForKey("last_name") as! String
                 let fbID : String = result.valueForKey("id") as! String

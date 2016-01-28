@@ -246,10 +246,10 @@
             </objects>
             <point key="canvasLocation" x="-558" y="882"/>
         </scene>
-        <!--Login With Facebook-->
+        <!--Facebook Login-->
         <scene sceneID="tVB-ej-d9F">
             <objects>
-                <viewController id="DEH-AZ-gkv" customClass="loginWithFacebook" customModule="DelegateIt" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="DEH-AZ-gkv" customClass="facebookLogin" customModule="DelegateIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5Vo-KS-2Rd"/>
                         <viewControllerLayoutGuide type="bottom" id="Lpx-ZE-zde"/>
@@ -500,8 +500,8 @@
         <image name="plus.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="a4v-gk-nIc"/>
         <segue reference="4JS-ob-VsK"/>
-        <segue reference="hAG-97-tgW"/>
+        <segue reference="a4v-gk-nIc"/>
+        <segue reference="eSR-jd-laA"/>
     </inferredMetricsTieBreakers>
 </document>

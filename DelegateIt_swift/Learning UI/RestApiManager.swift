@@ -8,7 +8,6 @@
 
 import Foundation
 import SwiftyJSON
-import Socket_IO_Client_Swift
 import CWStatusBarNotification
 import SystemConfiguration
 
@@ -18,7 +17,7 @@ class RestApiManager: NSObject {
     let notification = CWStatusBarNotification()
     
     var testURL = "http://192.168.99.100:8000";
-    var socketURL = "http://192.168.99.100:8060"
+    
     
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String,callback: (Int) -> ()) {
         let URLCALL = "/core/login/customer";
@@ -28,46 +27,58 @@ class RestApiManager: NSObject {
         restAPICALL(URLCALL,paramaters: parameters,callType: "POST") { (response) in
             output = response
             
-            let result = output["result"].stringValue
+            if(output == nil){
+                print("caught error")
+                //Print error to try again
+                
+            }else{
+                let result = output["result"].stringValue
+                
+                if(result == "0"){
+                    print("User Login Successful")
+                    let uuidTotal = output["customer"]["uuid"].stringValue
+                    let token = output["token"].stringValue
+                    self.getUser(uuidTotal, token: token)
+                    mainInstance.setToken(token)
+                    callback(1)
+                }
+                else if(result == "10"){
+                    print("User is not created")
+                    self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
+                }
+                else{
+                    //login failed
+                    //return 0
+                }
+                //Result 10 means to create a new user
+                //Result 0 is good
+            }
             
-            if(result == "0"){
-                print("User Login Successful")
-                let uuidTotal = output["customer"]["uuid"].stringValue
-                let token = output["token"].stringValue
-                self.getUser(uuidTotal, token: token)
-                mainInstance.setToken(token)
-                callback(1)
-            }
-            else if(result == "10"){
-                print("User is not created")
-                self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
-            }
-            else{
-                //login failed
-                //return 0
-            }
-            //Result 10 means to create a new user
-            //Result 0 is good
+            
         }
     }
     
     func createUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
         let URLCALL: String = "/core/customer"
         let parameters : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken,"first_name":first_name,"last_name":last_name,"email":email,"phone_number":"15555555551"]
-        //var output:JSON = restAPICALL(URLCALL,paramaters: parameters,callType: "POST")
         var output:JSON = nil
         restAPICALL(URLCALL,paramaters: parameters,callType: "POST") { (response) in
             output = response
-        }
-        
-        let result = output["result"].intValue
-        
-        if(result == 0){
-            print("User created")
-            //self.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email)
-        }
-        else if(result == 2){
-            print("User alread exists")
+            let result = output["result"].intValue
+            
+            if(result == 0){
+                //user created and need to login
+                self.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
+                    if(response == 1){
+                        //successfull
+                    }else{
+                        //fail
+                    }
+                }
+            }
+            else if(result == 2){
+                //User alread exists
+            }
         }
     }
     
@@ -93,13 +104,14 @@ class RestApiManager: NSObject {
             // Read the JSON
             do {
                 if(data != nil){
-                    if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
+                    if let _ = NSString(data:data!, encoding: NSUTF8StringEncoding) {
                         let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
                         json = JSON(jsonDictionary)
                         callback(json)
                     }
                 } else{
-                    print("Error no responce")
+                    print("No connection with DelegateIt server")
+                    callback(nil)
                 }
                 
             } catch {
@@ -109,73 +121,9 @@ class RestApiManager: NSObject {
     }
     
     
-    func loginUser2(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
-        // Setup the session to make REST POST call
-
-        let postEndpoint: String = testURL + "/core/login/customer"
-        let url = NSURL(string: postEndpoint)!
-        let session = NSURLSession.sharedSession()
-        let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
-    
-        // Create the request
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        do {
-            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
-            print(postParams)
-        } catch {
-            print("parameters are wrong")
-        }
-        // Make the POST call and handle it in a completion handler
-        session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-            // Read the JSON
-            do {
-                print(data)
-                if(data == nil){
-                    print("Error no responce")
-                }
-                if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
-                    // Print what we got from the call
-                    print(output)
-                    
-                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                    let json = JSON(jsonDictionary)
-                    let result = json["result"].stringValue
-                    
-                    if(result == "0"){
-                        print("User Login Successful")
-        
-                        let uuidTotal = json["customer"]["uuid"].stringValue  //jsonDictionary['uuid'] as! String
-                        print(uuidTotal)
-                        let token = json["token"].stringValue //jsonDictionary["token"] as! String
-                        print(token)
-                        self.getUser(uuidTotal, token: token) //CHANGE
-                        mainInstance.setToken(token)
-                    }
-                    else if(result == "10"){
-                        print("User is not created")
-                        self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
-                    }
-                }
-            } catch {
-                print("No Responce, check URL")
-            }
-            
-            //Result 10 means to create a new user
-            //Result 0 is good
-        }).resume()
-    }
-    
-    
-    
     
     func getUser(uuid:String,token:String) {
-        // Setup the session to make REST GET call.  Notice the URL is https NOT http!!
-        print(uuid)
-        print(token)
         let postEndpoint: String = testURL + "/core/customer/" + uuid + "?token=" + token
-        print(postEndpoint)
         let session = NSURLSession.sharedSession()
         let url = NSURL(string: postEndpoint)!
         
@@ -191,10 +139,8 @@ class RestApiManager: NSObject {
                     
                     let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
                     
-                    print("-----")
                     let json = JSON(jsonDictionary)
                     let result = json["result"].stringValue
-                    print(json)
                 
                     let first_name = json["customer"]["first_name"].stringValue
                     var email = ""
@@ -206,8 +152,6 @@ class RestApiManager: NSObject {
                     let phone_number = json["customer"]["phone_number"].stringValue
                     let uuid = json["customer"]["uuid"].stringValue
                     var active_transaction_uuids = json["customer"]["active_transaction_uuids"].arrayValue.map { $0.string!}
-                    print(active_transaction_uuids)
-                    //let active_transaction_uuids = ["Hello"]
                     let activeCount = active_transaction_uuids.count
                     
                     
@@ -218,7 +162,7 @@ class RestApiManager: NSObject {
                     for index = 0; index < active_transaction_uuids.count; index++ {
                         self.getTransaction(active_transaction_uuids[index], token: mainInstance.token)
                     }
-                    self.startSockets()
+                    sockets().startSockets()
                     
                     // Update the label
                     //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
@@ -322,17 +266,11 @@ class RestApiManager: NSObject {
                     print(json)
                     print("Got data")
                     
-                    print("--------")
-                    
                     
                     mainInstance.active_transaction_uuids2.append(transaction(dataInput: json))
                     
-                    
-                    print("--------")
-                
-                    
-                    
-                    
+
+    
                     //print(mainInstance.active_transaction_uuids2[0].first_name)
                     
                     // Update the label
@@ -469,42 +407,7 @@ class RestApiManager: NSObject {
             
         }).resume()
     }
-    
-    
-    //SocketIO
-    func startSockets() {
-        let socket = SocketIOClient(socketURL: socketURL, options: [.Log(false), .ForcePolling(false)])
-        
-        socket.on("connect") {data, ack in
-            print("socket connected")
-            var index = 0
-            for index = 0; index < mainInstance.active_transaction_uuids.count; index++ {
-                socket.on(mainInstance.active_transaction_uuids[index]) {data, ack in
-                    let json = JSON(data)
-                    var messageContent = json[0]["messages"][json[0]["messages"].count - 1]["content"]
-                    print(json[0]["uuid"].stringValue)
-                    print(messageContent)
-                    
-                    mainInstance.active_transaction_uuids2[mainInstance.getIndex(json[0]["uuid"].stringValue)] = transaction(dataInput: json)
-                    
-                    print("----")
-                    print(json[0]["uuid"].stringValue)
-                    print(mainInstance.active_transaction_uuids2[mainInstance.getIndex(json[0]["uuid"].stringValue)].lastMessage)
-                    
-                    //self.notification.notificationStyle = .NavigationBarNotification
-                    
-                    self.notification.notificationTappedBlock = {
-                        print("notification tapped")
-                        // more code here
-                    }
-                    self.notification.notificationLabelBackgroundColor = UIColor.blueColor()
-                    self.notification.displayNotificationWithMessage("NEW MESSAGE: \(messageContent)", completion: nil)
-                }
-                socket.emit("register_transaction", ["transaction_uuid": mainInstance.active_transaction_uuids[index]])
-            }
-        }
-        socket.connect()
-    }
+
     
     //Check For Internet Connection
     func isConnectedToNetwork() -> Bool {

@@ -14,6 +14,9 @@ class ordersView: UITableViewController {
     
     var detailData:[String] = []//mainInstance.active_transaction_uuids //["Dec 21", "Dec 21", "Dec 21", "Dec 21"]
     
+    
+    
+    
     @IBAction func saveToMainViewController (segue:UIStoryboardSegue) {
         let detailViewController = segue.sourceViewController as! DetailTableViewController
         let changedPrice = detailViewController.priceString
@@ -48,9 +51,6 @@ class ordersView: UITableViewController {
 
         */
         
-        
-        
-        
         let date = NSDate()
         //let formatter = NSDateFormatter()
         //formatter.dateStyle = NSDateFormatterStyle.LongStyle
@@ -58,11 +58,16 @@ class ordersView: UITableViewController {
         
         //let dateString = formatter.stringFromDate(date)
         
-
+        
         let dayTimePeriodFormatter = NSDateFormatter()
         dayTimePeriodFormatter.dateFormat = "MMM d"
         
         let dateString = dayTimePeriodFormatter.stringFromDate(date)
+        
+        
+        
+        
+        
         
         print(dateString)
         
@@ -73,6 +78,7 @@ class ordersView: UITableViewController {
         var index = 0
         for (index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
             tableData.append(mainInstance.active_transaction_uuids2[index].lastMessage)
+            print(mainInstance.active_transaction_uuids2[index].lastMessage)
             
             
             let day = NSDate(timeIntervalSince1970:mainInstance.active_transaction_uuids2[index].lastTimeStamp/1000000)
@@ -87,7 +93,60 @@ class ordersView: UITableViewController {
         super.viewDidLoad()
         self.title = "ORDERS"
         self.tabBarController?.tabBar.hidden = false
+        
+        
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadList:",name:"load", object: nil)
+        
+    
+    }
+    
+    func loadList(notification: NSNotification){
+        //load data here
+        //self.tableView.reloadData()
+        
+        
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            print("updated")
+            //self.tableData = mainInstance.active_transaction_uuids
+            //self.detailData = mainInstance.active_transaction_uuids
+            
+            self.tableData = []
+            self.detailData = []
+            
+            let date = NSDate()
+            
+            
+            let dayTimePeriodFormatter = NSDateFormatter()
+            dayTimePeriodFormatter.dateFormat = "MMM d"
+            
+            let dateString = dayTimePeriodFormatter.stringFromDate(date)
+            
+            var index = 0
+            for (index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
+                
+                
+                
+                let day = NSDate(timeIntervalSince1970:mainInstance.active_transaction_uuids2[index].lastTimeStamp/1000000)
+                
+                let dateString = dayTimePeriodFormatter.stringFromDate(day)
+                
+                if(index != 0 && mainInstance.active_transaction_uuids2[index].lastTimeStamp > mainInstance.active_transaction_uuids2[index-1].lastTimeStamp){
+                    self.tableData.insert(mainInstance.active_transaction_uuids2[index].lastMessage,atIndex: 0)
+                    self.detailData.insert(dateString, atIndex: 0)
+                }else{
+                    self.tableData.append(mainInstance.active_transaction_uuids2[index].lastMessage)
+                    self.detailData.append(dateString)
+                }
+                
+            }
+            self.tableView.reloadData()
+        })
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
