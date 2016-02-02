@@ -13,8 +13,8 @@ class notificationHandler {
     let notification = CWStatusBarNotification()
     func printHello(name:String){
         print("Display Notification")
-        //self.notification.notificationStyle = .NavigationBarNotification
-        self.notification.notificationLabelBackgroundColor = UIColor.redColor()
+        self.notification.notificationStyle = .NavigationBarNotification
+        self.notification.notificationLabelBackgroundColor = UIColor.blueColor()
         self.notification.displayNotificationWithMessage(name, completion: nil)
         self.notification.notificationTappedBlock = {
             print("notification tapped")

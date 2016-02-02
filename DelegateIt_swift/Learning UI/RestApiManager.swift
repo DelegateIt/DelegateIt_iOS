@@ -20,6 +20,8 @@ class RestApiManager: NSObject {
     
     
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String,callback: (Int) -> ()) {
+        
+        print("login")
         let URLCALL = "/core/login/customer";
         let parameters:[String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
         var output:JSON = nil
@@ -29,6 +31,7 @@ class RestApiManager: NSObject {
             
             if(output == nil){
                 print("caught error")
+                callback(-1)
                 //Print error to try again
                 
             }else{

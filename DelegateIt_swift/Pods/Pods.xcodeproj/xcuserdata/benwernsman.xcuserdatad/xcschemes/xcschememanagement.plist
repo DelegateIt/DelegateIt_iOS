@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Alamofire.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>CWStatusBarNotification.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -34,6 +39,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SwiftSpinner.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,7 +52,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>04BC7D1164D8233D82C62C9BA36DFF02</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>233B529E4F6EE6E3DF4E23BAFD26903D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2FF91065DA4A11459EAC28DC7D4D07D2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>302C9EE15903A85A29A5737D1E97EFC9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>391E4903D714C52CBBB5F3F3985DACDB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>432ECC54282C84882B482CCB4CF227FC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,27 +87,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A7759535AB5A5C35D8F16C71944E5983</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B24D1C0E3C40728E0172C680C2912632</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C9259DFFF819AADDEC79011DD3CE4426</key>
+		<key>CA439ABD5A41727571A921EFB9BF752D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>EDA125ADA52355B7CA6DF7BA96918357</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F999815080176EA189D7AAE13323C968</key>
 		<dict>
 			<key>primary</key>
 			<true/>

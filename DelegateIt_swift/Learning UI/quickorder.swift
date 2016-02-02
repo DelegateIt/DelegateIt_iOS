@@ -77,13 +77,34 @@ class quickorder: UIViewController {
             myImageView.addGestureRecognizer(tapGestureRecognizer)
             
             myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize)
+            
+            
+            
         }
+        
+        restAPI.rCall.getUser(){ (response) in
+            print(response)
+        }
+        
+        
+        
+        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
+        replyBtn.setImage(UIImage(named: "settingsBtn.png"), forState: UIControlState.Normal)
+        replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        var item = UIBarButtonItem(customView: replyBtn)
+        self.navigationItem.rightBarButtonItem = item
         
         //
         
         
         //let mapViewControllerObejct = self.storyboard?.instantiateViewControllerWithIdentifier("MapViewControllerIdentifier") as? messenger
         //self.navigationController?.pushViewController(mapViewControllerObejct!, animated: true)
+        
+    }
+    
+    func gotoSettings(sender:UIButton!){
+        print("Going to Settings")
+        self.performSegueWithIdentifier("goToSettings23", sender: self);
         
     }
     

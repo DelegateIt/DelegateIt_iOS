@@ -110,12 +110,12 @@ class Main {
     }
     
     func updateTransaction(newTransaction:JSON){
-        print(newTransaction[0]["uuid"].stringValue)
+        print(newTransaction[0])
         let currentUUID = newTransaction[0]["uuid"].stringValue
         var index = 0
         for(index = 0; index < active_transaction_uuids2.count; index++){
             if(active_transaction_uuids2[index].transactionUUID == currentUUID){
-                print(index)
+                print(newTransaction[0]["status"].stringValue)
                 print("Found --> Updating Info")
                 print(newTransaction[0]["messages"])
                 active_transaction_uuids2[index].messages = newTransaction[0]["messages"]

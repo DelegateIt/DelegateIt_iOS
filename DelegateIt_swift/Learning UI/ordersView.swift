@@ -14,6 +14,7 @@ class ordersView: UITableViewController {
     
     var detailData:[String] = []//mainInstance.active_transaction_uuids //["Dec 21", "Dec 21", "Dec 21", "Dec 21"]
     
+    var UUIDs:[String] = []
     
     
     
@@ -78,6 +79,7 @@ class ordersView: UITableViewController {
         var index = 0
         for (index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
             tableData.append(mainInstance.active_transaction_uuids2[index].lastMessage)
+            UUIDs.append(mainInstance.active_transaction_uuids2[index].transactionUUID)
             print(mainInstance.active_transaction_uuids2[index].lastMessage)
             
             
@@ -177,8 +179,8 @@ class ordersView: UITableViewController {
         if segue.identifier == "gotoOrder" {
             
             let path = tableView.indexPathForSelectedRow
-            let destination = segue.destinationViewController as! CustomOrder
-            destination.data = (path?.row)!
+            let destination = segue.destinationViewController as! orderMessenger
+            destination.data = UUIDs[(path?.row)!]
             //destination.price = detailData
             
         }

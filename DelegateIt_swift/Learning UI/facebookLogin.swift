@@ -8,11 +8,13 @@
 
 import Foundation
 import SwiftyJSON
+import SwiftSpinner
 
 
 class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
 
     @IBOutlet weak var bg: UIImageView!
+    
     
     //load if the user is not logged in
     override func viewDidAppear(animated: Bool) {
@@ -58,6 +60,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     
     //Return data collected from Facebook
     func returnUserData(){
+        
         let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me?fields=id,first_name,last_name,email,picture", parameters: nil)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
@@ -70,7 +73,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 let alertController = UIAlertController(title: "Login Error", message:"Please login with Facebook to continue", preferredStyle: UIAlertControllerStyle.Alert)
                 
                 let Dismiss = UIAlertAction(title: "Dismiss", style: .Default) { (action) in
-                    self.loadRetryButton()
+                    
                 }
                 
                 alertController.addAction(Dismiss)
@@ -98,47 +101,25 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 
                 RestApiManager.sharedInstance.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
                     if(response == 1){
+                        SwiftSpinner.hide()
                         dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
-                    }else{
-                        //Error With logging into Server
-                        let alertController = UIAlertController(title: "Login Error", message:"Connection to server Failed", preferredStyle: UIAlertControllerStyle.Alert)
                         
-                        let Dismiss = UIAlertAction(title: "Dismiss", style: .Default) { (action) in
-                            self.loadRetryButton()
-                        }
+                    }else if(response == -1){
                         
-                        alertController.addAction(Dismiss)
-                        
-                        let tryAgain = UIAlertAction(title: "Try Again", style: .Default) { (action) in
-                            self.dismissViewControllerAnimated(false, completion: nil)
-                            self.returnUserData()
-                        }
-                        alertController.addAction(tryAgain)
-                        
-                        self.presentViewController(alertController, animated: true, completion: nil)
-                        
-                        if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
-                            notificationH.printHello("No Internet Connection")
-                        }
+                        dispatch_async(dispatch_get_main_queue(), {
+                            // code here
+                            SwiftSpinner.show("Connecting...")
+                            
+                            if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
+                                notificationH.printHello("No Internet Connection")
+                            }
+                            
+                            NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("returnUserData"), userInfo: nil, repeats: false)
+                            
+                        })
                     }
                 }
             }
         })
-    }
-    
-    func loadRetryButton(){
-        let retrybutton = UIButton(type: UIButtonType.System) as UIButton
-        retrybutton.frame = CGRectMake(100, 100, 100, 50)
-        retrybutton.backgroundColor = UIColor.redColor()
-        retrybutton.setTitle("Retry", forState: UIControlState.Normal)
-        retrybutton.titleLabel!.textColor = UIColor.blackColor()
-        retrybutton.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        retrybutton.center = self.view.center
-        self.view.addSubview(retrybutton)
-    }
-    
-    func buttonAction(sender:UIButton!){
-        self.dismissViewControllerAnimated(false, completion: nil)
-        self.returnUserData()
     }
 }

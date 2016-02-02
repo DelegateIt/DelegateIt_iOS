@@ -25,7 +25,19 @@ class editUserProfile: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "PROFILE"
+        
+        /*
+        
+        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+        replyBtn.setImage(UIImage(named: "backBtn.png"), forState: UIControlState.Normal)
+        replyBtn.addTarget(self, action: Selector("goBack:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        var item = UIBarButtonItem(customView: replyBtn)
+        self.navigationItem.leftBarButtonItem = item
+
+        */
     }
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

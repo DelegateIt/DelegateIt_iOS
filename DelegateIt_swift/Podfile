@@ -7,4 +7,7 @@ target 'DelegateIt' do
   pod 'JSQMessagesViewController' 
   pod 'Stripe'
   pod 'CWStatusBarNotification', '~> 2.3.3'
+  pod "SwiftSpinner"
+  pod 'Alamofire', '~> 3.0'
+  
 end

@@ -58,6 +58,13 @@ class CustomOrder: JSQMessagesViewController {
                 self.navigationItem.rightBarButtonItem = rightBtn
             }
         }
+        
+        
+        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+        replyBtn.setImage(UIImage(named: "x.png"), forState: UIControlState.Normal)
+        replyBtn.addTarget(self, action: Selector("goHome:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        var item = UIBarButtonItem(customView: replyBtn)
+        self.navigationItem.leftBarButtonItem = item
 
         
         
@@ -80,6 +87,7 @@ class CustomOrder: JSQMessagesViewController {
         for (index = 0; index < messageCount; index++){
             if(messagesJSON[index]["from_customer"].boolValue){
                 var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
+                
                 messages += [message]
             }
             else{
@@ -113,8 +121,12 @@ class CustomOrder: JSQMessagesViewController {
         //self.navigationItem.leftBarButtonItem = leftBtn
         
         //print(self.inputToolbar?.si)
+    }
+    
+    func goHome(sender:UIButton!){
+        print("Going Back")
+        self.performSegueWithIdentifier("cancleOrder", sender: self);
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "loadMessages", userInfo: nil, repeats: true)
     }
     
     func loadMessages(){
@@ -263,11 +275,8 @@ class CustomOrder: JSQMessagesViewController {
         self.presentViewController(actionSheetController, animated: true, completion: nil)
     }
     
+    //Leave View
     override func viewWillDisappear(animated: Bool) {
-        timer.invalidate()
-    }
-    
-    func printData() {
-        print("Hey");
+        print("Left View")
     }
 }

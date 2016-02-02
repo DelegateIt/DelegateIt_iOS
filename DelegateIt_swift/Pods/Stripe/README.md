@@ -7,7 +7,7 @@
 
 The Stripe iOS SDK make it easy to collect your users' credit card details inside your iOS app. By creating [tokens](https://stripe.com/docs/api#tokens), Stripe handles the bulk of PCI compliance by preventing sensitive card data from hitting your server (for more, see [our article about PCI compliance](https://support.stripe.com/questions/do-i-need-to-be-pci-compliant-what-do-i-have-to-do)).
 
-We also offer [seamless integration](https://stripe.com/applepay) with [Apple Pay](https://apple.com/apple-pay) that will allow you to securely collect payments from your customers in a way that prevents them from having to re-enter their credit card information.
+We also offer [seamless integration](https://stripe.com/apple-pay) with [Apple Pay](https://www.apple.com/apple-pay/) that will allow you to securely collect payments from your customers in a way that prevents them from having to re-enter their credit card information.
 
 ## Requirements
 Our SDK is compatible with iOS apps supporting iOS 7.0 and above. It requires Xcode 7.0+ to build the source.
@@ -21,6 +21,8 @@ We've written a [guide](https://stripe.com/docs/mobile/ios) that explains everyt
 There are 2 example apps included in the repository:
 - Stripe iOS Example (Simple) shows a minimal Swift integration with our iOS SDK using Apple Pay.
 - Stripe iOS Example (Custom) demonstrates 2 different ways of collecting your user's payment details: via Apple Pay, and STPPaymentCardTextField, a native credit card UI form component we provide. It, too, uses a small example backend to make charges.
+
+To build and run the example apps, open `Stripe.xcworkspace` and choose the appropriate scheme.
 
 ### Getting started with the Simple iOS Example App
 
