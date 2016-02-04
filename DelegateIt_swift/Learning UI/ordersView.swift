@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 class ordersView: UITableViewController {
+    @IBOutlet weak var blueDot: UIImageView!
+    
     var tableData:[String] = []//mainInstance.active_transaction_uuids //["Order1", "Order2", "Order3", "Order4"]
     
     var detailData:[String] = []//mainInstance.active_transaction_uuids //["Dec 21", "Dec 21", "Dec 21", "Dec 21"]
@@ -28,6 +30,16 @@ class ordersView: UITableViewController {
     
     
     override func viewDidLoad() {
+        
+        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
+        replyBtn.setImage(UIImage(named: "settingsBtn.png"), forState: UIControlState.Normal)
+        replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        var item = UIBarButtonItem(customView: replyBtn)
+        self.navigationItem.rightBarButtonItem = item
+        
+    
+        
+        
         //let date = NSDate().timeIntervalSince1970
         //var date = NSDate()
         
@@ -96,6 +108,12 @@ class ordersView: UITableViewController {
         self.title = "ORDERS"
         self.tabBarController?.tabBar.hidden = false
         
+        
+    }
+    
+    func gotoSettings(sender:UIButton!){
+        print("Going to Settings")
+        self.performSegueWithIdentifier("goToSettings23", sender: self);
         
     }
     
@@ -168,6 +186,10 @@ class ordersView: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TextCell", forIndexPath: indexPath)
         // Configure the cell...
+        
+        let myImage:UIImage = UIImage(named: "blueDot.png")!
+        
+        
         cell.textLabel?.text = tableData[indexPath.row]
         cell.detailTextLabel?.text = detailData[indexPath.row]
         return cell

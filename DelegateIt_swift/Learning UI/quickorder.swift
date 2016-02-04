@@ -78,18 +78,14 @@ class quickorder: UIViewController {
             
             myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize)
             
-            
-            
+    
         }
-        
-        restAPI.rCall.getUser(){ (response) in
-            print(response)
-        }
+
         
         
         
-        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
-        replyBtn.setImage(UIImage(named: "settingsBtn.png"), forState: UIControlState.Normal)
+        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+        replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
         replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
         var item = UIBarButtonItem(customView: replyBtn)
         self.navigationItem.rightBarButtonItem = item
@@ -104,7 +100,7 @@ class quickorder: UIViewController {
     
     func gotoSettings(sender:UIButton!){
         print("Going to Settings")
-        self.performSegueWithIdentifier("goToSettings23", sender: self);
+        self.performSegueWithIdentifier("goToSettings22", sender: self);
         
     }
     

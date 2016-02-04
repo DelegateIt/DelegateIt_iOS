@@ -18,16 +18,7 @@ DEPENDENCIES:
   - Socket.IO-Client-Swift (~> 4.1.6)
   - Stripe
   - SwiftSpinner
-  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`)
-
-EXTERNAL SOURCES:
-  SwiftyJSON:
-    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
-
-CHECKOUT OPTIONS:
-  SwiftyJSON:
-    :commit: 42bdb102d2624b143c07850ebdc1537d5b6579b6
-    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
+  - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: 5f730ba29fd113b7ddd71c1e65d0c630acf5d7b0

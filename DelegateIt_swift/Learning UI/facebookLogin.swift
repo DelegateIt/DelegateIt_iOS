@@ -105,15 +105,11 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                         dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
                         
                     }else if(response == -1){
-                        
                         dispatch_async(dispatch_get_main_queue(), {
-                            // code here
                             SwiftSpinner.show("Connecting...")
-                            
                             if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
                                 notificationH.printHello("No Internet Connection")
                             }
-                            
                             NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("returnUserData"), userInfo: nil, repeats: false)
                             
                         })

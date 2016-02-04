@@ -12,20 +12,24 @@ import FBSDKLoginKit
 
 class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var userName: UILabel!
     let textCellIdentifier = "TextCell"
     
     let blogSegueIdentifier = "ShowBlogSegue"   //New
     
-    let swiftBlogs = ["EDIT PROFILE", "WORK WITH US", "ABOUT"]
+    let swiftBlogs = ["EDIT PROFILE","ABOUT US", "HOW IT WORKS?","WORK WITH US"]
     
     var choosenRow = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "SETTINGS"
+        self.title = "PROFILE"
         tableView.delegate = self
         tableView.dataSource = self
+        
+        self.tabBarController?.tabBar.hidden = true
         
         
        //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
@@ -39,6 +43,72 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         
         //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        
+        let image = UIImage(named: "yellowBG.png") as UIImage?
+        let button = UIButton(type: UIButtonType.System) as UIButton
+        button.frame = CGRectMake(0, screenSize.height-60, screenSize.width, 60)
+        button.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
+        button.setTitle("LOGOUT", forState: .Normal)
+        button.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 16.0)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
+        self.view.addSubview(button)
+        
+        var settingsBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+        settingsBtn.setImage(UIImage(named: "settingsBtn.png"), forState: UIControlState.Normal)
+        settingsBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        var item2 = UIBarButtonItem(customView: settingsBtn)
+        self.navigationItem.rightBarButtonItem = item2
+        
+        tableView.alwaysBounceVertical = false;
+        
+        // Do any additional setup after loading the view, typically from a nib.
+        print("Begin of code")
+        if let checkedUrl = NSURL(string: "https://graph.facebook.com/1237026922980425/picture?type=large") {
+            imageView.contentMode = .ScaleAspectFill
+            imageView.layer.borderWidth = 2
+            imageView.layer.masksToBounds = false
+            imageView.layer.borderColor = UIColor.blackColor().CGColor
+            imageView.layer.cornerRadius = imageView.frame.height/2
+            imageView.clipsToBounds = true
+            downloadImage(checkedUrl)
+        }
+        print("End of code. The image will continue downloading in the background and it will be loaded when it ends.")
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        userName.text = mainInstance.first_name + " " + mainInstance.last_name
+        print(mainInstance.first_name)
+        print("Loaded")
+    }
+    
+    
+    func getDataFromUrl(url:NSURL, completion: ((data: NSData?, response: NSURLResponse?, error: NSError? ) -> Void)) {
+        NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+            completion(data: data, response: response, error: error)
+            }.resume()
+    }
+    
+    func downloadImage(url: NSURL){
+        print("Download Started")
+        print("lastPathComponent: " + (url.lastPathComponent ?? ""))
+        getDataFromUrl(url) { (data, response, error)  in
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                guard let data = data where error == nil else { return }
+                print(response?.suggestedFilename ?? "")
+                print("Download Finished")
+                self.imageView.image = UIImage(data: data)
+            }
+        }
+    }
+    
+    func btnTouched(sender:UIButton!){
+        FBSDKLoginManager().logOut()
+        self.performSegueWithIdentifier("logout", sender: self);
     }
     
     func goHome(sender:UIButton!){
@@ -119,10 +189,6 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    
-    @IBAction func LogoutUser(sender: AnyObject) {
-        FBSDKLoginManager().logOut()
-    }
     
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {

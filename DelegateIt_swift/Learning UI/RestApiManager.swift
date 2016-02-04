@@ -10,7 +10,7 @@ import Foundation
 import SwiftyJSON
 import CWStatusBarNotification
 import SystemConfiguration
-
+import Alamofire
 
 class RestApiManager: NSObject {
     static let sharedInstance = RestApiManager()
@@ -21,6 +21,12 @@ class RestApiManager: NSObject {
     
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String,callback: (Int) -> ()) {
         
+        self.getUser2(fbID,fbToken: fbToken){ (response) in
+            print(response)
+        }
+        
+        print(fbID)
+        print(fbToken)
         print("login")
         let URLCALL = "/core/login/customer";
         let parameters:[String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
@@ -33,10 +39,8 @@ class RestApiManager: NSObject {
                 print("caught error")
                 callback(-1)
                 //Print error to try again
-                
             }else{
                 let result = output["result"].stringValue
-                
                 if(result == "0"){
                     print("User Login Successful")
                     let uuidTotal = output["customer"]["uuid"].stringValue
@@ -57,7 +61,14 @@ class RestApiManager: NSObject {
                 //Result 0 is good
             }
             
-            
+
+        }
+    }
+    
+    func getUser2(fbID:String,fbToken:String,callback: (JSON) -> ()){
+        Alamofire.request(.POST, testURL + "/core/login/customer", parameters: ["fbuser_id":fbID,"fbuser_token":fbToken],encoding: .JSON)
+            .responseJSON { response in
+                callback(JSON(data:response.data!))
         }
     }
     
@@ -65,6 +76,7 @@ class RestApiManager: NSObject {
         let URLCALL: String = "/core/customer"
         let parameters : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken,"first_name":first_name,"last_name":last_name,"email":email,"phone_number":"15555555551"]
         var output:JSON = nil
+        print(parameters)
         restAPICALL(URLCALL,paramaters: parameters,callType: "POST") { (response) in
             output = response
             let result = output["result"].intValue
@@ -365,8 +377,10 @@ class RestApiManager: NSObject {
         
         if(userProfileUpdate == "FIRST NAME"){
             updatedType = "first_name"
+            mainInstance.first_name = updatedInformation
         }else if(userProfileUpdate == "LAST NAME"){
             updatedType = "last_name"
+            mainInstance.last_name = updatedInformation
         }
         
         //Actual User
@@ -410,6 +424,8 @@ class RestApiManager: NSObject {
             
         }).resume()
     }
+    
+    
 
     
     //Check For Internet Connection

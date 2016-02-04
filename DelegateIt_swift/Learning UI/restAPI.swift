@@ -11,20 +11,22 @@ import Alamofire
 import SwiftyJSON
 
 class restAPI{
-    static let rCall = restAPI()
-    
+
     var testURL = "http://192.168.99.100:8000";
+    //let json = JSON(data: dataFromNetworking)
     
-    func getUser(callback: (String) -> ()){
+    func getUser(callback: (JSON) -> ()){
         Alamofire.request(.GET, testURL + "/core/login/customer", parameters: ["fbuser_id":mainInstance.fbID,"fbuser_token":mainInstance.fbToken])
             .response { request, response, data, error in
-                print("_testing_")
-                print(request)
-                print(response)
+                print("------____------")
                 print(data)
-                print(error)
-                
-                callback("Hey123->")
+                if let value = data {
+                    let json = JSON(value)
+                    print("JSON: \(json)")
+                }
+                callback("Hey")
         }
     }
 }
+
+var restCall = restAPI()
