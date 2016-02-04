@@ -77,7 +77,6 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
             downloadImage(checkedUrl)
         }
         print("End of code. The image will continue downloading in the background and it will be loaded when it ends.")
-        
     }
     
     override func viewWillAppear(animated: Bool) {

@@ -21,6 +21,8 @@
 		374EE0171BF2AC3D000AECE1 /* quick2.png in Resources */ = {isa = PBXBuildFile; fileRef = 374EE0161BF2AC3D000AECE1 /* quick2.png */; };
 		374EE0191BF2AC47000AECE1 /* quick1.png in Resources */ = {isa = PBXBuildFile; fileRef = 374EE0181BF2AC47000AECE1 /* quick1.png */; };
 		374EE01B1BF2B248000AECE1 /* profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374EE01A1BF2B248000AECE1 /* profile.swift */; };
+		3755A3061C63DDDF00AA8C5C /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3755A3051C63DDDF00AA8C5C /* config.swift */; };
+		3755A3081C63DF8800AA8C5C /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 3755A3071C63DF8800AA8C5C /* config.json */; };
 		3758E8B31C45926C00B8D974 /* transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3758E8B21C45926C00B8D974 /* transaction.swift */; };
 		3758E8B51C4597A900B8D974 /* notificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3758E8B41C4597A900B8D974 /* notificationHandler.swift */; };
 		376584081BF2653C007DA8A7 /* reservation.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 376584071BF2653C007DA8A7 /* reservation.jpg */; };
@@ -104,6 +106,8 @@
 		374EE0161BF2AC3D000AECE1 /* quick2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quick2.png; sourceTree = "<group>"; };
 		374EE0181BF2AC47000AECE1 /* quick1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quick1.png; sourceTree = "<group>"; };
 		374EE01A1BF2B248000AECE1 /* profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = profile.swift; sourceTree = "<group>"; };
+		3755A3051C63DDDF00AA8C5C /* config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = config.swift; path = "Learning UI/config.swift"; sourceTree = SOURCE_ROOT; };
+		3755A3071C63DF8800AA8C5C /* config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = config.json; path = "Learning UI/config.json"; sourceTree = SOURCE_ROOT; };
 		3758E8B21C45926C00B8D974 /* transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = transaction.swift; path = ../DelegateIt/transaction.swift; sourceTree = "<group>"; };
 		3758E8B41C4597A900B8D974 /* notificationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = notificationHandler.swift; sourceTree = "<group>"; };
 		376584071BF2653C007DA8A7 /* reservation.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = reservation.jpg; sourceTree = "<group>"; };
@@ -235,12 +239,14 @@
 		3737AC8A1C54049F00F71E8B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3755A3071C63DF8800AA8C5C /* config.json */,
 				37E5E5CB1BF13099003111DD /* AppDelegate.swift */,
 				37DC513E1C0952DA0082C4A7 /* facebookLogin.swift */,
 				37DB5CA31C099EED0018F09C /* storage.swift */,
 				3758E8B21C45926C00B8D974 /* transaction.swift */,
 				3758E8B41C4597A900B8D974 /* notificationHandler.swift */,
 				37DB5CA71C09AAF10018F09C /* RestApiManager.swift */,
+				3755A3051C63DDDF00AA8C5C /* config.swift */,
 				3733FF6C1C60CE41002D6141 /* restAPI.swift */,
 				37C220951C593A0B0074A96B /* sockets.swift */,
 			);
@@ -473,6 +479,7 @@
 				3733FF761C613638002D6141 /* blueDot@2x.png in Resources */,
 				3766DFF41C0B104800D2044C /* logo.png in Resources */,
 				376584201BF272EF007DA8A7 /* plus.png in Resources */,
+				3755A3081C63DF8800AA8C5C /* config.json in Resources */,
 				374EE0191BF2AC47000AECE1 /* quick1.png in Resources */,
 				3765841B1BF2727A007DA8A7 /* home@2x.png in Resources */,
 				3765841C1BF2727A007DA8A7 /* home@3x.png in Resources */,
@@ -593,6 +600,7 @@
 				37791DE91C2987180082693C /* editUserProfile.swift in Sources */,
 				3734CAB91C5E127D006968F0 /* orderMessenger.swift in Sources */,
 				37791DEB1C298BAD0082693C /* DetailTableViewController.swift in Sources */,
+				3755A3061C63DDDF00AA8C5C /* config.swift in Sources */,
 				37E5E5CC1BF13099003111DD /* AppDelegate.swift in Sources */,
 				37965A351C081797005DBF68 /* newOrder.swift in Sources */,
 			);

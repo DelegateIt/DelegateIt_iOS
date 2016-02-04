@@ -15,24 +15,16 @@ import Alamofire
 class RestApiManager: NSObject {
     static let sharedInstance = RestApiManager()
     let notification = CWStatusBarNotification()
-    
-    var testURL = "http://192.168.99.100:8000";
+    var testURL = mainInstance.restURL
     
     
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String,callback: (Int) -> ()) {
-        
-        self.getUser2(fbID,fbToken: fbToken){ (response) in
-            print(response)
-        }
-        
-        print(fbID)
-        print(fbToken)
-        print("login")
+    
         let URLCALL = "/core/login/customer";
         let parameters:[String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
         var output:JSON = nil
         
-        restAPICALL(URLCALL,paramaters: parameters,callType: "POST") { (response) in
+        apiCall(URLCALL,paramaters: parameters,callType: "POST") { (response) in
             output = response
             
             if(output == nil){
@@ -65,10 +57,19 @@ class RestApiManager: NSObject {
         }
     }
     
-    func getUser2(fbID:String,fbToken:String,callback: (JSON) -> ()){
-        Alamofire.request(.POST, testURL + "/core/login/customer", parameters: ["fbuser_id":fbID,"fbuser_token":fbToken],encoding: .JSON)
-            .responseJSON { response in
-                callback(JSON(data:response.data!))
+    func apiCall(URLCALL:String,paramaters:[String: String],callType:String,callback: (JSON) -> ()){
+        print(URLCALL)
+        if(callType == "POST"){
+            Alamofire.request(.POST, testURL + URLCALL, parameters: paramaters,encoding: .JSON)
+                .responseJSON { response in
+                    callback(JSON(data:response.data!))
+            }
+        }
+        else if(callType == "GET"){
+            Alamofire.request(.GET, testURL + "/core/login/customer", parameters: paramaters,encoding: .JSON)
+                .responseJSON { response in
+                    callback(JSON(data:response.data!))
+            }
         }
     }
     

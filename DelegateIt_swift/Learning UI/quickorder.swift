@@ -96,6 +96,7 @@ class quickorder: UIViewController {
         //let mapViewControllerObejct = self.storyboard?.instantiateViewControllerWithIdentifier("MapViewControllerIdentifier") as? messenger
         //self.navigationController?.pushViewController(mapViewControllerObejct!, animated: true)
         
+        
     }
     
     func gotoSettings(sender:UIButton!){

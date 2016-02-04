@@ -79,7 +79,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZAc-mq-HBb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1408" y="822"/>
+            <point key="canvasLocation" x="1292" y="844"/>
         </scene>
         <!--SETTINGS-->
         <scene sceneID="uFe-bU-xrA">
@@ -355,7 +355,7 @@
                             <tableViewSection headerTitle="Price" id="v5e-rA-Rpy">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="y25-S6-jbV">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="y25-S6-jbV" id="jmA-pI-TgG">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -526,11 +526,11 @@
         <image name="plus.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bzE-Kt-fj4"/>
-        <segue reference="iLt-IS-rad"/>
-        <segue reference="BLW-Ak-YwH"/>
-        <segue reference="hAG-97-tgW"/>
-        <segue reference="eoD-qJ-jAY"/>
         <segue reference="mWy-JL-R1S"/>
+        <segue reference="hAG-97-tgW"/>
+        <segue reference="xRJ-18-r70"/>
+        <segue reference="bzE-Kt-fj4"/>
+        <segue reference="jsK-sW-gdp"/>
+        <segue reference="8nj-ao-3JT"/>
     </inferredMetricsTieBreakers>
 </document>

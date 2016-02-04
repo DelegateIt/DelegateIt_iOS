@@ -77,6 +77,7 @@ class orderMessenger: JSQMessagesViewController {
             if(messagesJSON[index]["from_customer"].boolValue){
                 var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
                 
+                
                 messages += [message]
             }
             else{

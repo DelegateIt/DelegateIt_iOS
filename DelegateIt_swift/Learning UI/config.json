@@ -1,0 +1,19 @@
+{
+  "mode":"local",
+    
+  "local":{
+       "restURL": "http://192.168.99.100:8000",
+       "socketURL": "http://192.168.99.100:8060",
+       "debugMode": true
+  },
+  "test":{
+       "restURL": "",
+       "socketURL": "",
+       "debugMode": false
+  },
+  "production":{
+       "restURL": "",
+       "socketURL": "16",
+       "debugMode": false
+  },
+} 

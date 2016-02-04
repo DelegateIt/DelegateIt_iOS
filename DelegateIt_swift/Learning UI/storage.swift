@@ -27,6 +27,10 @@ class Main {
     var currentTransaction:transaction = transaction(dataInput: "")
     var messageQue:[String] = []
     
+    var restURL = ""
+    var socketURL = ""
+    var debubMode = false
+    
     
     //Facebook info
     var fbID:String = ""

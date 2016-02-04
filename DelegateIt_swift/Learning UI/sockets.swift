@@ -12,7 +12,7 @@ import SwiftyJSON
 
 class sockets{
     
-    var socketURL = "http://192.168.99.100:8060"
+    var socketURL = mainInstance.socketURL
 
     func startSockets() {
         let socket = SocketIOClient(socketURL: socketURL, options: [.Log(false), .ForcePolling(false)])

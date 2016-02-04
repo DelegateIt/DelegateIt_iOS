@@ -10,7 +10,6 @@ import Foundation
 import SwiftyJSON
 import SwiftSpinner
 
-
 class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
 
     @IBOutlet weak var bg: UIImageView!
@@ -19,6 +18,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     //load if the user is not logged in
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        config().getConfig()
         if(FBSDKAccessToken.currentAccessToken() != nil){
             self.returnUserData()
         }else{
