@@ -34,6 +34,8 @@ class orderMessenger: JSQMessagesViewController {
     var messageQue:[String] = []
     // -1 means no messages sent
     
+    var oldMessageCount = 0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +52,7 @@ class orderMessenger: JSQMessagesViewController {
             messageCount = mainInstance.active_transaction_uuids2[messageIndex].messageCount
             messagesJSON = mainInstance.active_transaction_uuids2[messageIndex].messages
             
-            if(mainInstance.currentTransaction.paymentStatus == "proposed" || mainInstance.currentTransaction.paymentStatus == "pending") {
+            if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "proposed" || mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "pending") {
                 var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
                 self.navigationItem.rightBarButtonItem = rightBtn
             }
@@ -58,18 +60,6 @@ class orderMessenger: JSQMessagesViewController {
         
         
         self.keyboardController.textView!.becomeFirstResponder()
-        
-        //orderBox.becomeFirstResponder()
-        
-        //navigationController?.navigationBar.topItem?.title = "NEW ORDER"
-        self.title = "ORDER"
-        
-        self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.1, 0.1);
-        self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1);
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        
         
         self.userName = "customer"
         var index = 0
@@ -89,6 +79,20 @@ class orderMessenger: JSQMessagesViewController {
         
         
         self.reloadMessagesView()
+        
+        //orderBox.becomeFirstResponder()
+        
+        //navigationController?.navigationBar.topItem?.title = "NEW ORDER"
+        self.title = "ORDER"
+        
+        self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.1, 0.1);
+        self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1);
+        
+        // Do any additional setup after loading the view, typically from a nib.
+        
+        
+        
+        
         self.senderDisplayName = self.userName
         self.senderId = self.userName
         self.inputToolbar!.contentView!.textView!.placeHolder = "Make a new order";
@@ -97,7 +101,7 @@ class orderMessenger: JSQMessagesViewController {
         //self.messages. //textColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
         
         //self.inputToolbar!.contentView!.textView!.placeHolderTextColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
-        automaticallyScrollsToMostRecentMessage = true
+        
         //self.inputToolbar!.contentView!.rightBarButtonItem?.
         //self.inputToolbar!.contentView!.leftBarButtonItem = nil
         
@@ -111,10 +115,61 @@ class orderMessenger: JSQMessagesViewController {
         //self.navigationItem.leftBarButtonItem = leftBtn
         
         //print(self.inputToolbar?.si)
+        
+        oldMessageCount = messageCount
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadList:",name:"load", object: nil)
+        
+        automaticallyScrollsToMostRecentMessage = true
+        
+    }
+    
+    
+    func loadList(notification: NSNotification){
+        var messageCount = 0
+        var messagesJSON:JSON = ""
+        
+        var messageIndex = mainInstance.getIndex(data)
+        //already created
+        mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[messageIndex]
+        transactionUUID = mainInstance.currentTransaction.transactionUUID
+        messageCount = mainInstance.active_transaction_uuids2[messageIndex].messageCount
+        messagesJSON = mainInstance.active_transaction_uuids2[messageIndex].messages
+        
+        self.keyboardController.textView!.becomeFirstResponder()
+        
+        self.userName = "customer"
+        var index = 0
+        for (index = oldMessageCount; index < messageCount; index++){
+            if(messagesJSON[index]["from_customer"].boolValue){
+                var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
+                messages += [message]
+            }
+            else{
+                var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
+                messages += [message]
+            }
+            counter++
+        }
+        
+        print(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus)
+        
+        if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "proposed" || mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "pending") {
+            var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+            self.navigationItem.rightBarButtonItem = rightBtn
+        }
+        
+        oldMessageCount = messageCount
+        
+        
+        self.reloadMessagesView()
+        
+        automaticallyScrollsToMostRecentMessage = true
     }
     
     func loadMessages(){
-        print("Checking")
+        
+        
         /*
         if(mainInstance.currentTransaction.paymentStatus == "proposed" || mainInstance.currentTransaction.paymentStatus == "pending" && mainInstance.currentTransaction.paymentStatus != mainInstance.active_transaction_uuids2[data].paymentStatus){
         var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")

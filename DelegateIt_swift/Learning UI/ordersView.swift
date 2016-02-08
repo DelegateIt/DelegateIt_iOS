@@ -187,7 +187,7 @@ class ordersView: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("TextCell", forIndexPath: indexPath)
         // Configure the cell...
         
-        let myImage:UIImage = UIImage(named: "blueDot.png")!
+        //let myImage:UIImage = UIImage(named: "blueDot.png")!
         
         
         cell.textLabel?.text = tableData[indexPath.row]

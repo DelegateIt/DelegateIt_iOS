@@ -1,5 +1,5 @@
 {
-  "mode":"local",
+  "mode":"test",
     
   "local":{
        "restURL": "http://192.168.99.100:8000",
@@ -7,13 +7,13 @@
        "debugMode": true
   },
   "test":{
-       "restURL": "",
-       "socketURL": "",
+       "restURL": "http://test-gatorapi.us-west-2.elasticbeanstalk.com",
+       "socketURL": "http://test-gatorapi.us-west-2.elasticbeanstalk.com:8060",
        "debugMode": false
   },
   "production":{
        "restURL": "",
-       "socketURL": "16",
+       "socketURL": "",
        "debugMode": false
   },
 } 

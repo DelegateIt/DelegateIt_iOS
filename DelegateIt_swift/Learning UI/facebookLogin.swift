@@ -13,25 +13,43 @@ import SwiftSpinner
 class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
 
     @IBOutlet weak var bg: UIImageView!
-    
+    var imageView = UIImageView()
+    var loginView : FBSDKLoginButton = FBSDKLoginButton()
     
     //load if the user is not logged in
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         config().getConfig()
+        
         if(FBSDKAccessToken.currentAccessToken() != nil){
             self.returnUserData()
         }else{
-            let loginView : FBSDKLoginButton = FBSDKLoginButton()
-            self.view.addSubview(loginView)
-            loginView.center = self.view.center
-            loginView.readPermissions = ["public_profile", "email"]
-            loginView.delegate = self
+            let screenSize: CGRect = UIScreen.mainScreen().bounds
+            let screenWidth = screenSize.width
+            let screenHeight = screenSize.height
+            imageView = UIImageView(frame: CGRectMake(0, 0, screenWidth/2, (screenWidth/2)/1.106)) // set as you want
+            imageView.center = self.view.center
+            let image = UIImage(named: "logo.png")
+            imageView.image = image
+            self.view.addSubview(imageView)
+            self.moveLogoView(CGPointMake(screenSize.width/2, screenHeight * 0.3))
         }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func moveLogoView(point: CGPoint){
+        UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            self.imageView.center = point
+            }) {(completed) -> Void in
+                print("The box has moved")
+                self.view.addSubview(self.loginView)
+                self.loginView.center = self.view.center
+           self.loginView.readPermissions = ["public_profile", "email"]
+           self.loginView.delegate = self
+        }
     }
     
     // Facebook Delegate Methods
@@ -101,6 +119,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 
                 RestApiManager.sharedInstance.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
                     if(response == 1){
+                        self.loginView.hidden = true
                         SwiftSpinner.hide()
                         dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
                         

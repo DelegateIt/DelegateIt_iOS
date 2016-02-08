@@ -17,15 +17,9 @@ class config{
                 let data = try NSData(contentsOfURL: NSURL(fileURLWithPath: path), options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 let jsonObj = JSON(data: data)
                 if jsonObj != JSON.null {
-                    print("jsonData:\(jsonObj)")
-                    
-                    var mode = jsonObj["mode"].stringValue
-                    
-                    if(mode == "local"){
-                        mainInstance.restURL = jsonObj["local"]["restURL"].stringValue
-                        mainInstance.socketURL = jsonObj["local"]["socketURL"].stringValue
-                    }
-
+                    let mode = jsonObj["mode"].stringValue
+                    mainInstance.restURL = jsonObj[mode]["restURL"].stringValue
+                    mainInstance.socketURL = jsonObj[mode]["socketURL"].stringValue
                 } else {
                     print("could not get json from file, make sure that file contains valid json.")
                 }

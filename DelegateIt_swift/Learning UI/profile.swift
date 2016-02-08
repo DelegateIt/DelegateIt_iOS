@@ -33,13 +33,15 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         
        //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-        
+        /*
         
         var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
         replyBtn.setImage(UIImage(named: "x.png"), forState: UIControlState.Normal)
         replyBtn.addTarget(self, action: Selector("goHome:"), forControlEvents:  UIControlEvents.TouchUpInside)
         var item = UIBarButtonItem(customView: replyBtn)
         self.navigationItem.leftBarButtonItem = item
+
+        */
         
         
         //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)

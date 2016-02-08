@@ -12,7 +12,7 @@ import UIKit
 class quickorder: UIViewController {
     
     @IBOutlet weak var myScrollView: UIScrollView!
-    var descriptions:[String] = ["1","2","3","4","5","6"] //change
+    var descriptions:[String] = ["I want pizza","I like pizza","3","4","5","6"] //change
     var descrionChosen = ""
     
     var timer: NSTimer = NSTimer()
@@ -20,6 +20,7 @@ class quickorder: UIViewController {
     
     
     override func viewDidLoad() {
+        
         //print(yourVariable)
         super.viewDidLoad()
         
@@ -82,7 +83,7 @@ class quickorder: UIViewController {
         }
 
         
-        
+        self.tabBarController?.tabBar.hidden = false
         
         var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
@@ -119,6 +120,11 @@ class quickorder: UIViewController {
         //print(iv.tag)
         descrionChosen = descriptions[iv.tag]
         self.performSegueWithIdentifier("showText", sender: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        print("SHow")
+        self.tabBarController?.tabBar.hidden = false
     }
     
     

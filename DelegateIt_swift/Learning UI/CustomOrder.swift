@@ -12,115 +12,74 @@ import JSQMessagesViewController
 import SwiftyJSON
 
 class CustomOrder: JSQMessagesViewController {
-    static let sharedInstance2 = CustomOrder()
-    
-    @IBOutlet weak var orderBox: UITextField!
-    
-    var timer: NSTimer = NSTimer()
     
     var orderText:String = ""
-    
-    var data:Int = -1
-    
     var userName = ""
     var messages = [JSQMessage]()
-
-    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0)) //JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
+    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0))
+    //JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0))
     let paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0))
     
-    var counter:Int = 0
-    var transactionUUID:String = ""
     var messageQue:[String] = []
-    // -1 means no messages sent
+    var currentT:transaction = transaction(dataInput: nil)
+    var creatingTransaction = false
+    var transactionCreated = false
+    
+    
+    override func viewWillAppear(animated: Bool) {
+        self.keyboardController.textView!.becomeFirstResponder()
+    }
     
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        var messageCount = 0
-        var messagesJSON:JSON = ""
-        if(data == -1){
-            //new order
-            mainInstance.setMessageCount(0)
-            var leftBtn = UIBarButtonItem(title: "CANCLE", style: .Plain, target: self, action: "sayHello2:")
-            self.navigationItem.leftBarButtonItem = leftBtn
-            
+        
+        
+        if(transactionCreated){
+            var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+            replyBtn.setImage(UIImage(named: "x.png"), forState: UIControlState.Normal)
+            replyBtn.addTarget(self, action: Selector("goHome:"), forControlEvents:  UIControlEvents.TouchUpInside)
+            var item = UIBarButtonItem(customView: replyBtn)
+            self.navigationItem.leftBarButtonItem = item
+            /*
+            var index = 0
+            for (index = 0; index < 10; index++){
+                if(messagesJSON[index]["from_customer"].boolValue){
+                    var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
+                    
+                    messages += [message]
+                }
+                else{
+                    var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
+                    messages += [message]
+                }
+                counter++
+            }
+
+            */
         }
         else{
-            //already created
-            mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[data]
-            transactionUUID = mainInstance.currentTransaction.transactionUUID
-            messageCount = mainInstance.active_transaction_uuids2[data].messageCount
-            messagesJSON = mainInstance.active_transaction_uuids2[data].messages
-            
-            if(mainInstance.currentTransaction.paymentStatus == "proposed" || mainInstance.currentTransaction.paymentStatus == "pending") {
-                var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
-                self.navigationItem.rightBarButtonItem = rightBtn
-            }
+            var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+            replyBtn.setImage(UIImage(named: "x.png"), forState: UIControlState.Normal)
+            replyBtn.addTarget(self, action: Selector("goHome:"), forControlEvents:  UIControlEvents.TouchUpInside)
+            var item = UIBarButtonItem(customView: replyBtn)
+            self.navigationItem.leftBarButtonItem = item
         }
         
-        
-        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
-        replyBtn.setImage(UIImage(named: "x.png"), forState: UIControlState.Normal)
-        replyBtn.addTarget(self, action: Selector("goHome:"), forControlEvents:  UIControlEvents.TouchUpInside)
-        var item = UIBarButtonItem(customView: replyBtn)
-        self.navigationItem.leftBarButtonItem = item
-
-        
-        
-        self.keyboardController.textView!.becomeFirstResponder()
-        
-        //orderBox.becomeFirstResponder()
-        
-        //navigationController?.navigationBar.topItem?.title = "NEW ORDER"
         self.title = "ORDER"
-        
         self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.1, 0.1);
         self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1);
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        
-        
         self.userName = "customer"
-        var index = 0
-        for (index = 0; index < messageCount; index++){
-            if(messagesJSON[index]["from_customer"].boolValue){
-                var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
-                
-                messages += [message]
-            }
-            else{
-                var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
-                messages += [message]
-            }
-            counter++
-        }
-        
-        
         self.reloadMessagesView()
         self.senderDisplayName = self.userName
         self.senderId = self.userName
         self.inputToolbar!.contentView!.textView!.placeHolder = "Make a new order";
         self.inputToolbar!.contentView!.textView!.text = orderText;
-        
-        //self.messages. //textColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
-        
-        //self.inputToolbar!.contentView!.textView!.placeHolderTextColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
         automaticallyScrollsToMostRecentMessage = true
-        //self.inputToolbar!.contentView!.rightBarButtonItem?.
-        //self.inputToolbar!.contentView!.leftBarButtonItem = nil
-    
+
         
-        //var leftBtn = UIBarButtonItem(title: "CANCEL", style: .Plain, target: self, action: "sayHello2:")
-       
-        
-        
-        //var leftNavBarButton = UIBarButtonItem(customView:b)
-        
-        //self.navigationItem.leftBarButtonItem = leftBtn
-        
-        //print(self.inputToolbar?.si)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadList:",name:"load", object: nil)
     }
     
     func goHome(sender:UIButton!){
@@ -169,6 +128,18 @@ class CustomOrder: JSQMessagesViewController {
         }
         */
         
+    }
+    
+    
+    func loadList(notification: NSNotification){
+        //load data here
+        //self.tableView.reloadData()
+        var index = 0
+        for (index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
+            
+            print(mainInstance.active_transaction_uuids2[index].transactionUUID)
+            
+        }
     }
     
     
@@ -225,25 +196,42 @@ class CustomOrder: JSQMessagesViewController {
         return self.messages.count;
     }
     
+    
+    
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         let newMessage = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text);
-        counter++
-        print(counter)
-        if(counter == 1){
-           print("create new transaction")
-            transactionUUID = RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
-            mainInstance.addMessage()
+
+        //if(counter == 1){
+          // print("create new transaction")
+        
+        if(!transactionCreated){
+            RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
+            transactionCreated = true
         }
+        else{
+            
+        }
+            //mainInstance.addMessage()
+        //}
+        
+        /*
+        
         print(mainInstance.currentTransaction)
         if(mainInstance.currentTransaction.transactionUUID == ""){
             mainInstance.addtoQue(newMessage.text)
         } else{
             RestApiManager.sharedInstance.sendMessage(mainInstance.currentTransaction.transactionUUID,token: mainInstance.token,message: newMessage.text)
         }
+
+        */
         
         messages += [newMessage]
         self.finishSendingMessage()
+
+
     }
+
+    
     
     override func didPressAccessoryButton(sender: UIButton!) {
         print("button pressed")

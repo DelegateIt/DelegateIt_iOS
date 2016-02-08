@@ -11,7 +11,6 @@ import SwiftyJSON
 
 
 class Main {
-    //User info
     var first_name:String = ""
     var last_name:String = ""
     var name:String = ""
@@ -120,7 +119,6 @@ class Main {
         for(index = 0; index < active_transaction_uuids2.count; index++){
             if(active_transaction_uuids2[index].transactionUUID == currentUUID){
                 print(newTransaction[0]["status"].stringValue)
-                print("Found --> Updating Info")
                 print(newTransaction[0]["messages"])
                 active_transaction_uuids2[index].messages = newTransaction[0]["messages"]
                 active_transaction_uuids2[index].getLastMessage()
@@ -131,29 +129,6 @@ class Main {
         
         
     }
-    
-
-    
-    /*
-    
-    func nameChecker() -> String {
-        if(self.last_name == ""){
-            self.name = self.first_name
-        }else{
-            self.name = self.first_name + " " + self.last_name
-        }
-        return self.name
-    }
-    
-    func setName(first_name:String) -> String{
-        self.first_name = first_name
-        return self.first_name
-    }
-    
-    func getName() -> String {
-        return self.first_name
-    }
-    */
 }
 
 var mainInstance = Main()

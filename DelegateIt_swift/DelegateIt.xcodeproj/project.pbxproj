@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		373399331BF27598009B8B14 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 373399321BF27598009B8B14 /* Images.xcassets */; };
 		373399351BF27621009B8B14 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 373399341BF27621009B8B14 /* Default-736h@3x.png */; };
-		3733FF6D1C60CE41002D6141 /* restAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3733FF6C1C60CE41002D6141 /* restAPI.swift */; };
 		3733FF761C613638002D6141 /* blueDot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3733FF741C613638002D6141 /* blueDot@2x.png */; };
 		3733FF771C613638002D6141 /* blueDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 3733FF751C613638002D6141 /* blueDot.png */; };
 		3734CAB91C5E127D006968F0 /* orderMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734CAB81C5E127D006968F0 /* orderMessenger.swift */; };
@@ -94,7 +93,6 @@
 /* Begin PBXFileReference section */
 		373399321BF27598009B8B14 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DelegateIt/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		373399341BF27621009B8B14 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
-		3733FF6C1C60CE41002D6141 /* restAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = restAPI.swift; sourceTree = "<group>"; };
 		3733FF741C613638002D6141 /* blueDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "blueDot@2x.png"; path = "../../../../../../Desktop/blueDot@2x.png"; sourceTree = "<group>"; };
 		3733FF751C613638002D6141 /* blueDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueDot.png; path = ../../../../../../Desktop/blueDot.png; sourceTree = "<group>"; };
 		3734CAB81C5E127D006968F0 /* orderMessenger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = orderMessenger.swift; sourceTree = "<group>"; };
@@ -247,7 +245,6 @@
 				3758E8B41C4597A900B8D974 /* notificationHandler.swift */,
 				37DB5CA71C09AAF10018F09C /* RestApiManager.swift */,
 				3755A3051C63DDDF00AA8C5C /* config.swift */,
-				3733FF6C1C60CE41002D6141 /* restAPI.swift */,
 				37C220951C593A0B0074A96B /* sockets.swift */,
 			);
 			name = Model;
@@ -586,7 +583,6 @@
 				37791DED1C299B340082693C /* about.swift in Sources */,
 				37DC513F1C0952DA0082C4A7 /* facebookLogin.swift in Sources */,
 				377AF90F1C292665009028EA /* BlogViewController.swift in Sources */,
-				3733FF6D1C60CE41002D6141 /* restAPI.swift in Sources */,
 				3765840C1BF26AC0007DA8A7 /* orders.swift in Sources */,
 				37DB5CA41C099EED0018F09C /* storage.swift in Sources */,
 				3758E8B51C4597A900B8D974 /* notificationHandler.swift in Sources */,

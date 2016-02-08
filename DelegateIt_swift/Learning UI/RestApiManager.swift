@@ -8,37 +8,74 @@
 
 import Foundation
 import SwiftyJSON
-import CWStatusBarNotification
 import SystemConfiguration
 import Alamofire
 
 class RestApiManager: NSObject {
     static let sharedInstance = RestApiManager()
-    let notification = CWStatusBarNotification()
     var testURL = mainInstance.restURL
+    
+    func apiCall(URLCALL:String,paramaters:[String: String],callType:String,callback: (JSON) -> ()){
+        if(callType == "POST"){
+            Alamofire.request(.POST, testURL + URLCALL, parameters: paramaters,encoding: .JSON)
+                .responseJSON { response in
+                    callback(JSON(data:response.data!))
+            }
+        }
+        else if(callType == "GET"){
+            Alamofire.request(.GET, testURL + URLCALL)
+                .responseJSON { response in
+                    callback(JSON(data:response.data!))
+            }
+        }
+        else if(callType == "PUT"){
+            print(URLCALL)
+            Alamofire.request(.PUT, testURL + URLCALL, parameters: paramaters,encoding: .JSON)
+                .responseJSON { response in
+                    callback(JSON(data:response.data!))
+            }
+        }
+    }
     
     
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String,callback: (Int) -> ()) {
-    
         let URLCALL = "/core/login/customer";
         let parameters:[String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
         var output:JSON = nil
         
         apiCall(URLCALL,paramaters: parameters,callType: "POST") { (response) in
             output = response
-            
             if(output == nil){
-                print("caught error")
-                callback(-1)
                 //Print error to try again
+                callback(-1)
+                
             }else{
                 let result = output["result"].stringValue
                 if(result == "0"){
                     print("User Login Successful")
                     let uuidTotal = output["customer"]["uuid"].stringValue
                     let token = output["token"].stringValue
-                    self.getUser(uuidTotal, token: token)
+                    let first_name = output["customer"]["first_name"].stringValue
+                    var email = ""
+                    if(output["customer"]["email"] != nil){
+                        email = output["customer"]["email"].stringValue
+                    }
+                    let last_name = output["customer"]["last_name"].stringValue
+                    let phone_number = output["customer"]["phone_number"].stringValue
+                    let uuid = output["customer"]["uuid"].stringValue
+                    var active_transaction_uuids = output["customer"]["active_transaction_uuids"].arrayValue.map { $0.string!}
+                    let activeCount = active_transaction_uuids.count
+                    
                     mainInstance.setToken(token)
+                    mainInstance.setValues(first_name,last_name:last_name,uuid:uuid,active_transaction_uuids:active_transaction_uuids,activeCount:activeCount,email:email,phone_number:phone_number)
+                    
+                    var index:Int
+                    
+                    for index = 0; index < active_transaction_uuids.count; index++ {
+                        self.getTransaction(active_transaction_uuids[index], token: mainInstance.token)
+                    }
+                    sockets().startSockets()
+                    
                     callback(1)
                 }
                 else if(result == "10"){
@@ -57,28 +94,14 @@ class RestApiManager: NSObject {
         }
     }
     
-    func apiCall(URLCALL:String,paramaters:[String: String],callType:String,callback: (JSON) -> ()){
-        print(URLCALL)
-        if(callType == "POST"){
-            Alamofire.request(.POST, testURL + URLCALL, parameters: paramaters,encoding: .JSON)
-                .responseJSON { response in
-                    callback(JSON(data:response.data!))
-            }
-        }
-        else if(callType == "GET"){
-            Alamofire.request(.GET, testURL + "/core/login/customer", parameters: paramaters,encoding: .JSON)
-                .responseJSON { response in
-                    callback(JSON(data:response.data!))
-            }
-        }
-    }
+    
     
     func createUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
         let URLCALL: String = "/core/customer"
         let parameters : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken,"first_name":first_name,"last_name":last_name,"email":email,"phone_number":"15555555551"]
         var output:JSON = nil
         print(parameters)
-        restAPICALL(URLCALL,paramaters: parameters,callType: "POST") { (response) in
+        apiCall(URLCALL,paramaters: parameters,callType: "POST") { (response) in
             output = response
             let result = output["result"].intValue
             
@@ -99,97 +122,25 @@ class RestApiManager: NSObject {
     }
     
     
-    func restAPICALL(URLCALL:String,paramaters:[String: String],callType:String,callback: (JSON) -> ()){
-        let postEndpoint: String = testURL + URLCALL
-        let url = NSURL(string: postEndpoint)!
-        let session = NSURLSession.sharedSession()
-        let postParams : [String: String] = paramaters
-        var json:JSON = nil
-        
-        // Create the request
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = callType
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        do {
-            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
-        } catch {
-            print("parameters are wrong")
-        }
-        // Make the POST call and handle it in a completion handler
-        session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) in
-            // Read the JSON
-            do {
-                if(data != nil){
-                    if let _ = NSString(data:data!, encoding: NSUTF8StringEncoding) {
-                        let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                        json = JSON(jsonDictionary)
-                        callback(json)
-                    }
-                } else{
-                    print("No connection with DelegateIt server")
-                    callback(nil)
-                }
-                
-            } catch {
-                print("No responce, check URL")
-            }
-        }).resume()
-    }
-    
-    
-    
-    func getUser(uuid:String,token:String) {
-        let postEndpoint: String = testURL + "/core/customer/" + uuid + "?token=" + token
-        let session = NSURLSession.sharedSession()
-        let url = NSURL(string: postEndpoint)!
-        
-        // Make the POST call and handle it in a completion handler
-        session.dataTaskWithURL(url, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-            // Make sure we get an OK response
+    func getTransaction(transactionUUID:String,token:String) {
+        let URLCALL: String = "/core/transaction/" + transactionUUID + "?token=" + token
+        let parameters : [String: String] = ["":""]
+        var output:JSON = nil
+        apiCall(URLCALL,paramaters: parameters,callType: "GET") { (response) in
+            output = response
+            let result = output["result"].intValue
             
-            // Read the JSON
-            do {
-                if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
-                    // Print what we got from the call
-                    print(output)
-                    
-                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                    
-                    let json = JSON(jsonDictionary)
-                    let result = json["result"].stringValue
-                
-                    let first_name = json["customer"]["first_name"].stringValue
-                    var email = ""
-                    if(json["customer"]["email"] != nil){
-                        email = json["customer"]["email"].stringValue
-                    }
-                    
-                    let last_name = json["customer"]["last_name"].stringValue
-                    let phone_number = json["customer"]["phone_number"].stringValue
-                    let uuid = json["customer"]["uuid"].stringValue
-                    var active_transaction_uuids = json["customer"]["active_transaction_uuids"].arrayValue.map { $0.string!}
-                    let activeCount = active_transaction_uuids.count
-                    
-                    
-                    mainInstance.setValues(first_name,last_name:last_name,uuid:uuid,active_transaction_uuids:active_transaction_uuids,activeCount:activeCount,email:email,phone_number:phone_number)
-                    
-                    var index:Int
-                    
-                    for index = 0; index < active_transaction_uuids.count; index++ {
-                        self.getTransaction(active_transaction_uuids[index], token: mainInstance.token)
-                    }
-                    sockets().startSockets()
-                    
-                    // Update the label
-                    //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
-                }
-            } catch {
-                print("bad things happened")
+            if(result == 0){
+                mainInstance.active_transaction_uuids2.append(transaction(dataInput: output))
             }
-        }).resume()
+            else{
+                print("error")
+            }
+        }
     }
     
-    
+
+
 
     func createTransaction(uuid:String,token:String,newMessage:String) -> String {
         // Setup the session to make REST POST call
@@ -232,6 +183,8 @@ class RestApiManager: NSObject {
                         print("Transaction created")
                         transactionUUID = jsonDictionary["uuid"] as! String
                         print(transactionUUID)
+                        mainInstance.active_transaction_uuids.append(transactionUUID)
+                        sockets().startSockets()
                         self.sendMessage(transactionUUID,token: mainInstance.token,message: newMessage)
                     }
                     print("Got data")
@@ -256,47 +209,6 @@ class RestApiManager: NSObject {
     }
     
     
-    func getTransaction(transactionUUID:String,token:String) {
-        // Setup the session to make REST GET call.  Notice the URL is https NOT http!!
-        print(token)
-        let postEndpoint: String = testURL + "/core/transaction/" + transactionUUID + "?token=" + token
-        print(postEndpoint)
-        let session = NSURLSession.sharedSession()
-        let url = NSURL(string: postEndpoint)!
-        
-        // Make the POST call and handle it in a completion handler
-        session.dataTaskWithURL(url, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-            // Make sure we get an OK response
-            
-            // Read the JSON
-            do {
-                if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
-                    // Print what we got from the call
-                    print(output)
-                    
-                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                    
-                    print("-----")
-                    let json = JSON(jsonDictionary)
-                    let result = json["result"].stringValue
-                    print(json)
-                    print("Got data")
-                    
-                    
-                    mainInstance.active_transaction_uuids2.append(transaction(dataInput: json))
-                    
-
-    
-                    //print(mainInstance.active_transaction_uuids2[0].first_name)
-                    
-                    // Update the label
-                    //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
-                }
-            } catch {
-                print("bad things happened")
-            }
-        }).resume()
-    }
     
     
     func sendMessage(transactionUUID:String,token:String,message:String) -> Int {
@@ -365,14 +277,9 @@ class RestApiManager: NSObject {
     }
     
     func updateUser(userProfileUpdate:String,updatedInformation:String) {
-        // Setup the session to make REST POST call
-        let postEndpoint: String = testURL + "/core/customer/" + mainInstance.uuid + "?token=" + mainInstance.token
-        print(postEndpoint)
-        let url = NSURL(string: postEndpoint)!
-        let session = NSURLSession.sharedSession()
-        //let postParams : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken]
+        let URLCALL: String = "/core/customer/" + mainInstance.uuid + "?token=" + mainInstance.token
         
-        var result:Int = -1
+        var output:JSON = nil
         
         var updatedType = "email"
         
@@ -384,48 +291,21 @@ class RestApiManager: NSObject {
             mainInstance.last_name = updatedInformation
         }
         
-        //Actual User
-        let postParams : [String: String] = [updatedType:updatedInformation]
+        let parameters : [String: String] = [updatedType:updatedInformation]
         
-        
-        // Create the request
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "PUT"
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        do {
-            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
-            print(postParams)
-        } catch {
-            print("bad things happened")
-        }
-        // Make the POST call and handle it in a completion handler
-        session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+        apiCall(URLCALL,paramaters: parameters,callType: "PUT") { (response) in
+            output = response
+            print(output)
+            let result = output["result"].intValue
             
-            // Read the JSON
-            do {
-                if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
-                    // Print what we got from the call
-                    print(output)
-                    
-                    // Parse the JSON to get the IP
-                    let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                    result = jsonDictionary["result"] as! Int
-                    
-                    if(result == 0){
-                        print("Message Sent")
-                    }
-                }
-            } catch {
-                print("bad things happened")
+            if(result == 0){
+                print("It worked")
             }
-            
-            //Result 10 means to create a new user
-            //Result 0 is good
-            
-            
-        }).resume()
+            else{
+                print("error")
+            }
+        }
     }
-    
     
 
     
