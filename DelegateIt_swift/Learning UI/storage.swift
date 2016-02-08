@@ -66,6 +66,14 @@ class Main {
         print(last_name)
     }
     
+    func emptyData(){
+        self.active_transaction_uuids = []
+        self.active_transaction_uuids2 = []
+        self.currentTransaction = transaction(dataInput: "")
+        self.fbID = ""
+        self.fbToken = ""
+    }
+    
     func addtoQue(message:String){
         self.messageQue.append(message)
     }
@@ -91,6 +99,7 @@ class Main {
     }
     
     func findTransaction(UUID:String) -> transaction {
+        activeCount = active_transaction_uuids2.count
         var index = 0
         for(index = 0; index < activeCount; index++){
             if(active_transaction_uuids2[index].transactionUUID == UUID){
@@ -101,6 +110,7 @@ class Main {
     }
     
     func getIndex(UUID:String) -> Int {
+        activeCount = active_transaction_uuids2.count
         var index = 0
         for(index = 0; index < activeCount; index++){
             print(active_transaction_uuids2[index].transactionUUID)
@@ -111,6 +121,8 @@ class Main {
         }
         return -1
     }
+    
+    
     
     func updateTransaction(newTransaction:JSON){
         print(newTransaction[0])
@@ -127,7 +139,11 @@ class Main {
             }
         }
         
-        
+        self.sortTransaction()
+    }
+    
+    func sortTransaction(){
+        active_transaction_uuids2.sortInPlace({$0.lastTimeStamp > $1.lastTimeStamp})
     }
 }
 

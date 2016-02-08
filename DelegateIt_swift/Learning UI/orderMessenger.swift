@@ -39,9 +39,6 @@ class orderMessenger: JSQMessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(data)
-        print(mainInstance.getIndex(data))
-        print("-___-")
         var messageCount = 0
         var messagesJSON:JSON = ""
         
@@ -64,7 +61,13 @@ class orderMessenger: JSQMessagesViewController {
         self.userName = "customer"
         var index = 0
         for (index = 0; index < messageCount; index++){
-            if(messagesJSON[index]["from_customer"].boolValue){
+            if(messagesJSON[index]["type"].stringValue == "receipt"){
+                var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+                self.navigationItem.rightBarButtonItem = rightBtn
+                var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:"Receipt: Tap to Pay")
+                messages += [message]
+            }
+            else if(messagesJSON[index]["from_customer"].boolValue){
                 var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
                 
                 
@@ -95,7 +98,7 @@ class orderMessenger: JSQMessagesViewController {
         
         self.senderDisplayName = self.userName
         self.senderId = self.userName
-        self.inputToolbar!.contentView!.textView!.placeHolder = "Make a new order";
+        self.inputToolbar!.contentView!.textView!.placeHolder = "Message";
         self.inputToolbar!.contentView!.textView!.text = orderText;
         
         //self.messages. //textColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
@@ -141,7 +144,13 @@ class orderMessenger: JSQMessagesViewController {
         self.userName = "customer"
         var index = 0
         for (index = oldMessageCount; index < messageCount; index++){
-            if(messagesJSON[index]["from_customer"].boolValue){
+            if(messagesJSON[index]["type"].stringValue == "receipt"){
+                var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+                self.navigationItem.rightBarButtonItem = rightBtn
+                var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:"Receipt: Tap to Pay")
+                messages += [message]
+            }
+            else if(messagesJSON[index]["from_customer"].boolValue){
                 var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
                 messages += [message]
             }
@@ -207,7 +216,6 @@ class orderMessenger: JSQMessagesViewController {
         print(mainInstance.active_transaction_uuids2[0].messages)
         }
         */
-        
     }
     
     
@@ -280,7 +288,7 @@ class orderMessenger: JSQMessagesViewController {
             RestApiManager.sharedInstance.sendMessage(mainInstance.currentTransaction.transactionUUID,token: mainInstance.token,message: newMessage.text)
         }
         
-        messages += [newMessage]
+        //messages += [newMessage]
         self.finishSendingMessage()
     }
     

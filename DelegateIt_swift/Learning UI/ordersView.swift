@@ -30,9 +30,10 @@ class ordersView: UITableViewController {
     
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         
-        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
-        replyBtn.setImage(UIImage(named: "settingsBtn.png"), forState: UIControlState.Normal)
+        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+        replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
         replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
         var item = UIBarButtonItem(customView: replyBtn)
         self.navigationItem.rightBarButtonItem = item
@@ -64,28 +65,31 @@ class ordersView: UITableViewController {
 
         */
         
-        let date = NSDate()
-        //let formatter = NSDateFormatter()
-        //formatter.dateStyle = NSDateFormatterStyle.LongStyle
-        //formatter.timeStyle = .MediumStyle
+        loadTable()
         
-        //let dateString = formatter.stringFromDate(date)
         
+        self.title = "ORDERS"
+        self.tabBarController?.tabBar.hidden = false
+        
+    }
+    
+    func loadTable(){
+        self.tableData = []
+        self.detailData = []
+        self.UUIDs = []
+        var date = NSDate().timeIntervalSince1970
+        date *= 1000000
         
         let dayTimePeriodFormatter = NSDateFormatter()
         dayTimePeriodFormatter.dateFormat = "MMM d"
         
-        let dateString = dayTimePeriodFormatter.stringFromDate(date)
+        let hourFormat = NSDateFormatter()
+        hourFormat.dateFormat = "h:mm a"
         
-        
-        
-        
-        
-        
-        print(dateString)
         
         //print(dateString.d)
         
+        mainInstance.sortTransaction()
         
         
         var index = 0
@@ -96,19 +100,18 @@ class ordersView: UITableViewController {
             
             
             let day = NSDate(timeIntervalSince1970:mainInstance.active_transaction_uuids2[index].lastTimeStamp/1000000)
+            var dateString = ""
             
-            let dateString = dayTimePeriodFormatter.stringFromDate(day)
-            
+            if(date - mainInstance.active_transaction_uuids2[index].lastTimeStamp < 86400000000){
+                 dateString = hourFormat.stringFromDate(day)
+            }
+            else{
+                 dateString = dayTimePeriodFormatter.stringFromDate(day)
+            }
             detailData.append(dateString)
         }
         
-        //tableData = mainInstance.active_transaction_uuids
-        //detailData = mainInstance.active_transaction_uuids
-        super.viewDidLoad()
-        self.title = "ORDERS"
-        self.tabBarController?.tabBar.hidden = false
-        
-        
+        self.tableView.reloadData()
     }
     
     func gotoSettings(sender:UIButton!){
@@ -118,52 +121,13 @@ class ordersView: UITableViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
+        self.tabBarController?.tabBar.hidden = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadList:",name:"load", object: nil)
-        
-    
     }
     
     func loadList(notification: NSNotification){
-        //load data here
-        //self.tableView.reloadData()
-        
-        
-        
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            print("updated")
-            //self.tableData = mainInstance.active_transaction_uuids
-            //self.detailData = mainInstance.active_transaction_uuids
-            
-            self.tableData = []
-            self.detailData = []
-            
-            let date = NSDate()
-            
-            
-            let dayTimePeriodFormatter = NSDateFormatter()
-            dayTimePeriodFormatter.dateFormat = "MMM d"
-            
-            let dateString = dayTimePeriodFormatter.stringFromDate(date)
-            
-            var index = 0
-            for (index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
-                
-                
-                
-                let day = NSDate(timeIntervalSince1970:mainInstance.active_transaction_uuids2[index].lastTimeStamp/1000000)
-                
-                let dateString = dayTimePeriodFormatter.stringFromDate(day)
-                
-                if(index != 0 && mainInstance.active_transaction_uuids2[index].lastTimeStamp > mainInstance.active_transaction_uuids2[index-1].lastTimeStamp){
-                    self.tableData.insert(mainInstance.active_transaction_uuids2[index].lastMessage,atIndex: 0)
-                    self.detailData.insert(dateString, atIndex: 0)
-                }else{
-                    self.tableData.append(mainInstance.active_transaction_uuids2[index].lastMessage)
-                    self.detailData.append(dateString)
-                }
-                
-            }
-            self.tableView.reloadData()
+            self.loadTable()
         })
     }
     

@@ -15,6 +15,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     @IBOutlet weak var bg: UIImageView!
     var imageView = UIImageView()
     var loginView : FBSDKLoginButton = FBSDKLoginButton()
+    var loggedIn = 0
     
     //load if the user is not logged in
     override func viewDidAppear(animated: Bool) {
@@ -117,11 +118,20 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 
                 let fbToken = FBSDKAccessToken.currentAccessToken().tokenString
                 
+                SwiftSpinner.show("Connecting...")
+                
                 RestApiManager.sharedInstance.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
                     if(response == 1){
                         self.loginView.hidden = true
                         SwiftSpinner.hide()
-                        dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
+                        if(self.loggedIn == 0){
+                            self.loggedIn = 1
+                            dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
+                        }
+                        else{
+                            print("ERROR")
+                        }
+                        
                         
                     }else if(response == -1){
                         dispatch_async(dispatch_get_main_queue(), {
@@ -129,8 +139,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                             if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
                                 notificationH.printHello("No Internet Connection")
                             }
-                            NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("returnUserData"), userInfo: nil, repeats: false)
-                            
+                            NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("returnUserData"), userInfo: nil, repeats: false)
                         })
                     }
                 }

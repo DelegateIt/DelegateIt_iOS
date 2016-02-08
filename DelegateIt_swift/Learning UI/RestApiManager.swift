@@ -74,8 +74,8 @@ class RestApiManager: NSObject {
                     for index = 0; index < active_transaction_uuids.count; index++ {
                         self.getTransaction(active_transaction_uuids[index], token: mainInstance.token)
                     }
-                    sockets().startSockets()
                     
+                    sockets().startSockets()
                     callback(1)
                 }
                 else if(result == "10"){
@@ -185,7 +185,14 @@ class RestApiManager: NSObject {
                         print(transactionUUID)
                         mainInstance.active_transaction_uuids.append(transactionUUID)
                         sockets().startSockets()
-                        self.sendMessage(transactionUUID,token: mainInstance.token,message: newMessage)
+                        if(self.sendMessage(transactionUUID,token: mainInstance.token,message: newMessage) == 1){
+                            
+                        }
+                        self.getTransaction(transactionUUID,token: mainInstance.token)
+                        
+                        
+                        NSNotificationCenter.defaultCenter().postNotificationName("loadbadge", object: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName("updateTransaction", object: nil)
                     }
                     print("Got data")
                     

@@ -22,11 +22,10 @@ class sockets{
             for index = 0; index < mainInstance.active_transaction_uuids.count; index++ {
                 socket.on(mainInstance.active_transaction_uuids[index]) {data, ack in
                     let json = JSON(data)
-                    var count = json[0]["messages"].count - 1
-                    //print(json[0]["messages"][count].stringValue)
-                    if(!json[0]["messages"][count]["from_customer"].boolValue){
+                    //var count = json[0]["messages"].count - 1
+                    //if(!json[0]["messages"][count]["from_customer"].boolValue){
                         mainInstance.updateTransaction(json)
-                    }
+                    //}
                     
                     
                 }

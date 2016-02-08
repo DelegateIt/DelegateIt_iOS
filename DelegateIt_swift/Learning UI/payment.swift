@@ -17,8 +17,6 @@ class payment: UIViewController {
         super.viewDidLoad()
         print("Loading payment")
         self.title = "CONFIRM PAYMENT"
-        var b = UIBarButtonItem(title: "CONFIRM", style: .Plain, target: self, action: "sayHello:")
-        self.navigationItem.rightBarButtonItem = b
         // Do any additional setup after loading the view, typically from a nib.
         
         let url = NSURL (string: mainInstance.currentTransaction.paymentURL);

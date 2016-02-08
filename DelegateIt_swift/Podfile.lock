@@ -1,15 +1,16 @@
 PODS:
-  - Alamofire (3.1.5)
+  - Alamofire (3.2.0)
   - CWStatusBarNotification (2.3.4)
   - JSQMessagesViewController (7.2.0):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
   - Socket.IO-Client-Swift (4.1.6)
-  - Stripe (6.1.0):
-    - Stripe/Core (= 6.1.0)
-  - Stripe/Core (6.1.0)
+  - Stripe (6.2.0):
+    - Stripe/Core (= 6.2.0)
+  - Stripe/Core (6.2.0)
   - SwiftSpinner (0.8.0)
   - SwiftyJSON (2.3.2)
+  - Whisper (2.0.2)
 
 DEPENDENCIES:
   - Alamofire (~> 3.0)
@@ -19,15 +20,17 @@ DEPENDENCIES:
   - Stripe
   - SwiftSpinner
   - SwiftyJSON
+  - Whisper
 
 SPEC CHECKSUMS:
-  Alamofire: 5f730ba29fd113b7ddd71c1e65d0c630acf5d7b0
+  Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
   CWStatusBarNotification: 3fec41edcb0ae3677d9febfcb9632d8bdf52294c
   JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Socket.IO-Client-Swift: 5e8aa2961d1f32e5c0e104c00c9f192133a92d11
-  Stripe: bee87bf3459953211b9a3709fb3b90a90a62b060
+  Stripe: 275524137e6c4cc1058f6d32ece248adf30a21f9
   SwiftSpinner: 11c2c5ec7443d92f3026d3067ca8a91d4adef13f
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
+  Whisper: 49abcba82d23dd20f0a9a025797cacd09c8aa3bb
 
 COCOAPODS: 0.39.0

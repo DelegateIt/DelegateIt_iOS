@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import JSQMessagesViewController
 import SwiftyJSON
+import Whisper
 
 class CustomOrder: JSQMessagesViewController {
     
@@ -26,6 +27,8 @@ class CustomOrder: JSQMessagesViewController {
     var creatingTransaction = false
     var transactionCreated = false
     
+     var replyBtn = UIButton()
+    
     
     override func viewWillAppear(animated: Bool) {
         self.keyboardController.textView!.becomeFirstResponder()
@@ -37,27 +40,11 @@ class CustomOrder: JSQMessagesViewController {
         
         
         if(transactionCreated){
-            var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+            replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
             replyBtn.setImage(UIImage(named: "x.png"), forState: UIControlState.Normal)
             replyBtn.addTarget(self, action: Selector("goHome:"), forControlEvents:  UIControlEvents.TouchUpInside)
             var item = UIBarButtonItem(customView: replyBtn)
             self.navigationItem.leftBarButtonItem = item
-            /*
-            var index = 0
-            for (index = 0; index < 10; index++){
-                if(messagesJSON[index]["from_customer"].boolValue){
-                    var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
-                    
-                    messages += [message]
-                }
-                else{
-                    var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
-                    messages += [message]
-                }
-                counter++
-            }
-
-            */
         }
         else{
             var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
@@ -77,9 +64,40 @@ class CustomOrder: JSQMessagesViewController {
         self.inputToolbar!.contentView!.textView!.placeHolder = "Make a new order";
         self.inputToolbar!.contentView!.textView!.text = orderText;
         automaticallyScrollsToMostRecentMessage = true
+        
+        self.inputToolbar?.toggleSendButtonEnabled()
 
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadList:",name:"load", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "addBackBtn:",name:"updateTransaction", object: nil)
+        
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard:")
+        //tapGestureRecognizer.delegate = self
+        self.collectionView?.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    func gestureRecognizer(_: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
+            return true
+    }
+    
+    func dismissKeyboard(gesture: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+    
+    
+    func addBackBtn(notification: NSNotification){
+        print("----____---___--___")
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.replyBtn.hidden = true
+            var backBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+            backBtn.setImage(UIImage(named: "backBtn.png"), forState: UIControlState.Normal)
+            backBtn.addTarget(self, action: Selector("goHome:"), forControlEvents:  UIControlEvents.TouchUpInside)
+            var item = UIBarButtonItem(customView: backBtn)
+            self.navigationItem.leftBarButtonItem = item
+        })
     }
     
     func goHome(sender:UIButton!){

@@ -9,5 +9,6 @@ target 'DelegateIt' do
   pod 'Stripe'
   pod 'CWStatusBarNotification', '~> 2.3.3'
   pod "SwiftSpinner"
+  pod "Whisper"
   
 end

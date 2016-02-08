@@ -19,7 +19,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let blogSegueIdentifier = "ShowBlogSegue"   //New
     
-    let swiftBlogs = ["EDIT PROFILE","ABOUT US", "HOW IT WORKS?","WORK WITH US"]
+    let swiftBlogs = ["EDIT PROFILE","ABOUT US", "HOW IT WORKS?","WORK WITH US","VERSION"]
     
     var choosenRow = ""
     
@@ -59,11 +59,6 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
         self.view.addSubview(button)
         
-        var settingsBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-        settingsBtn.setImage(UIImage(named: "settingsBtn.png"), forState: UIControlState.Normal)
-        settingsBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
-        var item2 = UIBarButtonItem(customView: settingsBtn)
-        self.navigationItem.rightBarButtonItem = item2
         
         tableView.alwaysBounceVertical = false;
         
@@ -180,7 +175,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         choosenRow = swiftBlogs[row]
         print("--")
         
-        if(choosenRow == "ABOUT" || choosenRow == "WORK WITH US") {
+        if(choosenRow == "ABOUT US" || choosenRow == "WORK WITH US" || choosenRow == "HOW IT WORKS?" || choosenRow == "VERSION") {
             self.performSegueWithIdentifier("sample2", sender: self);
         }
         else {
@@ -193,10 +188,12 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        mainInstance.emptyData()
         print("User Logged Out")
     }
 
     func logout() {
+        mainInstance.emptyData()
         FBSDKLoginManager().logOut()
     }
     

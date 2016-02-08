@@ -12,33 +12,27 @@ import UIKit
 class quickorder: UIViewController {
     
     @IBOutlet weak var myScrollView: UIScrollView!
-    var descriptions:[String] = ["I want pizza","I like pizza","3","4","5","6"] //change
+    var descriptions:[String] = ["I would like a Brushfire taco","I would like a Americano","Message filler 3","Message filler 4","Message filler 5","6"] //change
     var descrionChosen = ""
-    
-    var timer: NSTimer = NSTimer()
-    
-    
     
     override func viewDidLoad() {
         
         //print(yourVariable)
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view, typically from a nib.
+        self.tabBarController?.tabBar.hidden = false
         
-        mainInstance.printHello()
+        // Do any additional setup after loading the view, typically from a nib.
+    
         
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         
-        let myImages = ["reservation.jpg","tripplanning.jpg","drycleaning.jpg","quick1.png","quick2.png","quick3.png"]
+        let myImages = ["Group.png","coffee.png","quick3.png","tripplanning.jpg","pizza.png"]
         
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
         var scrollViewContentSize:CGFloat = 0;
-        
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: "loadbadge", userInfo: nil, repeats: true)
-        
-        
+
         for var index = 0; index < myImages.count; index++
         {
             
@@ -69,7 +63,7 @@ class quickorder: UIViewController {
             myScrollView.addSubview(myImageView)
             
             
-            yPosition += imageHeight
+            yPosition += imageHeight + 2
             scrollViewContentSize += imageHeight
             
             let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
@@ -78,18 +72,18 @@ class quickorder: UIViewController {
             myImageView.addGestureRecognizer(tapGestureRecognizer)
             
             myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize)
-            
-    
         }
-
-        
-        self.tabBarController?.tabBar.hidden = false
         
         var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
         replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
         var item = UIBarButtonItem(customView: replyBtn)
         self.navigationItem.rightBarButtonItem = item
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBadge:",name:"loadbadge", object: nil)
+        
+        loadBadge()
         
         //
         
@@ -106,14 +100,17 @@ class quickorder: UIViewController {
         
     }
     
-    func loadbadge() {
-        if(mainInstance.first_name != ""){
-            let tabItem = self.tabBarController?.tabBar.items![2]
-            var myString = String(mainInstance.activeCount)
-            tabItem?.badgeValue = myString
-            timer.invalidate()
-        }
+    func updateBadge(notification: NSNotification){
+        loadBadge()
     }
+    
+    func loadBadge(){
+        print("Updating")
+        let tabItem = self.tabBarController?.tabBar.items![2]
+        let myString = String(mainInstance.activeCount)
+        tabItem?.badgeValue = myString
+    }
+    
     
     func imageTapped(img: AnyObject?)    {
         let iv : UIView! = img!.view
