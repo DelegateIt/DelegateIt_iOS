@@ -45,6 +45,7 @@ class RestApiManager: NSObject {
         
         apiCall(URLCALL,paramaters: parameters,callType: "POST") { (response) in
             output = response
+            print(output)
             if(output == nil){
                 //Print error to try again
                 callback(-1)
@@ -80,7 +81,12 @@ class RestApiManager: NSObject {
                 }
                 else if(result == "10"){
                     print("User is not created")
-                    self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email)
+                    self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
+                        self.loginUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email) { (response) in
+                            callback(response)
+                        }
+                        callback(response)
+                    }
                 }
                 else{
                     //login failed
@@ -96,28 +102,38 @@ class RestApiManager: NSObject {
     
     
     
-    func createUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String) {
+    func createUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String,callback: (Int) -> ()) {
         let URLCALL: String = "/core/customer"
-        let parameters : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken,"first_name":first_name,"last_name":last_name,"email":email,"phone_number":"15555555551"]
+        let parameters : [String: String] = ["fbuser_id":fbID,"fbuser_token":fbToken,"first_name":first_name,"last_name":last_name,"email":email]
         var output:JSON = nil
         print(parameters)
         apiCall(URLCALL,paramaters: parameters,callType: "POST") { (response) in
             output = response
             let result = output["result"].intValue
             
-            if(result == 0){
+            print("Create User")
+            print(output)
+            
+            if(result == 0 || result == 2){
                 //user created and need to login
                 self.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
                     if(response == 1){
                         //successfull
+                        print("Success")
+                        callback(1)
+                        
                     }else{
                         //fail
+                        print("Fail")
+                        callback(response)
                     }
                 }
             }
-            else if(result == 2){
+            else if(result == -1){
                 //User alread exists
+                callback(1)
             }
+            callback(0)
         }
     }
     
@@ -131,6 +147,7 @@ class RestApiManager: NSObject {
             let result = output["result"].intValue
             
             if(result == 0){
+                print("APPPPPPPP")
                 mainInstance.active_transaction_uuids2.append(transaction(dataInput: output))
             }
             else{

@@ -13,15 +13,32 @@ class about: UIViewController {
     
     var blogName:String?
     
+    @IBOutlet weak var webView: UIWebView!
+    
     override func viewWillAppear(animated: Bool) {
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("----")
+        
         print(blogName)
         self.title = blogName
-        print("ABOUTasdf")
+        
+        
+        if(blogName == "WORK WITH US"){
+            showWebView("https://godelegateit.com/properties/")
+        }
+        else {
+            showWebView("http://delegateit.co/")
+        }
+        
+    }
+    
+    
+    func showWebView(websiteName:String){
+        let url = NSURL (string:websiteName);
+        let requestObj = NSURLRequest(URL: url!);
+        webView.loadRequest(requestObj);
     }
 }

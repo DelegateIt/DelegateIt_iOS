@@ -19,7 +19,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let blogSegueIdentifier = "ShowBlogSegue"   //New
     
-    let swiftBlogs = ["EDIT PROFILE","ABOUT US", "HOW IT WORKS?","WORK WITH US","VERSION"]
+    let swiftBlogs = ["EDIT PROFILE","ABOUT US", "HOW IT WORKS?","WORK WITH US"]
     
     var choosenRow = ""
     
@@ -60,11 +60,13 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.view.addSubview(button)
         
         
-        tableView.alwaysBounceVertical = false;
+        
         
         // Do any additional setup after loading the view, typically from a nib.
         print("Begin of code")
-        if let checkedUrl = NSURL(string: "https://graph.facebook.com/1237026922980425/picture?type=large") {
+        if let checkedUrl = NSURL(string: "https://graph.facebook.com/" + mainInstance.fbID + "/picture?type=large") {
+            print(mainInstance.fbID)
+            print("HEYYY")
             imageView.contentMode = .ScaleAspectFill
             imageView.layer.borderWidth = 2
             imageView.layer.masksToBounds = false
@@ -74,6 +76,11 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
             downloadImage(checkedUrl)
         }
         print("End of code. The image will continue downloading in the background and it will be loaded when it ends.")
+        
+        tableView.alwaysBounceVertical = false;
+        //tableView.scrollEnabled = false;
+        
+        self.tableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -103,6 +110,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func btnTouched(sender:UIButton!){
+        mainInstance.emptyData()
         FBSDKLoginManager().logOut()
         self.performSegueWithIdentifier("logout", sender: self);
     }
@@ -181,19 +189,16 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         else {
             self.performSegueWithIdentifier("ShowBlogSegue", sender: self);
         }
-        
-        
     }
     
     
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-        mainInstance.emptyData()
+        
         print("User Logged Out")
     }
 
     func logout() {
-        mainInstance.emptyData()
         FBSDKLoginManager().logOut()
     }
     

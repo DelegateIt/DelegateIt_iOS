@@ -45,8 +45,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="myScrollView" destination="Mzn-bG-zuV" id="W4J-i9-puO"/>
-                        <segue destination="P4g-hU-bqS" kind="show" identifier="showText" id="hAG-97-tgW"/>
                         <segue destination="R4y-L4-fxB" kind="show" identifier="goToSettings22" id="bzE-Kt-fj4"/>
+                        <segue destination="P4g-hU-bqS" kind="showDetail" identifier="showText" animates="NO" action="showViewController:sender:" id="5Dm-Ka-WH9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GJ6-kc-RAN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -79,7 +79,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZAc-mq-HBb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1222" y="930"/>
+            <point key="canvasLocation" x="1302" y="734"/>
         </scene>
         <!--SETTINGS-->
         <scene sceneID="uFe-bU-xrA">
@@ -202,12 +202,27 @@
                     <view key="view" contentMode="scaleToFill" id="r6S-BV-7gL">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Co4-11-QBF">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                            </webView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Co4-11-QBF" firstAttribute="top" secondItem="r6S-BV-7gL" secondAttribute="top" id="3GT-YX-xdb"/>
+                            <constraint firstAttribute="trailing" secondItem="Co4-11-QBF" secondAttribute="trailing" id="4Dp-B3-cHf"/>
+                            <constraint firstItem="Co4-11-QBF" firstAttribute="leading" secondItem="r6S-BV-7gL" secondAttribute="leading" id="Pm0-8T-42d"/>
+                            <constraint firstItem="Co4-11-QBF" firstAttribute="bottom" secondItem="5tt-q5-oKQ" secondAttribute="top" id="YF3-n2-CGh"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="webView" destination="Co4-11-QBF" id="9H1-Sz-ZgA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Oa-3q-12o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3065" y="1240"/>
+            <point key="canvasLocation" x="3107" y="1264"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3GV-PZ-wG3">
@@ -512,10 +527,10 @@
         <image name="plus.png" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="bzE-Kt-fj4"/>
         <segue reference="xRJ-18-r70"/>
-        <segue reference="hAG-97-tgW"/>
-        <segue reference="eoD-qJ-jAY"/>
+        <segue reference="5Dm-Ka-WH9"/>
         <segue reference="mWy-JL-R1S"/>
-        <segue reference="UyD-dK-3O4"/>
+        <segue reference="eoD-qJ-jAY"/>
     </inferredMetricsTieBreakers>
 </document>

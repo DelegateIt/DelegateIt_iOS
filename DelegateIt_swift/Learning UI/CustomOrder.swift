@@ -86,10 +86,7 @@ class CustomOrder: JSQMessagesViewController {
         self.view.endEditing(true)
     }
     
-    
-    func addBackBtn(notification: NSNotification){
-        print("----____---___--___")
-        
+    func addBackBtnCode(){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.replyBtn.hidden = true
             var backBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
@@ -98,6 +95,10 @@ class CustomOrder: JSQMessagesViewController {
             var item = UIBarButtonItem(customView: backBtn)
             self.navigationItem.leftBarButtonItem = item
         })
+    }
+    
+    func addBackBtn(notification: NSNotification){
+        addBackBtnCode()
     }
     
     func goHome(sender:UIButton!){
@@ -225,6 +226,7 @@ class CustomOrder: JSQMessagesViewController {
         if(!transactionCreated){
             RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
             transactionCreated = true
+            addBackBtnCode()
         }
         else{
             

@@ -67,6 +67,7 @@ class Main {
     }
     
     func emptyData(){
+        print("EMPTY")
         self.active_transaction_uuids = []
         self.active_transaction_uuids2 = []
         self.currentTransaction = transaction(dataInput: "")
