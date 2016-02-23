@@ -19,17 +19,12 @@ class sockets{
         socket.on("connect") {data, ack in
             print("socket connected")
             var index = 0
-            for index = 0; index < mainInstance.active_transaction_uuids.count; index++ {
-                socket.on(mainInstance.active_transaction_uuids[index]) {data, ack in
+            for index = 0; index < mainInstance.active_transaction_uuids2.count; index++ {
+                socket.on(mainInstance.active_transaction_uuids2[index].transactionUUID) {data, ack in
                     let json = JSON(data)
-                    //var count = json[0]["messages"].count - 1
-                    //if(!json[0]["messages"][count]["from_customer"].boolValue){
-                        mainInstance.updateTransaction(json)
-                    //}
-                    
-                    
+                    mainInstance.updateTransaction(json)
                 }
-                socket.emit("register_transaction", ["transaction_uuid": mainInstance.active_transaction_uuids[index]])
+                socket.emit("register_transaction", ["transaction_uuid": mainInstance.active_transaction_uuids2[index].transactionUUID])
             }
         }
         socket.connect()

@@ -25,14 +25,17 @@ class orderMessenger: JSQMessagesViewController {
     var userName = ""
     var messages = [JSQMessage]()
     
-    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0)) //JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
+    let myImage:UIImage = UIImage(named: "pizza.png")!
+    
+    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 229/255, green: 229/255, blue: 234/255, alpha: 1.0))
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0))
-    let paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0))
+    var paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1.0))
     
     var counter:Int = 0
     var transactionUUID:String = ""
     var messageQue:[String] = []
-    // -1 means no messages sent
+    
+    var tapBtn:String = "\nTAP TO PAY \u{203A}\n"
     
     var oldMessageCount = 0
     
@@ -42,120 +45,122 @@ class orderMessenger: JSQMessagesViewController {
         var messageCount = 0
         var messagesJSON:JSON = ""
         
-        var messageIndex = mainInstance.getIndex(data)
-            //already created
-            mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[messageIndex]
-            transactionUUID = mainInstance.currentTransaction.transactionUUID
-            messageCount = mainInstance.active_transaction_uuids2[messageIndex].messageCount
-            messagesJSON = mainInstance.active_transaction_uuids2[messageIndex].messages
+        let messageIndex = mainInstance.getIndex(data)
+        mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[messageIndex]
+        transactionUUID = mainInstance.currentTransaction.transactionUUID
+        messageCount = mainInstance.active_transaction_uuids2[messageIndex].messageCount
+        messagesJSON = mainInstance.active_transaction_uuids2[messageIndex].messages
             
-            if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "proposed" || mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "pending") {
-                var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
-                self.navigationItem.rightBarButtonItem = rightBtn
-            }
-        
-        
-        
-        self.keyboardController.textView!.becomeFirstResponder()
+        if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "proposed" || mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "pending") {
+            let rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+            self.navigationItem.rightBarButtonItem = rightBtn
+        }
         
         self.userName = "customer"
         var index = 0
         for (index = 0; index < messageCount; index++){
             if(messagesJSON[index]["type"].stringValue == "receipt"){
-                var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+                let rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
                 self.navigationItem.rightBarButtonItem = rightBtn
-                var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:"Receipt: Tap to Pay")
+                let message = JSQMessage(senderId: "customer2", displayName: "customer2", text:tapBtn)
                 messages += [message]
             }
             else if(messagesJSON[index]["from_customer"].boolValue){
-                var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
+                let message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
                 
                 
                 messages += [message]
             }
             else{
-                var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
+                let message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
                 messages += [message]
             }
             counter++
         }
         
-        
+    
         self.reloadMessagesView()
         
-        //orderBox.becomeFirstResponder()
-        
-        //navigationController?.navigationBar.topItem?.title = "NEW ORDER"
         self.title = "ORDER"
         
-        self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.1, 0.1);
-        self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1);
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        
-        
+        self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.1, 0.1)
+        self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1)
         
         self.senderDisplayName = self.userName
         self.senderId = self.userName
         self.inputToolbar!.contentView!.textView!.placeHolder = "Message";
         self.inputToolbar!.contentView!.textView!.text = orderText;
         
-        //self.messages. //textColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
-        
-        //self.inputToolbar!.contentView!.textView!.placeHolderTextColor = UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0)
-        
-        //self.inputToolbar!.contentView!.rightBarButtonItem?.
-        //self.inputToolbar!.contentView!.leftBarButtonItem = nil
-        
-        
-        //var leftBtn = UIBarButtonItem(title: "CANCEL", style: .Plain, target: self, action: "sayHello2:")
-        
-        
-        
-        //var leftNavBarButton = UIBarButtonItem(customView:b)
-        
-        //self.navigationItem.leftBarButtonItem = leftBtn
-        
-        //print(self.inputToolbar?.si)
-        
         oldMessageCount = messageCount
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadList:",name:"load", object: nil)
-        
         automaticallyScrollsToMostRecentMessage = true
-        
     }
+    
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell: JSQMessagesCollectionViewCell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+        let msg: JSQMessage = self.messages[indexPath.item] as JSQMessage
+        
+        if !msg.isMediaMessage {
+            if msg.senderId == self.senderId {
+                cell.textView!.textColor = UIColor.whiteColor()
+                cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+            }
+            else if(cell.textView?.text == tapBtn){
+                cell.textView!.textColor = UIColor.whiteColor()
+                cell.textView!.font = UIFont.boldSystemFontOfSize(30.0)
+                cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+            }
+            else {
+                cell.textView!.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
+                cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+            }
+        }
+        
+        cell.userInteractionEnabled = true;
+        
+        if(cell.textView?.text == tapBtn){
+            cell.tag = 1
+        }else{
+            cell.tag = 0
+        }
+        
+        let recognizer = UITapGestureRecognizer(target: self, action:Selector("cellTappedOn:"))
+        cell.addGestureRecognizer(recognizer)
+        return cell
+    }
+    
+    func cellTappedOn(pressed: UITapGestureRecognizer){
+        if(pressed.view?.tag == 1){
+            self.performSegueWithIdentifier("acceptOrder", sender: self);
+        }
+
+    }
+    
     
     
     func loadList(notification: NSNotification){
         var messageCount = 0
         var messagesJSON:JSON = ""
-        
-        var messageIndex = mainInstance.getIndex(data)
-        //already created
+        let messageIndex = mainInstance.getIndex(data)
         mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[messageIndex]
         transactionUUID = mainInstance.currentTransaction.transactionUUID
         messageCount = mainInstance.active_transaction_uuids2[messageIndex].messageCount
         messagesJSON = mainInstance.active_transaction_uuids2[messageIndex].messages
-        
-        self.keyboardController.textView!.becomeFirstResponder()
-        
         self.userName = "customer"
         var index = 0
         for (index = oldMessageCount; index < messageCount; index++){
             if(messagesJSON[index]["type"].stringValue == "receipt"){
-                var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+                let rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
                 self.navigationItem.rightBarButtonItem = rightBtn
-                var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:"Receipt: Tap to Pay")
+                let message = JSQMessage(senderId: "customer2", displayName: "customer2", text:tapBtn)
                 messages += [message]
             }
             else if(messagesJSON[index]["from_customer"].boolValue){
-                var message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
+                let message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
                 messages += [message]
             }
             else{
-                var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
+                let message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
                 messages += [message]
             }
             counter++
@@ -164,7 +169,7 @@ class orderMessenger: JSQMessagesViewController {
         print(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus)
         
         if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "proposed" || mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "pending") {
-            var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
+            let rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
             self.navigationItem.rightBarButtonItem = rightBtn
         }
         
@@ -175,49 +180,6 @@ class orderMessenger: JSQMessagesViewController {
         
         automaticallyScrollsToMostRecentMessage = true
     }
-    
-    func loadMessages(){
-        
-        
-        /*
-        if(mainInstance.currentTransaction.paymentStatus == "proposed" || mainInstance.currentTransaction.paymentStatus == "pending" && mainInstance.currentTransaction.paymentStatus != mainInstance.active_transaction_uuids2[data].paymentStatus){
-        var rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
-        self.navigationItem.rightBarButtonItem = rightBtn
-        }
-        if(mainInstance.currentTransaction.messageCount == mainInstance.active_transaction_uuids2[data].messageCount){
-        //do nothing
-        
-        }else{
-        /*
-        self.userName = "customer"
-        var index = 0
-        for (index = mainInstance.currentTransaction.messageCount; index < mainInstance.active_transaction_uuids2[data].messageCount; index++){
-        if(mainInstance.active_transaction_uuids2[data].messages[index]["from_customer"].boolValue){
-        var message = JSQMessage(senderId: "customer", displayName: "customer", text:mainInstance.active_transaction_uuids2[data].messages[index]["content"].stringValue)
-        messages += [message]
-        }
-        else{
-        var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:mainInstance.active_transaction_uuids2[data].messages[index]["content"].stringValue)
-        messages += [message]
-        }
-        counter++
-        }
-        //self.reloadMessagesView()
-        mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[data]
-        */
-        print("----")
-        print(transactionUUID)
-        print(data)
-        print(mainInstance.active_transaction_uuids2[mainInstance.getIndex(transactionUUID)].messages)
-        var message = JSQMessage(senderId: "customer2", displayName: "customer2", text:mainInstance.active_transaction_uuids2[mainInstance.getIndex(transactionUUID)].lastMessage)
-        messages += [message]
-        
-        print("------")
-        print(mainInstance.active_transaction_uuids2[0].messages)
-        }
-        */
-    }
-    
     
     
     func reloadMessagesView() {
@@ -246,16 +208,13 @@ class orderMessenger: JSQMessagesViewController {
     }
     
     
-    
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         let data = self.messages[indexPath.row]
         
-        print(data.text)
         if (data.senderId == self.senderId) {
             return self.outgoingBubble
         } else {
-            if(data.text == "ACCEPT ORDER"){
-                //data.text = "HEYYYY"
+            if(data.text == tapBtn){
                 return self.paymentBubble
             }
             else{

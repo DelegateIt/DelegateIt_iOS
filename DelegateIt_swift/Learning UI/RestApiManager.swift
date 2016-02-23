@@ -54,7 +54,6 @@ class RestApiManager: NSObject {
                 let result = output["result"].stringValue
                 if(result == "0"){
                     print("User Login Successful")
-                    let uuidTotal = output["customer"]["uuid"].stringValue
                     let token = output["token"].stringValue
                     let first_name = output["customer"]["first_name"].stringValue
                     var email = ""
@@ -64,18 +63,13 @@ class RestApiManager: NSObject {
                     let last_name = output["customer"]["last_name"].stringValue
                     let phone_number = output["customer"]["phone_number"].stringValue
                     let uuid = output["customer"]["uuid"].stringValue
-                    var active_transaction_uuids = output["customer"]["active_transaction_uuids"].arrayValue.map { $0.string!}
+                    let active_transaction_uuids = output["customer"]["active_transaction_uuids"].arrayValue.map { $0.string!}
                     let activeCount = active_transaction_uuids.count
                     
                     mainInstance.setToken(token)
                     mainInstance.setValues(first_name,last_name:last_name,uuid:uuid,active_transaction_uuids:active_transaction_uuids,activeCount:activeCount,email:email,phone_number:phone_number)
                     
-                    var index:Int
-                    
-                    for index = 0; index < active_transaction_uuids.count; index++ {
-                        self.getTransaction(active_transaction_uuids[index], token: mainInstance.token)
-                    }
-                    
+                    self.getAllTransactions(uuid,token: token)
                     sockets().startSockets()
                     callback(1)
                 }
@@ -137,8 +131,32 @@ class RestApiManager: NSObject {
         }
     }
     
+    func getAllTransactions(UUID:String,token:String){
+        let URLCALL: String = "/core/transaction?customer_uuid=" + UUID + "&token=" + token
+        let parameters : [String: String] = ["":""]
+        var output:JSON = nil
+        print(URLCALL)
+        apiCall(URLCALL,paramaters: parameters,callType: "GET") { (response) in
+            output = response
+            let result = output["result"].intValue
+            
+            if(result == 0){
+                if(output["transactions"].count > 0){
+                    for index in 0 ... output["transactions"].count-1 {
+                        mainInstance.active_transaction_uuids2.append(transaction(dataInput: output["transactions"][index]))
+                    }
+                    NSNotificationCenter.defaultCenter().postNotificationName("loadbadge", object: nil)
+                }
+            }
+            else{
+                print("error")
+            }
+        }
+    }
+    
     
     func getTransaction(transactionUUID:String,token:String) {
+        print("GETTING TRANSACTION")
         let URLCALL: String = "/core/transaction/" + transactionUUID + "?token=" + token
         let parameters : [String: String] = ["":""]
         var output:JSON = nil
@@ -146,9 +164,13 @@ class RestApiManager: NSObject {
             output = response
             let result = output["result"].intValue
             
+            print("Get Transaction")
+            print(output)
+            
             if(result == 0){
-                print("APPPPPPPP")
-                mainInstance.active_transaction_uuids2.append(transaction(dataInput: output))
+                mainInstance.active_transaction_uuids2.append(transaction(dataInput: output["transaction"]))
+                NSNotificationCenter.defaultCenter().postNotificationName("loadbadge", object: nil)
+                print(mainInstance.active_transaction_uuids2[0].transactionUUID)
             }
             else{
                 print("error")
@@ -172,6 +194,8 @@ class RestApiManager: NSObject {
         //Actual User
         let postParams : [String: String] = ["customer_uuid":uuid,"customer_platform_type":"ios"]
         
+        var outputJ:JSON = nil
+        
         
         // Create the request
         let request = NSMutableURLRequest(URL: url)
@@ -181,7 +205,7 @@ class RestApiManager: NSObject {
             request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
             print(postParams)
         } catch {
-            print("bad things happened")
+            print("failure")
         }
         // Make the POST call and handle it in a completion handler
         session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
@@ -190,26 +214,26 @@ class RestApiManager: NSObject {
             do {
                 if let output = NSString(data:data!, encoding: NSUTF8StringEncoding) {
                     // Print what we got from the call
-                    print(output)
+                    
+                    outputJ = JSON(output)
                     
                     // Parse the JSON to get the IP
                     let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
                     result = jsonDictionary["result"] as! Int
                     
                     if(result == 0){
-                        print("Transaction created")
                         transactionUUID = jsonDictionary["uuid"] as! String
-                        print(transactionUUID)
-                        mainInstance.active_transaction_uuids.append(transactionUUID)
                         sockets().startSockets()
+                        print("print_transaction")
+                        print(outputJ["transaction"])
+                        print(jsonDictionary["uuid"])
                         if(self.sendMessage(transactionUUID,token: mainInstance.token,message: newMessage) == 1){
-                            
+                                print("SENT")
                         }
                         self.getTransaction(transactionUUID,token: mainInstance.token)
                         
-                        
-                        NSNotificationCenter.defaultCenter().postNotificationName("loadbadge", object: nil)
                         NSNotificationCenter.defaultCenter().postNotificationName("updateTransaction", object: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName("loadbadge", object: nil)
                     }
                     print("Got data")
                     
@@ -217,7 +241,7 @@ class RestApiManager: NSObject {
                     //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
                 }
             } catch {
-                print("bad things happened")
+                print("failuer")
             }
             
             //Result 10 means to create a new user
@@ -256,7 +280,7 @@ class RestApiManager: NSObject {
             request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(postParams, options: NSJSONWritingOptions())
             print(postParams)
         } catch {
-            print("bad things happened")
+            print("failure")
         }
         // Make the POST call and handle it in a completion handler
         session.dataTaskWithRequest(request, completionHandler: { ( data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
@@ -285,7 +309,7 @@ class RestApiManager: NSObject {
                     //self.performSelectorOnMainThread("updateIPLabel:", withObject: origin, waitUntilDone: false)
                 }
             } catch {
-                print("bad things happened")
+                print("Request failed")
             }
             
             //Result 10 means to create a new user
@@ -302,9 +326,7 @@ class RestApiManager: NSObject {
     
     func updateUser(userProfileUpdate:String,updatedInformation:String) {
         let URLCALL: String = "/core/customer/" + mainInstance.uuid + "?token=" + mainInstance.token
-        
         var output:JSON = nil
-        
         var updatedType = "email"
         
         if(userProfileUpdate == "FIRST NAME"){
@@ -330,7 +352,6 @@ class RestApiManager: NSObject {
             }
         }
     }
-    
 
     
     //Check For Internet Connection
@@ -349,5 +370,10 @@ class RestApiManager: NSObject {
         let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
         return (isReachable && !needsConnection)
     }
+    
+    
+    
+    
+    
     
 }

@@ -22,12 +22,12 @@ class transaction {
     
     
     init(dataInput:JSON){
-        self.paymentStatus = dataInput["transaction"]["status"].stringValue
-        self.paymentURL = dataInput["transaction"]["payment_url"].stringValue
-        self.transactionUUID = dataInput["transaction"]["uuid"].stringValue
-        self.timeStamp = dataInput["transaction"]["timestamp"].doubleValue
-        self.messageCount = dataInput["transaction"]["messages"].count
-        self.messages = dataInput["transaction"]["messages"]
+        self.paymentStatus = dataInput["status"].stringValue
+        self.paymentURL = dataInput["payment_url"].stringValue
+        self.transactionUUID = dataInput["uuid"].stringValue
+        self.timeStamp = dataInput["timestamp"].doubleValue
+        self.messageCount = dataInput["messages"].count
+        self.messages = dataInput["messages"]
         
         print(messageCount)
         

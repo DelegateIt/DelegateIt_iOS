@@ -139,7 +139,6 @@ class Main {
                 NSNotificationCenter.defaultCenter().postNotificationName("load", object: nil)
             }
         }
-        
         self.sortTransaction()
     }
     

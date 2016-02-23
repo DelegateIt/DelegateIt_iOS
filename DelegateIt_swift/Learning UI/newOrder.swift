@@ -25,8 +25,8 @@ class newOrder: JSQMessagesViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.userName = "iPhone"
         for i in 1...10 {
-            var sender = (i%2 == 0) ? "Syncano" : self.userName
-            var message = JSQMessage(senderId: sender, displayName: sender, text: "Text")
+            let sender = (i%2 == 0) ? "Syncano" : self.userName
+            let message = JSQMessage(senderId: sender, displayName: sender, text: "Text")
             self.messages += [message]
         }
         self.collectionView!.reloadData()
@@ -42,12 +42,12 @@ class newOrder: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
-        var data = self.messages[indexPath.row]
+        let data = self.messages[indexPath.row]
         return data
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
-        var data = self.messages[indexPath.row]
+        let data = self.messages[indexPath.row]
         if (data.senderId == self.senderId) {
             return self.outgoingBubble
         } else {
@@ -64,7 +64,7 @@ class newOrder: JSQMessagesViewController {
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        var newMessage = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text);
+        let newMessage = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text);
         messages += [newMessage]
         self.finishSendingMessage()
     }

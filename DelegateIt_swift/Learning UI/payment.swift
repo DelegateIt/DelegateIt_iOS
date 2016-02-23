@@ -30,7 +30,6 @@ class payment: UIViewController {
     }
     
     func sayHello(sender: UIBarButtonItem) {
-        print("test22")
         //backToOrder
         self.performSegueWithIdentifier("CompleteOrder", sender: self);
     }

@@ -7,8 +7,8 @@
        "debugMode": true
   },
   "test":{
-       "restURL": "http://test-gatorapi.us-west-2.elasticbeanstalk.com",
-       "socketURL": "http://test-gatorapi.us-west-2.elasticbeanstalk.com:8060",
+       "restURL": "http://gator-api-test.immprnfxbj.us-west-2.elasticbeanstalk.com",
+       "socketURL": "http://gator-notify-test.immprnfxbj.us-west-2.elasticbeanstalk.com:80",
        "debugMode": false
   },
   "production":{

@@ -15,12 +15,10 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var userName: UILabel!
+    
     let textCellIdentifier = "TextCell"
-    
-    let blogSegueIdentifier = "ShowBlogSegue"   //New
-    
+    let blogSegueIdentifier = "ShowBlogSegue"
     let swiftBlogs = ["EDIT PROFILE","ABOUT US", "HOW IT WORKS?","WORK WITH US"]
-    
     var choosenRow = ""
     
     override func viewDidLoad() {
@@ -30,26 +28,8 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.dataSource = self
         
         self.tabBarController?.tabBar.hidden = true
-        
-        
-       //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-        /*
-        
-        var replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
-        replyBtn.setImage(UIImage(named: "x.png"), forState: UIControlState.Normal)
-        replyBtn.addTarget(self, action: Selector("goHome:"), forControlEvents:  UIControlEvents.TouchUpInside)
-        var item = UIBarButtonItem(customView: replyBtn)
-        self.navigationItem.leftBarButtonItem = item
-
-        */
-        
-        
-        //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-        
-        
         let screenSize: CGRect = UIScreen.mainScreen().bounds
-        
-        let image = UIImage(named: "yellowBG.png") as UIImage?
+
         let button = UIButton(type: UIButtonType.System) as UIButton
         button.frame = CGRectMake(0, screenSize.height-60, screenSize.width, 60)
         button.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
@@ -59,14 +39,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
         self.view.addSubview(button)
         
-        
-        
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        print("Begin of code")
         if let checkedUrl = NSURL(string: "https://graph.facebook.com/" + mainInstance.fbID + "/picture?type=large") {
-            print(mainInstance.fbID)
-            print("HEYYY")
             imageView.contentMode = .ScaleAspectFill
             imageView.layer.borderWidth = 2
             imageView.layer.masksToBounds = false
@@ -75,18 +48,13 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
             imageView.clipsToBounds = true
             downloadImage(checkedUrl)
         }
-        print("End of code. The image will continue downloading in the background and it will be loaded when it ends.")
         
         tableView.alwaysBounceVertical = false;
-        //tableView.scrollEnabled = false;
-        
         self.tableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(animated: Bool) {
         userName.text = mainInstance.first_name + " " + mainInstance.last_name
-        print(mainInstance.first_name)
-        print("Loaded")
     }
     
     
@@ -97,13 +65,9 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func downloadImage(url: NSURL){
-        print("Download Started")
-        print("lastPathComponent: " + (url.lastPathComponent ?? ""))
         getDataFromUrl(url) { (data, response, error)  in
             dispatch_async(dispatch_get_main_queue()) { () -> Void in
                 guard let data = data where error == nil else { return }
-                print(response?.suggestedFilename ?? "")
-                print("Download Finished")
                 self.imageView.image = UIImage(data: data)
             }
         }
@@ -120,39 +84,11 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.performSegueWithIdentifier("goHome22", sender: self);
     }
     
-    //New
-    // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        //print(swiftBlogs[(tableView.indexPathForSelectedRow?.row)!])
-        //print(segue.identifier)
-        
-        print(choosenRow)
-        
         if(segue.identifier == "sample2"){
             let destination = segue.destinationViewController as! about
             destination.blogName = choosenRow
         }
-        
-        /*
-        if segue.identifier == "sample2" {
-            if let destination = segue.destinationViewController as? about {
-                if let blogIndex = tableView.indexPathForSelectedRow {
-                    destination.blogName = swiftBlogs[(tableView.indexPathForSelectedRow?.row)!]
-                }
-            }
-        }
-        else if swiftBlogs[(tableView.indexPathForSelectedRow?.row)!] == "ABOUT2" {
-            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("showAbout") as? about
-            self.presentViewController(vc!, animated: true, completion: nil)
-        }
-        else if segue.identifier == blogSegueIdentifier {
-            if let destination = segue.destinationViewController as? BlogViewController {
-                if let blogIndex = tableView.indexPathForSelectedRow {
-                    destination.blogName = swiftBlogs[(tableView.indexPathForSelectedRow?.row)!]
-                }
-            }
-        }
-        */
     }
     
     // MARK: - UITextFieldDelegate Methods
@@ -166,22 +102,16 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath) as UITableViewCell
-        
         let row = indexPath.row
         cell.textLabel?.text = swiftBlogs[row]
-        
         return cell
     }
     
     // MARK: - UITableViewDelegate Methods
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
         let row = indexPath.row
-        print("--")
-        //print(swiftBlogs[row])
         choosenRow = swiftBlogs[row]
-        print("--")
         
         if(choosenRow == "ABOUT US" || choosenRow == "WORK WITH US" || choosenRow == "HOW IT WORKS?" || choosenRow == "VERSION") {
             self.performSegueWithIdentifier("sample2", sender: self);
@@ -194,7 +124,6 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-        
         print("User Logged Out")
     }
 

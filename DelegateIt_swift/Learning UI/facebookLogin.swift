@@ -27,6 +27,8 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         
         loggedIn = 0
         
+        initializeNotificationServices()
+        
         if(FBSDKAccessToken.currentAccessToken() != nil){
             self.returnUserData()
         }else{
@@ -46,6 +48,18 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         
         moveLogo = false
     }
+    
+    func initializeNotificationServices() -> Void {
+        let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        
+        // This is an asynchronous method to retrieve a Device Token
+        // Callbacks are in AppDelegate.swift
+        // Success = didRegisterForRemoteNotificationsWithDeviceToken
+        // Fail = didFailToRegisterForRemoteNotificationsWithError
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -87,7 +101,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
             SwiftSpinner.show("No connection, trying to reconnect...")
         }
         else{
-            SwiftSpinner.show("Reconnecting")
+            SwiftSpinner.show("Reconnecting")//Reconnecting
         }
     }
     
@@ -157,7 +171,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                         
                     }else if(response == -1){
                         dispatch_async(dispatch_get_main_queue(), {
-                            SwiftSpinner.show("Connecting...")
+                            SwiftSpinner.show("PLEASE UPDATE, YOU ARE RUNNING AN OLD VERSION")
                             if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
                                 notificationH.printHello("No Internet Connection")
                             }
