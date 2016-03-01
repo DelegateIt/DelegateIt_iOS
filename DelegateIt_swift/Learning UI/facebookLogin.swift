@@ -20,14 +20,20 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     var moveLogo = true
     var spinning = false
     
+    
+    var first_name:String = ""
+    var last_name:String = ""
+    var fbID:String = ""
+    var email = ""
+    var fbToken:String = ""
+    
+    
     //load if the user is not logged in
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         config().getConfig()
         
         loggedIn = 0
-        
-        initializeNotificationServices()
         
         if(FBSDKAccessToken.currentAccessToken() != nil){
             self.returnUserData()
@@ -45,8 +51,8 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 self.moveLogoView(CGPointMake(screenSize.width/2, screenHeight * 0.3))
             }
         }
-        
         moveLogo = false
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginUser:",name:"readyToLogin", object: nil)
     }
     
     func initializeNotificationServices() -> Void {
@@ -58,6 +64,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         // Success = didRegisterForRemoteNotificationsWithDeviceToken
         // Fail = didFailToRegisterForRemoteNotificationsWithError
         UIApplication.sharedApplication().registerForRemoteNotifications()
+        self.loginUser()
     }
     
     
@@ -105,6 +112,8 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         }
     }
     
+    
+    
     //Return data collected from Facebook
     func returnUserData(){
         
@@ -138,48 +147,53 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
             }
             else
             {
-                print(FBSDKAccessToken.currentAccessToken().tokenString)
-                print(result)
-                let first_name : String = result.valueForKey("first_name") as! String
-                let last_name : String = result.valueForKey("last_name") as! String
-                let fbID : String = result.valueForKey("id") as! String
-                var email = ""
+                self.first_name = result.valueForKey("first_name") as! String
+                self.last_name = result.valueForKey("last_name") as! String
+                self.fbID =  result.valueForKey("id") as! String
+                
                 if(result.valueForKey("email") != nil) {
-                    email = result.valueForKey("email") as! String
-                    print("User Email is: \(email)")
+                    self.email = result.valueForKey("email") as! String
+                    print("User Email is: \(self.email)")
                 }
                 
-                let fbToken = FBSDKAccessToken.currentAccessToken().tokenString
-                
+                self.fbToken = FBSDKAccessToken.currentAccessToken().tokenString
                 SwiftSpinner.show("Connecting...")
+                mainInstance.fbID = self.fbID
                 
-                mainInstance.fbID = fbID
+                print("PUSH")
+                //print(UIApplication.sharedApplication().isRegisteredForRemoteNotifications())
                 
-                RestApiManager.sharedInstance.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
-                    if(response == 1){
-                        self.loginView.hidden = true
-                        SwiftSpinner.hide()
-                        self.reconnectTimer.invalidate()
-                        if(self.loggedIn == 0){
-                            self.loggedIn = 1
-                            dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
-                        }
-                        else{
-                            print("Double call")
-                        }
-                        
-                        
-                    }else if(response == -1){
-                        dispatch_async(dispatch_get_main_queue(), {
-                            SwiftSpinner.show("PLEASE UPDATE, YOU ARE RUNNING AN OLD VERSION")
-                            if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
-                                notificationH.printHello("No Internet Connection")
-                            }
-                            NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("returnUserData"), userInfo: nil, repeats: false)
-                        })
-                    }
-                }
+                self.initializeNotificationServices()
+                
+                //
             }
         })
+    }
+    
+    func loginUser() {
+        RestApiManager.sharedInstance.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
+            if(response == 1){
+                self.loginView.hidden = true
+                SwiftSpinner.hide()
+                self.reconnectTimer.invalidate()
+                if(self.loggedIn == 0){
+                    self.loggedIn = 1
+                    dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
+                }
+                else{
+                    print("Double call")
+                }
+                
+                
+            }else if(response == -1){
+                dispatch_async(dispatch_get_main_queue(), {
+                    SwiftSpinner.show("PLEASE UPDATE, YOU ARE RUNNING AN OLD VERSION")
+                    if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
+                        notificationH.printHello("No Internet Connection")
+                    }
+                    NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("loginUser"), userInfo: nil, repeats: false)
+                })
+            }
+        }
     }
 }

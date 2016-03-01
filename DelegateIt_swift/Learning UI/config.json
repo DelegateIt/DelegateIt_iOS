@@ -1,5 +1,5 @@
 {
-  "mode":"test",
+  "mode":"production",
     
   "local":{
        "restURL": "http://192.168.99.100:8000",
@@ -12,8 +12,8 @@
        "debugMode": false
   },
   "production":{
-       "restURL": "",
-       "socketURL": "",
+       "restURL": "http://api.godelegateit.com",
+       "socketURL": "http://notify.godelegateit.com:80",
        "debugMode": false
   },
 } 

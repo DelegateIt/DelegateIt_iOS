@@ -15,6 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey("launchCount")?.integerValue >= 3{
+            if UIApplication.sharedApplication().respondsToSelector("isRegisteredForRemoteNotifications") {
+                UIApplication.sharedApplication().registerUserNotificationSettings(
+                    UIUserNotificationSettings(
+                        forTypes: [.Alert, .Badge, .Sound],
+                        categories: nil))
+                UIApplication.sharedApplication().registerForRemoteNotifications()
+            }
+        }
+        
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
@@ -55,12 +66,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let deviceTokenStr = convertDeviceTokenToString(deviceToken)
-        print(deviceTokenStr)
-        // ...register device token with our Time Entry API server via REST
+        //print(deviceTokenStr)
+        mainInstance.deviceID = deviceTokenStr
+        //callback
+        if(!mainInstance.loggingIn){
+            mainInstance.loggingIn = true
+            //facebookLogin().loginUser()
+        }
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        print("Device token for push notifications: FAIL -- ")
+        //no token
+        //print("Failed")
+        if(!mainInstance.loggingIn){
+            mainInstance.loggingIn = true
+            //facebookLogin().loginUser()
+        }
+        
    
     }
     
@@ -69,6 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // foreground (or if the app was in the background and the user clicks on the notification).
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         // display the userInfo
+        /*
         if let notification = userInfo["aps"] as? NSDictionary,
             let alert = notification["alert"] as? String {
                 let alertCtrl = UIAlertController(title: "Time Entry", message: alert as String, preferredStyle: UIAlertControllerStyle.Alert)
@@ -84,6 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // -- pass in NoData, since no new data was fetched from the server.
                 completionHandler(UIBackgroundFetchResult.NoData)
         }
+        */
     }
     
     
@@ -96,10 +120,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Our API returns token in all uppercase, regardless how it was originally sent.
         // To make the two consistent, I am uppercasing the token string here.
         deviceTokenStr = deviceTokenStr.uppercaseString
-        
-        print("-----PUSH_ID----")
-        print(deviceTokenStr)
-        print("||-----PUSH_ID----||")
         
         return deviceTokenStr
     }

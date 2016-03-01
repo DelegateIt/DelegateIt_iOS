@@ -17,26 +17,36 @@ class CustomOrder: JSQMessagesViewController {
     var orderText:String = ""
     var userName = ""
     var messages = [JSQMessage]()
-    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0))
+    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 229/255, green: 229/255, blue: 234/255, alpha: 1.0))
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0))
-    let paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 254/255, green: 198/255, blue: 61/255, alpha: 1.0))
+    var paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1.0))
+    
+    var bubbleFactory = JSQMessagesBubbleImageFactory()
+    var outgoingBubbleImage: JSQMessagesBubbleImage!
+    var incomingBubbleImage: JSQMessagesBubbleImage!
     
     var messageQue:[String] = []
     var currentT:transaction = transaction(dataInput: nil)
     var creatingTransaction = false
     var transactionCreated = false
     
-     var replyBtn = UIButton()
+    var transactionUUID:String = ""
     
+    var oldMessageCount = 0
     
-    override func viewWillAppear(animated: Bool) {
-        self.keyboardController.textView!.becomeFirstResponder()
-    }
+    var messageIndex = -1;
+    
+    var tapBtn:String = "\nTAP TO PAY \u{203A}\n"
+    
+    var replyBtn = UIButton()
+
     
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        outgoingBubbleImage = bubbleFactory.outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
+        incomingBubbleImage = bubbleFactory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
         
         if(transactionCreated){
             replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
@@ -61,7 +71,8 @@ class CustomOrder: JSQMessagesViewController {
         self.senderDisplayName = self.userName
         self.senderId = self.userName
         self.inputToolbar!.contentView!.textView!.placeHolder = "Make a new order";
-        self.inputToolbar!.contentView!.textView!.text = orderText;
+        
+        
         automaticallyScrollsToMostRecentMessage = true
         self.inputToolbar?.toggleSendButtonEnabled()
 
@@ -72,6 +83,29 @@ class CustomOrder: JSQMessagesViewController {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard:")
         self.collectionView?.addGestureRecognizer(tapGestureRecognizer)
+        
+        self.inputToolbar!.contentView!.leftBarButtonItem = nil
+        
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        if(messageIndex == -1){
+            NSTimer.scheduledTimerWithTimeInterval(0.001, target: self, selector: Selector("updateText"), userInfo: nil, repeats: false)
+        }
+    }
+    
+    func updateText(){
+        if(messageIndex == -1){
+            self.inputToolbar!.contentView!.textView!.text = orderText;
+            NSNotificationCenter.defaultCenter().postNotificationName(UITextViewTextDidChangeNotification, object:  self.inputToolbar!.contentView!.textView!)
+            self.inputToolbar?.toggleSendButtonEnabled()
+            NSTimer.scheduledTimerWithTimeInterval(0.001, target: self, selector: Selector("moveKeyboard"), userInfo: nil, repeats: false)
+        }
+    }
+    
+    func moveKeyboard(){
+        self.keyboardController.textView!.becomeFirstResponder()
     }
     
     func gestureRecognizer(_: UIGestureRecognizer,
@@ -99,19 +133,75 @@ class CustomOrder: JSQMessagesViewController {
     }
     
     func goHome(sender:UIButton!){
-        print("Going Back")
+        //print("Going Back")
         self.performSegueWithIdentifier("cancleOrder", sender: self);
         
     }
     
+    
     func loadList(notification: NSNotification){
-        var index = 0
-        for (index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
+        loadnewMessages()
+    }
+    
+    func loadnewMessages(){
+        var messageCount = 0
+        var messagesJSON:JSON = ""
+        //print("LOADING")
+        messageIndex = mainInstance.getIndex(mainInstance.currentTransactionUUID)
+        //print(messageIndex)
+        for(var index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
+            //print(mainInstance.active_transaction_uuids2[index].transactionUUID)
+        }
+        if(messageIndex != -1){
+            mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[messageIndex]
+            transactionUUID = mainInstance.currentTransaction.transactionUUID
+            messageCount = mainInstance.active_transaction_uuids2[messageIndex].messageCount
+            messagesJSON = mainInstance.active_transaction_uuids2[messageIndex].messages
+            //print("current")
+            //print(mainInstance.currentTransactionUUID)
+            //print(mainInstance.active_transaction_uuids2[messageIndex].messageCount)
+            self.userName = "customer"
+            var index = 0
+            //print("COUNT")
+            //print(messageCount)
+            for (index = oldMessageCount; index < messageCount; index++){
+                if(messagesJSON[index]["type"].stringValue == "receipt"){
+                    //let rightBtn = UIBarButtonItem(title: "PAY", style: .Plain, target: self, action: "sayHello:")
+                    //self.navigationItem.rightBarButtonItem = rightBtn
+                    let paymentBtnImage = UIImage(named: "payment.png")
+                    let mediaItem = JSQPhotoMediaItem(image: paymentBtnImage)
+                    mediaItem.appliesMediaViewMaskAsOutgoing = false
+                    let message = JSQMessage(senderId: "customer2", displayName: "customer2", media:mediaItem)
+                    messages += [message]
+                }
+                else if(messagesJSON[index]["from_customer"].boolValue){
+                    let message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
+                    messages += [message]
+                }
+                else{
+                    let message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
+                    messages += [message]
+                }
+            }
             
-            print(mainInstance.active_transaction_uuids2[index].transactionUUID)
             
+            if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "proposed" || mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "pending") {
+                //let rightBtn = UIBarButtonItem(title: "PAY", style: .Plain, target: self, action: "sayHello:")
+                //self.navigationItem.rightBarButtonItem = rightBtn
+            }
+            
+            oldMessageCount = messageCount
+            
+            self.reloadMessagesView()
+            automaticallyScrollsToMostRecentMessage = true
+            self.scrollToBottomAnimated(true)
+        }
+        else{
+            messageIndex = mainInstance.getIndex(mainInstance.currentTransactionUUID)
+            NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("loadnewMessages"), userInfo: nil, repeats: false)
         }
     }
+
     
     
     
@@ -121,6 +211,7 @@ class CustomOrder: JSQMessagesViewController {
     
     
     func sayHello(sender: UIBarButtonItem) {
+        view.endEditing(true)
         self.performSegueWithIdentifier("acceptOrder", sender: self);
     }
     
@@ -140,19 +231,11 @@ class CustomOrder: JSQMessagesViewController {
     
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
-        let data = self.messages[indexPath.row]
-        
-        print(data.text)
-        if (data.senderId == self.senderId) {
-            return self.outgoingBubble
-        } else {
-            if(data.text == "ACCEPT ORDER"){
-                return self.paymentBubble
-            }
-            else{
-                return self.incomingBubble
-            }
+        let message = self.messages[indexPath.item]
+        if message.senderId == self.senderId {
+            return outgoingBubbleImage
         }
+        return incomingBubbleImage
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
@@ -163,30 +246,89 @@ class CustomOrder: JSQMessagesViewController {
         return self.messages.count;
     }
     
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell: JSQMessagesCollectionViewCell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+        let msg: JSQMessage = self.messages[indexPath.item] as JSQMessage
+        
+        if !msg.isMediaMessage {
+            if msg.senderId == self.senderId {
+                cell.textView!.textColor = UIColor.whiteColor()
+                cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+            }
+            else if(cell.textView?.text == tapBtn){
+                cell.textView!.textColor = UIColor.whiteColor()
+                cell.textView!.font = UIFont.boldSystemFontOfSize(30.0)
+                cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+            }
+            else {
+                cell.textView!.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
+                cell.textView!.linkTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
+            }
+        }
+        
+        cell.userInteractionEnabled = true;
+        
+        if(msg.isMediaMessage){
+            cell.tag = 1
+        }else{
+            cell.tag = 0
+        }
+        
+        let recognizer = UITapGestureRecognizer(target: self, action:Selector("cellTappedOn:"))
+        cell.addGestureRecognizer(recognizer)
+        return cell
+    }
+    
+    func cellTappedOn(pressed: UITapGestureRecognizer){
+        if(pressed.view?.tag == 1){
+            self.performSegueWithIdentifier("acceptOrder", sender: self);
+        }
+        
+    }
+    
+    
     
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         let newMessage = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text);
+        oldMessageCount++
         
-        if(!transactionCreated){
+        if(!transactionCreated && !creatingTransaction){
+            creatingTransaction = true
             RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
             transactionCreated = true
+            self.inputToolbar!.contentView!.textView!.placeHolder = "Message"
             addBackBtnCode()
+            transactionUUID = mainInstance.currentTransactionUUID
+            messageIndex = mainInstance.getIndex(mainInstance.currentTransactionUUID)
         }
         else{
-            
+            if(mainInstance.currentTransactionUUID == ""){
+                messageQue.append(newMessage.text)
+                NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("sendMessage"), userInfo: nil, repeats: false)
+            }
+            else{
+                RestApiManager.sharedInstance.sendMessage(mainInstance.currentTransactionUUID,token: mainInstance.token,message: newMessage.text)
+            }
         }
-        
         messages += [newMessage]
         self.finishSendingMessage()
-
-
+    }
+    
+    func sendMessage(){
+        if(mainInstance.currentTransactionUUID == ""){
+            NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("sendMessage"), userInfo: nil, repeats: false)
+        }
+        else{
+            RestApiManager.sharedInstance.sendMessage(mainInstance.currentTransactionUUID,token: mainInstance.token,message: messageQue[0])
+            messageQue.removeFirst()
+        }
     }
 
     
     
     override func didPressAccessoryButton(sender: UIButton!) {
-        print("button pressed")
+        //print("button pressed")
         //Create the AlertController
         let actionSheetController: UIAlertController = UIAlertController(title: "Send a picture or your location", message: "", preferredStyle: .ActionSheet)
         
@@ -217,6 +359,6 @@ class CustomOrder: JSQMessagesViewController {
     
     //Leave View
     override func viewWillDisappear(animated: Bool) {
-        print("Left View")
+        //print("Left View")
     }
 }

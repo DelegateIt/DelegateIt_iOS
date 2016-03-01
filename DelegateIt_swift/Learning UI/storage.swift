@@ -22,13 +22,22 @@ class Main {
     var active_transaction_uuids2:[transaction] = []
     var token:String = ""
     var currentMessage:Int = -1
+    var currentTransactionUUID:String = ""
     
     var currentTransaction:transaction = transaction(dataInput: "")
     var messageQue:[String] = []
     
+    var deviceID:String = ""
+    
     var restURL = ""
     var socketURL = ""
     var debubMode = false
+    
+    var profilePic:UIImage = UIImage()
+    var delegateItWebsite:NSURLRequest = NSURLRequest()
+    
+    
+    var loggingIn:Bool = false
     
     
     //Facebook info
@@ -73,6 +82,7 @@ class Main {
         self.currentTransaction = transaction(dataInput: "")
         self.fbID = ""
         self.fbToken = ""
+        self.loggingIn = false
     }
     
     func addtoQue(message:String){
@@ -111,12 +121,9 @@ class Main {
     }
     
     func getIndex(UUID:String) -> Int {
-        activeCount = active_transaction_uuids2.count
         var index = 0
-        for(index = 0; index < activeCount; index++){
-            print(active_transaction_uuids2[index].transactionUUID)
+        for(index = 0; index < active_transaction_uuids2.count; index++){
             if(active_transaction_uuids2[index].transactionUUID == UUID){
-                print("Found")
                 return index
             }
         }

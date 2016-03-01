@@ -21,16 +21,14 @@ class about: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(blogName)
+        //print(blogName)
         self.title = blogName
-        
-        
-        if(blogName == "WORK WITH US"){
-            showWebView("https://godelegateit.com/properties/")
-        }
-        else {
+        if(blogName == "WEBSITE"){
             showWebView("http://delegateit.co/")
+        }
+        else if(blogName == "FEEDBACK"){
+            showWebView("http://goo.gl/forms/4w9t1K2aU9")
+            //showWebView("https://www.godelegateit.com/feedback.html")
         }
         
     }

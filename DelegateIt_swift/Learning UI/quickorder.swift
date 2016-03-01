@@ -12,14 +12,14 @@ import UIKit
 class quickorder: UIViewController {
     
     @IBOutlet weak var myScrollView: UIScrollView!
-    var descriptions:[String] = ["I would like a Brushfire taco","I would like a Americano","Message filler 3","Message filler 4","Message filler 5","6"] //change
+    var descriptions:[String] = ["I would like to book a paddleboarding trip on Lake Austin","I want Tiff's Treats coookies delivered to me","I would like to book a double decker tour of Austin","I want a large pizza from Austin's Pizza"]
     var descrionChosen = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.tabBar.hidden = false
         let screenSize: CGRect = UIScreen.mainScreen().bounds
-        let myImages = ["Group.png","coffee.png","quick3.png","tripplanning.jpg","pizza.png"]
+        let myImages = ["order4.png","order2.png","quick3.png","order1.png"]
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
         var scrollViewContentSize:CGFloat = 0;
@@ -61,6 +61,18 @@ class quickorder: UIViewController {
         let item = UIBarButtonItem(customView: replyBtn)
         self.navigationItem.rightBarButtonItem = item
         
+        RestApiManager.sharedInstance.downloadProfilePic()
+        
+        /*
+        
+        let helpBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+        helpBtn.setImage(UIImage(named: "help.png"), forState: UIControlState.Normal)
+        helpBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        let item2 = UIBarButtonItem(customView: helpBtn)
+        self.navigationItem.leftBarButtonItem = item2
+ 
+        */
+        
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBadge:",name:"loadbadge", object: nil)
         
@@ -78,11 +90,18 @@ class quickorder: UIViewController {
     
     func loadBadge(){
         if(mainInstance.active_transaction_uuids2.count != 0){
-            let tabItem = self.tabBarController?.tabBar.items![2]
-            let myString = String(mainInstance.active_transaction_uuids2.count)
-            tabItem?.badgeValue = myString
+            var badgeCount = 0
+            for(var index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
+                if(mainInstance.active_transaction_uuids2[index].paymentStatus != "completed"){
+                    badgeCount++
+                }
+            }
+            if(badgeCount != 0){
+                let tabItem = self.tabBarController?.tabBar.items![2]
+                let myString = String(badgeCount)
+                tabItem?.badgeValue = myString
+            }
         }
-        
     }
     
     func imageTapped(img: AnyObject?)    {

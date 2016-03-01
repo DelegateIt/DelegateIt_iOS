@@ -18,7 +18,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let textCellIdentifier = "TextCell"
     let blogSegueIdentifier = "ShowBlogSegue"
-    let swiftBlogs = ["EDIT PROFILE","ABOUT US", "HOW IT WORKS?","WORK WITH US"]
+    let swiftBlogs = ["EDIT PROFILE","WEBSITE","FEEDBACK"]
     var choosenRow = ""
     
     override func viewDidLoad() {
@@ -39,15 +39,14 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
         self.view.addSubview(button)
         
-        if let checkedUrl = NSURL(string: "https://graph.facebook.com/" + mainInstance.fbID + "/picture?type=large") {
-            imageView.contentMode = .ScaleAspectFill
-            imageView.layer.borderWidth = 2
-            imageView.layer.masksToBounds = false
-            imageView.layer.borderColor = UIColor.blackColor().CGColor
-            imageView.layer.cornerRadius = imageView.frame.height/2
-            imageView.clipsToBounds = true
-            downloadImage(checkedUrl)
-        }
+        imageView.contentMode = .ScaleAspectFill
+        imageView.layer.borderWidth = 2
+        imageView.layer.masksToBounds = false
+        imageView.layer.borderColor = UIColor.blackColor().CGColor
+        imageView.layer.cornerRadius = imageView.frame.height/2
+        imageView.clipsToBounds = true
+        
+        self.imageView.image = mainInstance.profilePic
         
         tableView.alwaysBounceVertical = false;
         self.tableView.tableFooterView = UIView()
@@ -58,20 +57,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     
-    func getDataFromUrl(url:NSURL, completion: ((data: NSData?, response: NSURLResponse?, error: NSError? ) -> Void)) {
-        NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
-            completion(data: data, response: response, error: error)
-            }.resume()
-    }
-    
-    func downloadImage(url: NSURL){
-        getDataFromUrl(url) { (data, response, error)  in
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                guard let data = data where error == nil else { return }
-                self.imageView.image = UIImage(data: data)
-            }
-        }
-    }
+   
     
     func btnTouched(sender:UIButton!){
         mainInstance.emptyData()
@@ -113,7 +99,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         let row = indexPath.row
         choosenRow = swiftBlogs[row]
         
-        if(choosenRow == "ABOUT US" || choosenRow == "WORK WITH US" || choosenRow == "HOW IT WORKS?" || choosenRow == "VERSION") {
+        if(choosenRow == "WEBSITE" || choosenRow == "FEEDBACK" || choosenRow == "HOW IT WORKS?" || choosenRow == "VERSION") {
             self.performSegueWithIdentifier("sample2", sender: self);
         }
         else {

@@ -37,7 +37,7 @@ class DetailTableViewController: UITableViewController {
         let amount = price[index!]
         priceTextField.text = amount
         
-        print(data[index!])
+        //print(data[index!])
         
         self.title = "EDIT" //data[index!]
         
@@ -126,8 +126,8 @@ class DetailTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "save" {
             priceString = priceTextField.text
-            print(priceTextField.text)
-            print(data[index!])
+            //print(priceTextField.text)
+            //print(data[index!])
             RestApiManager.sharedInstance.updateUser(data[index!],updatedInformation: priceTextField.text!)
         }
         // Get the new view controller using [segue destinationViewController].

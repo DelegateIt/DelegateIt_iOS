@@ -24,12 +24,16 @@ class orderMessenger: JSQMessagesViewController {
     
     var userName = ""
     var messages = [JSQMessage]()
-    
-    let myImage:UIImage = UIImage(named: "pizza.png")!
+
     
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 229/255, green: 229/255, blue: 234/255, alpha: 1.0))
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor(red: 74/255, green: 186/255, blue: 251/255, alpha: 1.0))
     var paymentBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1.0))
+    
+    var bubbleFactory = JSQMessagesBubbleImageFactory()
+    var outgoingBubbleImage: JSQMessagesBubbleImage!
+    var incomingBubbleImage: JSQMessagesBubbleImage!
+    
     
     var counter:Int = 0
     var transactionUUID:String = ""
@@ -45,6 +49,9 @@ class orderMessenger: JSQMessagesViewController {
         var messageCount = 0
         var messagesJSON:JSON = ""
         
+        outgoingBubbleImage = bubbleFactory.outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
+        incomingBubbleImage = bubbleFactory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
+        
         let messageIndex = mainInstance.getIndex(data)
         mainInstance.currentTransaction = mainInstance.active_transaction_uuids2[messageIndex]
         transactionUUID = mainInstance.currentTransaction.transactionUUID
@@ -52,17 +59,24 @@ class orderMessenger: JSQMessagesViewController {
         messagesJSON = mainInstance.active_transaction_uuids2[messageIndex].messages
             
         if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "proposed" || mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "pending") {
-            let rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
-            self.navigationItem.rightBarButtonItem = rightBtn
+            //let rightBtn = UIBarButtonItem(title: "PAY", style: .Plain, target: self, action: "sayHello:")
+            //self.navigationItem.rightBarButtonItem = rightBtn
         }
         
         self.userName = "customer"
         var index = 0
         for (index = 0; index < messageCount; index++){
             if(messagesJSON[index]["type"].stringValue == "receipt"){
-                let rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
-                self.navigationItem.rightBarButtonItem = rightBtn
-                let message = JSQMessage(senderId: "customer2", displayName: "customer2", text:tapBtn)
+                //let rightBtn = UIBarButtonItem(title: "PAY", style: .Plain, target: self, action: "sayHello:")
+                //self.navigationItem.rightBarButtonItem = rightBtn
+                var paymentBtnImage = UIImage(named: "payment.png")
+                if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "completed"){
+                    paymentBtnImage = UIImage(named: "receipt.png")
+                }
+                
+                let mediaItem = JSQPhotoMediaItem(image: paymentBtnImage)
+                mediaItem.appliesMediaViewMaskAsOutgoing = false
+                let message = JSQMessage(senderId: "customer2", displayName: "customer2", media:mediaItem)
                 messages += [message]
             }
             else if(messagesJSON[index]["from_customer"].boolValue){
@@ -77,6 +91,8 @@ class orderMessenger: JSQMessagesViewController {
             }
             counter++
         }
+        
+        
         
     
         self.reloadMessagesView()
@@ -94,6 +110,22 @@ class orderMessenger: JSQMessagesViewController {
         oldMessageCount = messageCount
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadList:",name:"load", object: nil)
         automaticallyScrollsToMostRecentMessage = true
+        
+        self.inputToolbar!.contentView!.leftBarButtonItem = nil
+        
+        if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "completed"){
+            self.inputToolbar!.contentView!.textView!.placeHolder = "Transaction Completed";
+            self.inputToolbar!.contentView!.textView!.hidden = true
+            self.inputToolbar!.contentView!.hidden = true
+        }
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+        let message = self.messages[indexPath.item]
+        if message.senderId == self.senderId {
+            return outgoingBubbleImage
+        }
+        return incomingBubbleImage
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -118,7 +150,7 @@ class orderMessenger: JSQMessagesViewController {
         
         cell.userInteractionEnabled = true;
         
-        if(cell.textView?.text == tapBtn){
+        if(msg.isMediaMessage){
             cell.tag = 1
         }else{
             cell.tag = 0
@@ -150,9 +182,15 @@ class orderMessenger: JSQMessagesViewController {
         var index = 0
         for (index = oldMessageCount; index < messageCount; index++){
             if(messagesJSON[index]["type"].stringValue == "receipt"){
-                let rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
-                self.navigationItem.rightBarButtonItem = rightBtn
-                let message = JSQMessage(senderId: "customer2", displayName: "customer2", text:tapBtn)
+                //let rightBtn = UIBarButtonItem(title: "PAY", style: .Plain, target: self, action: "sayHello:")
+                //self.navigationItem.rightBarButtonItem = rightBtn
+                var paymentBtnImage = UIImage(named: "payment.png")
+                if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "completed"){
+                    paymentBtnImage = UIImage(named: "receipt.png")
+                }
+                let mediaItem = JSQPhotoMediaItem(image: paymentBtnImage)
+                mediaItem.appliesMediaViewMaskAsOutgoing = false
+                let message = JSQMessage(senderId: "customer2", displayName: "customer2", media:mediaItem)
                 messages += [message]
             }
             else if(messagesJSON[index]["from_customer"].boolValue){
@@ -166,19 +204,23 @@ class orderMessenger: JSQMessagesViewController {
             counter++
         }
         
-        print(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus)
         
         if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "proposed" || mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "pending") {
-            let rightBtn = UIBarButtonItem(title: "PAY NOW", style: .Plain, target: self, action: "sayHello:")
-            self.navigationItem.rightBarButtonItem = rightBtn
+            //let rightBtn = UIBarButtonItem(title: "PAY", style: .Plain, target: self, action: "sayHello:")
+            //self.navigationItem.rightBarButtonItem = rightBtn
+        }
+        
+        if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "completed"){
+            self.inputToolbar!.contentView!.textView!.placeHolder = "Transaction Completed";
+            self.inputToolbar!.contentView!.textView!.hidden = true
         }
         
         oldMessageCount = messageCount
         
         
         self.reloadMessagesView()
-        
         automaticallyScrollsToMostRecentMessage = true
+        self.scrollToBottomAnimated(true)
     }
     
     
@@ -207,21 +249,6 @@ class orderMessenger: JSQMessagesViewController {
         return data
     }
     
-    
-    override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
-        let data = self.messages[indexPath.row]
-        
-        if (data.senderId == self.senderId) {
-            return self.outgoingBubble
-        } else {
-            if(data.text == tapBtn){
-                return self.paymentBubble
-            }
-            else{
-                return self.incomingBubble
-            }
-        }
-    }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
         return nil
