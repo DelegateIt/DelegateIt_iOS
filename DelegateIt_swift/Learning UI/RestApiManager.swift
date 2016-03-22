@@ -41,9 +41,7 @@ class RestApiManager: NSObject {
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String,callback: (Int) -> ()) {
         let URLCALL = "/core/login/customer";
         var parameters:[String: String]
-        //print("DEVICE")
         if(mainInstance.deviceID != ""){
-            //print(mainInstance.deviceID)
             parameters = ["fbuser_id":fbID,"fbuser_token":fbToken,"device_id":mainInstance.deviceID]
         }
         else{

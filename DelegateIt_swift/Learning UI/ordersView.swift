@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Google
 
 class ordersView: UITableViewController {
     
@@ -24,9 +25,21 @@ class ordersView: UITableViewController {
         tableView.reloadData()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Orders")
+        
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mainInstance.comingfrom = "orders"
+        
+        
         let replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
         replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
@@ -60,10 +73,9 @@ class ordersView: UITableViewController {
         
         
         self.title = "ORDERS"
+        print("show tab bar")
         self.tabBarController?.tabBar.hidden = false
-        
-        
-        
+    
     }
     
     func loadTable(){
@@ -127,7 +139,7 @@ class ordersView: UITableViewController {
     
     
     override func viewDidAppear(animated: Bool) {
-        self.tabBarController?.tabBar.hidden = false
+        //self.tabBarController?.tabBar.hidden = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadList:",name:"load", object: nil)
     }
     
@@ -167,6 +179,10 @@ class ordersView: UITableViewController {
             let path = tableView.indexPathForSelectedRow
             let destination = segue.destinationViewController as! orderMessenger
             destination.data = UUIDs[(path?.row)!]
+        }
+        else if(segue.identifier == "goToSettings23"){
+            let secondVC: profile = segue.destinationViewController as! profile
+            secondVC.hidesBottomBarWhenPushed = true
         }
     }
     

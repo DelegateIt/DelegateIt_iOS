@@ -7,7 +7,8 @@
 //
 
 import Foundation
-import UIKit;
+import UIKit
+import Google
 
 class payment: UIViewController {
 
@@ -18,11 +19,19 @@ class payment: UIViewController {
         print("Loading payment")
         self.title = "CONFIRM PAYMENT"
         
-        print(mainInstance.currentTransaction.paymentURL)
+        //print(mainInstance.currentTransaction.paymentURL)
         
         let url = NSURL (string: mainInstance.currentTransaction.paymentURL);
         let requestObj = NSURLRequest(URL: url!);
         paymentWebView.loadRequest(requestObj);
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Payment Page")
+        
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
     }
     
     override func didReceiveMemoryWarning() {

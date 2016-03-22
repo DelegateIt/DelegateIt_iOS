@@ -10,5 +10,6 @@ target 'DelegateIt' do
   pod 'CWStatusBarNotification', '~> 2.3.3'
   pod "SwiftSpinner"
   pod "Whisper"
+  pod 'Google/Analytics'
   
 end

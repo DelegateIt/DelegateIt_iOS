@@ -85,7 +85,7 @@
 
 - (CGSize)jsq_correctedAvatarSizeFromSize:(CGSize)size
 {
-    return CGSizeMake(ceilf(size.width), ceilf(size.height));
+    return CGSizeMake(ceilf(size.width), ceilf(100));
 }
 
 - (CGFloat)jsq_correctedLabelHeightForHeight:(CGFloat)height

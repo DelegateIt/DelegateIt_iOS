@@ -11,6 +11,7 @@ import UIKit
 import JSQMessagesViewController
 import SwiftyJSON
 import Whisper
+import Google
 
 class CustomOrder: JSQMessagesViewController {
     
@@ -39,11 +40,15 @@ class CustomOrder: JSQMessagesViewController {
     var tapBtn:String = "\nTAP TO PAY \u{203A}\n"
     
     var replyBtn = UIButton()
+    
+    var label = UILabel()
 
     
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mainInstance.gotoOrders = false
         
         outgoingBubbleImage = bubbleFactory.outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
         incomingBubbleImage = bubbleFactory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
@@ -61,6 +66,18 @@ class CustomOrder: JSQMessagesViewController {
             replyBtn.addTarget(self, action: Selector("goHome:"), forControlEvents:  UIControlEvents.TouchUpInside)
             let item = UIBarButtonItem(customView: replyBtn)
             self.navigationItem.leftBarButtonItem = item
+            
+            let screenSize: CGRect = UIScreen.mainScreen().bounds
+            label = UILabel(frame: CGRectMake(0, 0, 300, 300))
+            label.center = CGPointMake(screenSize.width/2, 60)
+            if(orderText == ""){
+                label.center.y = label.center.y + 60
+            }
+            label.textAlignment = NSTextAlignment.Center
+            label.text = "Please send us a text message with your request or desired item"
+            label.font = UIFont.systemFontOfSize(16, weight: UIFontWeightLight)
+            label.numberOfLines = 2
+            self.view.addSubview(label)
         }
         
         self.title = "ORDER"
@@ -88,11 +105,17 @@ class CustomOrder: JSQMessagesViewController {
         
         
     }
+
     
     override func viewWillAppear(animated: Bool) {
         if(messageIndex == -1){
             NSTimer.scheduledTimerWithTimeInterval(0.001, target: self, selector: Selector("updateText"), userInfo: nil, repeats: false)
         }
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Custom order")
+            
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
     }
     
     func updateText(){
@@ -135,7 +158,30 @@ class CustomOrder: JSQMessagesViewController {
     func goHome(sender:UIButton!){
         //print("Going Back")
         self.performSegueWithIdentifier("cancleOrder", sender: self);
+        //self.performSegueWithIdentifier("backToOrder", sender: self);
         
+        //backToOrder
+        
+        //let appDelegate = UIApplication.sharedApplication().delegate! as! AppDelegate
+        
+        //var initialViewController = self.storyboard!.instantiateViewControllerWithIdentifier("myTabbarControllerID") as! UIViewController
+        //appDelegate.window?.rootViewController = initialViewController
+        //appDelegate.window?.makeKeyAndVisible()
+        
+        //let mainStoryboard = UIStoryboard(name: "Storyboard", bundle: NSBundle.mainBundle())
+        //let vc : UIViewController = mainStoryboard.instantiateViewControllerWithIdentifier("ordersView") as UIViewController
+        //self.presentViewController(vc, animated: true, completion: nil)
+        
+        //let ordersView:ordersView = UIViewController()
+        
+        //self.presentViewController(ordersView, animated: true, completion: nil)
+        
+        //let vc = ordersView() //change this to your class name
+        //self.presentViewController(vc, animated: true, completion: nil)
+        
+        //Actually Works but loses view controller
+        //let vc = self.storyboard?.instantiateViewControllerWithIdentifier("orders_22") as! ordersView
+        //self.presentViewController(vc, animated: true, completion: nil)
     }
     
     
@@ -294,7 +340,10 @@ class CustomOrder: JSQMessagesViewController {
         oldMessageCount++
         
         if(!transactionCreated && !creatingTransaction){
+            self.label.hidden = true
+            self.label.removeFromSuperview()
             creatingTransaction = true
+            mainInstance.gotoOrders = true
             RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
             transactionCreated = true
             self.inputToolbar!.contentView!.textView!.placeHolder = "Message"

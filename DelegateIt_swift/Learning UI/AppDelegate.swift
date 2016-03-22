@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Google
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        var configureError:NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
         
         if NSUserDefaults.standardUserDefaults().objectForKey("launchCount")?.integerValue >= 3{
             if UIApplication.sharedApplication().respondsToSelector("isRegisteredForRemoteNotifications") {

@@ -39,6 +39,10 @@ class Main {
     
     var loggingIn:Bool = false
     
+    var comingfrom:String = "popular"
+    
+    var gotoOrders:Bool = false
+    
     
     //Facebook info
     var fbID:String = ""
@@ -133,7 +137,7 @@ class Main {
     
     
     func updateTransaction(newTransaction:JSON){
-        print(newTransaction[0])
+        //print(newTransaction[0])
         let currentUUID = newTransaction[0]["uuid"].stringValue
         var index = 0
         for(index = 0; index < active_transaction_uuids2.count; index++){

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import JSQMessagesViewController
 import SwiftyJSON
+import Google
 
 class orderMessenger: JSQMessagesViewController {
     static let sharedInstance2 = CustomOrder()
@@ -43,6 +44,16 @@ class orderMessenger: JSQMessagesViewController {
     
     var oldMessageCount = 0
     
+    //0 nothing, 1 sent, 2 delivered
+    var sayDelivered = 0
+    
+    override func viewWillAppear(animated: Bool) {
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Order Messenger")
+        
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,11 +102,6 @@ class orderMessenger: JSQMessagesViewController {
             }
             counter++
         }
-        
-        
-        
-    
-        self.reloadMessagesView()
         
         self.title = "ORDER"
         
@@ -156,6 +162,7 @@ class orderMessenger: JSQMessagesViewController {
             cell.tag = 0
         }
         
+        
         let recognizer = UITapGestureRecognizer(target: self, action:Selector("cellTappedOn:"))
         cell.addGestureRecognizer(recognizer)
         return cell
@@ -166,6 +173,28 @@ class orderMessenger: JSQMessagesViewController {
             self.performSegueWithIdentifier("acceptOrder", sender: self);
         }
 
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        if((indexPath.row == messages.count-1) && (sayDelivered != 0)){
+            return 20
+        }
+        return 0
+    }
+    
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+        if(indexPath.row == messages.count-1){
+            if(sayDelivered == 1){
+                return NSAttributedString(string: "Sending")
+            }
+            else{
+                return NSAttributedString(string: "Delivered  ")
+            }
+        }
+        
+        return nil
+        
     }
     
     
@@ -193,16 +222,28 @@ class orderMessenger: JSQMessagesViewController {
                 let message = JSQMessage(senderId: "customer2", displayName: "customer2", media:mediaItem)
                 messages += [message]
             }
+            else if(messagesJSON[index]["content"].stringValue == messages[messages.count-1].text){
+                //Message is already in view
+                //Should say delivered here
+                print("CAUGHTTTT")
+                sayDelivered = 2
+                reloadMessagesView()
+            }
             else if(messagesJSON[index]["from_customer"].boolValue){
                 let message = JSQMessage(senderId: "customer", displayName: "customer", text:messagesJSON[index]["content"].stringValue)
                 messages += [message]
             }
             else{
-                let message = JSQMessage(senderId: "customer2", displayName: "customer2", text:messagesJSON[index]["content"].stringValue)
+                let message = JSQMessage(senderId: "customer2", displayName: "customer2",text:messagesJSON[index]["content"].stringValue)
                 messages += [message]
             }
             counter++
+            
+            
         }
+        
+        print("CAUGHTTTT")
+        sayDelivered = 2
         
         
         if(mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "proposed" || mainInstance.active_transaction_uuids2[messageIndex].paymentStatus == "pending") {
@@ -221,6 +262,10 @@ class orderMessenger: JSQMessagesViewController {
         self.reloadMessagesView()
         automaticallyScrollsToMostRecentMessage = true
         self.scrollToBottomAnimated(true)
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        return 0
     }
     
     
@@ -261,21 +306,22 @@ class orderMessenger: JSQMessagesViewController {
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         let newMessage = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text);
         counter++
-        print(counter)
+        //print(counter)
         if(counter == 1){
-            print("create new transaction")
+            //print("create new transaction")
             transactionUUID = RestApiManager.sharedInstance.createTransaction(mainInstance.uuid,token: mainInstance.token,newMessage: newMessage.text)
             mainInstance.addMessage()
         }
-        print(mainInstance.currentTransaction)
+        //print(mainInstance.currentTransaction)
         if(mainInstance.currentTransaction.transactionUUID == ""){
             mainInstance.addtoQue(newMessage.text)
         } else{
             RestApiManager.sharedInstance.sendMessage(mainInstance.currentTransaction.transactionUUID,token: mainInstance.token,message: newMessage.text)
         }
-        
-        //messages += [newMessage]
+        sayDelivered = 1
+        messages += [newMessage]
         self.finishSendingMessage()
+        //self.collectionView!.reloadData()
     }
     
     override func didPressAccessoryButton(sender: UIButton!) {

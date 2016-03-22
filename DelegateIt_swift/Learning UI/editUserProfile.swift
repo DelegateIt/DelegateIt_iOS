@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Google
 
 class editUserProfile: UITableViewController {
 
@@ -19,6 +20,14 @@ class editUserProfile: UITableViewController {
         let index = detailViewController.index
         detailData[index!] = changedPrice!
         tableView.reloadData()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "User Profile Details")
+        
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
     }
 
     

@@ -80,7 +80,7 @@
     if (self.cachedImageView == nil) {
         CGSize size = [self mediaViewDisplaySize];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:self.image];
-        imageView.frame = CGRectMake(0.0f, 0.0f, size.width, size.height);
+        imageView.frame = CGRectMake(0.0f, 0.0f, size.width, 100);
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
         [JSQMessagesMediaViewBubbleImageMasker applyBubbleImageMaskToMediaView:imageView isOutgoing:self.appliesMediaViewMaskAsOutgoing];

@@ -9,6 +9,7 @@
 
 import Foundation
 import FBSDKLoginKit
+import Google
 
 class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -21,13 +22,16 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let swiftBlogs = ["EDIT PROFILE","WEBSITE","FEEDBACK"]
     var choosenRow = ""
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "PROFILE"
         tableView.delegate = self
         tableView.dataSource = self
         
-        self.tabBarController?.tabBar.hidden = true
+        //self.tabBarController?.tabBar.hidden = true
+        
         let screenSize: CGRect = UIScreen.mainScreen().bounds
 
         let button = UIButton(type: UIButtonType.System) as UIButton
@@ -38,6 +42,13 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
         self.view.addSubview(button)
+        
+        print(button.frame.origin.x)
+        
+        if(mainInstance.comingfrom == "popular"){
+            button.frame.origin.y = button.frame.origin.y - (button.frame.height)
+        }
+        
         
         imageView.contentMode = .ScaleAspectFill
         imageView.layer.borderWidth = 2
@@ -50,10 +61,23 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         tableView.alwaysBounceVertical = false;
         self.tableView.tableFooterView = UIView()
+        
+        tableView.frame.origin.x = screenSize.width/2
+        tableView.frame.origin.y = screenSize.height/2
+        
+        print(screenSize.height)
     }
     
     override func viewWillAppear(animated: Bool) {
         userName.text = mainInstance.first_name + " " + mainInstance.last_name
+        
+        
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "profile")
+        
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
     }
     
     

@@ -17,7 +17,6 @@ class notificationHandler {
         self.notification.notificationLabelBackgroundColor = UIColor.blueColor()
         self.notification.displayNotificationWithMessage(name, completion: nil)
         self.notification.notificationTappedBlock = {
-            //print("notification tapped")
             self.notification.dismissNotification()
         }
     }

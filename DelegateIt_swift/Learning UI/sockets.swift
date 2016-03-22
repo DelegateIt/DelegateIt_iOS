@@ -23,6 +23,7 @@ class sockets{
                 socket.on(mainInstance.active_transaction_uuids2[index].transactionUUID) {data, ack in
                     let json = JSON(data)
                     mainInstance.updateTransaction(json)
+                    print("GOT MESSAGE")
                 }
                 socket.emit("register_transaction", ["transaction_uuid": mainInstance.active_transaction_uuids2[index].transactionUUID])
             }

@@ -5,3 +5,4 @@
 //#import <JSQMessagesViewController/JSQMessages.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <Google/Analytics.h>

@@ -9,6 +9,8 @@
 import Foundation
 import SwiftyJSON
 import SwiftSpinner
+import Google
+import UIKit
 
 class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
 
@@ -53,6 +55,14 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         }
         moveLogo = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginUser:",name:"readyToLogin", object: nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: "Login")
+        
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
     }
     
     func initializeNotificationServices() -> Void {
@@ -178,6 +188,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 self.reconnectTimer.invalidate()
                 if(self.loggedIn == 0){
                     self.loggedIn = 1
+                    self.tabBarController?.selectedIndex = 2
                     dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("login", sender: self) })
                 }
                 else{
@@ -187,7 +198,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 
             }else if(response == -1){
                 dispatch_async(dispatch_get_main_queue(), {
-                    SwiftSpinner.show("PLEASE UPDATE, YOU ARE RUNNING AN OLD VERSION")
+                    SwiftSpinner.show("Can't connect to server!")
                     if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
                         notificationH.printHello("No Internet Connection")
                     }

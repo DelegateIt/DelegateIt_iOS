@@ -1,19 +1,19 @@
 {
-  "mode":"production",
+  "mode":"test",
     
   "local":{
        "restURL": "http://192.168.99.100:8000",
-       "socketURL": "http://192.168.99.100:8060",
+       "socketURL": "http://192.168.99.100:",
        "debugMode": true
   },
   "test":{
-       "restURL": "http://gator-api-test.immprnfxbj.us-west-2.elasticbeanstalk.com",
-       "socketURL": "http://gator-notify-test.immprnfxbj.us-west-2.elasticbeanstalk.com:80",
+       "restURL": "http://gator-api-test.ixgvzamgqt.us-west-2.elasticbeanstalk.com",
+       "socketURL": "http://gator-notify-test.ixgvzamgqt.us-west-2.elasticbeanstalk.com",
        "debugMode": false
   },
   "production":{
-       "restURL": "http://api.godelegateit.com",
-       "socketURL": "http://notify.godelegateit.com:80",
+       "restURL": "https://api.godelegateit.com",
+       "socketURL": "https://notify.godelegateit.com",
        "debugMode": false
   },
 } 

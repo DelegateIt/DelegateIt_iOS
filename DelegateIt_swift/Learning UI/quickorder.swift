@@ -8,18 +8,52 @@
 
 import Foundation
 import UIKit
+import Google
 
 class quickorder: UIViewController {
     
     @IBOutlet weak var myScrollView: UIScrollView!
-    var descriptions:[String] = ["I would like to book a paddleboarding trip on Lake Austin","I want Tiff's Treats coookies delivered to me","I would like to book a double decker tour of Austin","I want a large pizza from Austin's Pizza"]
+    var descriptions:[String] = ["I would like to book a paddleboarding trip on Lake Austin","I want Tiff's Treats cookies delivered to me","I would like to book a double decker tour of Austin","I want a large pizza from Austin's Pizza","I would like to have my clothes dry cleaned",""]
+    var extraInformation:[String] = ["Paddle board on the beautiful Lake Austin. We know the best place!","Made from scratch and right out of the oven, these cookies will be sure to delight.","Want to get out and see the town?","The sauce, fresh ingredients, and charmingly local Austin's Pizza has been making our favorite pies since 1999.","Clean and fresh clothes with pick-up and drop-off.","As your personal concierge, we accept any order. Give us a challenge, we dare you."]
     var descrionChosen = ""
+    
+    var buttonList:[UIButton] = []
+    
+    var lastPicked = -1;
+    
+    override func viewWillAppear(animated: Bool) {
+        if(mainInstance.gotoOrders){
+            tabBarController?.selectedIndex = 2
+        }
+        else{
+            let tracker = GAI.sharedInstance().defaultTracker
+            tracker.set(kGAIScreenName, value: "quickorder")
+            
+            let builder = GAIDictionaryBuilder.createScreenView()
+            tracker.send(builder.build() as [NSObject : AnyObject])
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBarController?.tabBar.hidden = false
+        //self.tabBarController?.tabBar.hidden = false
+        
+        mainInstance.comingfrom = "popular"
+        
+        let replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+        replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
+        replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        let item = UIBarButtonItem(customView: replyBtn)
+        self.navigationItem.rightBarButtonItem = item
+        
+        
+        //Make the button yellow
+        let tabItem = self.tabBarController?.tabBar.items![1]
+        tabItem?.image = UIImage(named: "plus.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+        self.tabBarController?.tabBar.items![1].setTitleTextAttributes([NSForegroundColorAttributeName:UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1.0)], forState: UIControlState.Normal)
+        
         let screenSize: CGRect = UIScreen.mainScreen().bounds
-        let myImages = ["order4.png","order2.png","quick3.png","order1.png"]
+        let myImages = ["new_paddleboarding.png","new_cookies.png","new_toa.png","new_pizza.png","new_drycleaning","new_orderanything.png"]
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
         var scrollViewContentSize:CGFloat = 0;
@@ -43,7 +77,42 @@ class quickorder: UIViewController {
             myImageView.frame.origin.y = yPosition
             myImageView.tag = index
             
+            //start
+            
+            /*
+            
+            let button = UIButton(type: UIButtonType.System) as UIButton
+            button.frame = CGRectMake((screenSize.width-(screenSize.width/1.2))/2, 120, screenSize.width/1.2, 100)
+            button.frame.size.height = myImageView.frame.height
+            button.frame.size.width = myImageView.frame.width
+            button.center = myImageView.center
+            //button.center.y = button.center.y - 35
+            button.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+            button.setTitle(extraInformation[index], forState: .Normal)
+            button.titleLabel?.font = UIFont(name:"HelveticaNeue-Light", size: 16.0)
+            button.titleLabel?.numberOfLines = 3
+            button.titleLabel?.textAlignment = NSTextAlignment.Center
+            button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            //button.alpha = 0.4
+            button.tag = index
+            button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
+            //button.hidden = true
+            button.enabled = true
+            button.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
+            button.titleLabel?.alpha = 0
+            button.isAccessibilityElement = true
+    
+            buttonList.append(button)
+            
+            myScrollView.addSubview(button) //might need to move back
+ 
+            */
+            
+            //end
+            
             myScrollView.addSubview(myImageView)
+            
+            
             
             yPosition += imageHeight + 2
             scrollViewContentSize += imageHeight
@@ -54,12 +123,8 @@ class quickorder: UIViewController {
             myImageView.addGestureRecognizer(tapGestureRecognizer)
             myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize)
         }
+        myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize+10)
         
-        let replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
-        replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
-        replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
-        let item = UIBarButtonItem(customView: replyBtn)
-        self.navigationItem.rightBarButtonItem = item
         
         RestApiManager.sharedInstance.downloadProfilePic()
         
@@ -79,8 +144,36 @@ class quickorder: UIViewController {
         loadBadge()
     }
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
+            let position :CGPoint = touch.locationInView(view)
+            print(position.x)
+            print(position.y)
+            
+        }
+    }
+    
+    func btnTouched(sender:UIButton!){
+        if(buttonList[sender.tag].backgroundColor != UIColor.blackColor().colorWithAlphaComponent(0)){
+            buttonList[sender.tag].backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
+            buttonList[sender.tag].titleLabel?.alpha = 0
+        }
+        else{
+            if(lastPicked != -1){
+                buttonList[lastPicked].backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
+                buttonList[lastPicked].titleLabel?.alpha = 0
+            }
+            buttonList[sender.tag].backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.8)
+            buttonList[sender.tag].titleLabel?.alpha = 1
+        }
+        lastPicked = sender.tag
+    }
+    
     func gotoSettings(sender:UIButton!){
-        self.performSegueWithIdentifier("goToSettings22", sender: self);
+        print("Going to settings")
+        //self.tabBarController?.hidesBottomBarWhenPushed = false
+        //self.tabBarController?.tabBar.hidden = true
+        self.performSegueWithIdentifier("goToSettings24", sender: self);
         
     }
     
@@ -111,7 +204,7 @@ class quickorder: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.tabBarController?.tabBar.hidden = false
+        //self.tabBarController?.tabBar.hidden = false
     }
     
     
@@ -130,7 +223,12 @@ class quickorder: UIViewController {
             let secondVC: CustomOrder = segue.destinationViewController as! CustomOrder
             secondVC.orderText = descrionChosen
         }
+        else if(segue.identifier == "goToSettings24"){
+            let secondVC: profile = segue.destinationViewController as! profile
+            secondVC.hidesBottomBarWhenPushed = true
+        }
     }
+
     
 }
 
