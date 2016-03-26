@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
+        
+        
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
@@ -71,7 +73,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let deviceTokenStr = convertDeviceTokenToString(deviceToken)
-        //print(deviceTokenStr)
         mainInstance.deviceID = deviceTokenStr
         //callback
         if(!mainInstance.loggingIn){
@@ -96,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // foreground (or if the app was in the background and the user clicks on the notification).
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         // display the userInfo
-        /*
+        
         if let notification = userInfo["aps"] as? NSDictionary,
             let alert = notification["alert"] as? String {
                 let alertCtrl = UIAlertController(title: "Time Entry", message: alert as String, preferredStyle: UIAlertControllerStyle.Alert)
@@ -112,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // -- pass in NoData, since no new data was fetched from the server.
                 completionHandler(UIBackgroundFetchResult.NoData)
         }
-        */
+        
     }
     
     

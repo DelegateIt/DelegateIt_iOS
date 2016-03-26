@@ -43,6 +43,7 @@ class Main {
     
     var gotoOrders:Bool = false
     
+    var isHelpShowing:Bool = false
     
     //Facebook info
     var fbID:String = ""

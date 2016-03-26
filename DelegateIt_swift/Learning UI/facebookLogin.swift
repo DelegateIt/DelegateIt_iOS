@@ -34,7 +34,6 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         config().getConfig()
-        
         loggedIn = 0
         
         if(FBSDKAccessToken.currentAccessToken() != nil){
@@ -170,12 +169,10 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 SwiftSpinner.show("Connecting...")
                 mainInstance.fbID = self.fbID
                 
-                print("PUSH")
-                //print(UIApplication.sharedApplication().isRegisteredForRemoteNotifications())
+                //Print Device ID
+                print(UIDevice.currentDevice().identifierForVendor!.UUIDString)
                 
                 self.initializeNotificationServices()
-                
-                //
             }
         })
     }

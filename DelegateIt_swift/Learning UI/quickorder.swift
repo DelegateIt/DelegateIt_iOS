@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Google
+import NMPopUpViewSwift
 
 class quickorder: UIViewController {
     
@@ -20,8 +21,12 @@ class quickorder: UIViewController {
     var buttonList:[UIButton] = []
     
     var lastPicked = -1;
+
+    
+    var popViewController : PopUpViewControllerSwift!
     
     override func viewWillAppear(animated: Bool) {
+        //self.tabBarController?.tabBar.items![1].title = "ESSENTIALS"
         if(mainInstance.gotoOrders){
             tabBarController?.selectedIndex = 2
         }
@@ -48,9 +53,12 @@ class quickorder: UIViewController {
         
         
         //Make the button yellow
+        /*
         let tabItem = self.tabBarController?.tabBar.items![1]
         tabItem?.image = UIImage(named: "plus.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         self.tabBarController?.tabBar.items![1].setTitleTextAttributes([NSForegroundColorAttributeName:UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1.0)], forState: UIControlState.Normal)
+  
+        */
         
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let myImages = ["new_paddleboarding.png","new_cookies.png","new_toa.png","new_pizza.png","new_drycleaning","new_orderanything.png"]
@@ -128,15 +136,14 @@ class quickorder: UIViewController {
         
         RestApiManager.sharedInstance.downloadProfilePic()
         
-        /*
+        
         
         let helpBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         helpBtn.setImage(UIImage(named: "help.png"), forState: UIControlState.Normal)
-        helpBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        helpBtn.addTarget(self, action: Selector("showHelp:"), forControlEvents:  UIControlEvents.TouchUpInside)
         let item2 = UIBarButtonItem(customView: helpBtn)
         self.navigationItem.leftBarButtonItem = item2
- 
-        */
+
         
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBadge:",name:"loadbadge", object: nil)
@@ -150,6 +157,11 @@ class quickorder: UIViewController {
             print(position.x)
             print(position.y)
             
+            if(mainInstance.isHelpShowing){
+    
+                //self.popViewController.view.removeFromSuperview()
+                NSNotificationCenter.defaultCenter().postNotificationName("removePOP", object: nil)
+            }
         }
     }
     
@@ -167,6 +179,38 @@ class quickorder: UIViewController {
             buttonList[sender.tag].titleLabel?.alpha = 1
         }
         lastPicked = sender.tag
+    }
+    
+    func showHelp(sender:UIButton!){
+        print("Show Help")
+        
+        if(!mainInstance.isHelpShowing){
+            mainInstance.isHelpShowing = true
+            let bundle = NSBundle(forClass: PopUpViewControllerSwift.self)
+            //self.popViewController = PopUpViewControllerSwift(nibName: "essentials", bundle: bundle)
+            self.popViewController = PopUpViewControllerSwift(nibName: "PopUpViewController_iPhone6Plus", bundle: bundle)
+            //self.popViewController.title = "This is a popup view"
+            self.popViewController.showInView(self.view, withMessage: "You just triggered a great popup window", animated: true)
+        }
+        else{
+            mainInstance.isHelpShowing = false
+            //self.popViewController.view.removeFromSuperview()
+            
+            UIView.animateWithDuration(0.25, animations: {
+                }, completion:{(finished : Bool)  in
+                    if (finished)
+                    {
+                        self.popViewController.view.removeFromSuperview()
+                    }
+            });
+        }
+        
+        
+        
+        
+        //self.view.removeFromSuperview()
+        
+        //self.performSegueWithIdentifier("goToSettings24", sender: self);
     }
     
     func gotoSettings(sender:UIButton!){

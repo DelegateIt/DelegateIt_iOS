@@ -42,7 +42,7 @@ class ordersView: UITableViewController {
         
         let replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
-        replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        replyBtn.addTarget(self, action: #selector(ordersView.gotoSettings(_:)), forControlEvents:  UIControlEvents.TouchUpInside)
         let item = UIBarButtonItem(customView: replyBtn)
         self.navigationItem.rightBarButtonItem = item
         
@@ -62,7 +62,7 @@ class ordersView: UITableViewController {
             button.setTitle("MAKE A NEW ORDER", forState: .Normal)
             button.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 16.0)
             button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
+            button.addTarget(self, action: #selector(ordersView.btnTouched(_:)), forControlEvents:.TouchUpInside)
             self.view.addSubview(button)
             self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
             tableView.alwaysBounceVertical = false;
@@ -92,7 +92,8 @@ class ordersView: UITableViewController {
         mainInstance.sortTransaction()
         
         var index = 0
-        for (index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
+        for (index = 0; index < mainInstance.active_transaction_uuids2.count; index += 1)
+        {
             print(mainInstance.active_transaction_uuids2[index].paymentStatus)
             if(mainInstance.active_transaction_uuids2[index].paymentStatus == "proposed"){
                 tableData.append("RECEIPT")
@@ -140,7 +141,7 @@ class ordersView: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         //self.tabBarController?.tabBar.hidden = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadList:",name:"load", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ordersView.loadList(_:)),name:"load", object: nil)
     }
     
     func loadList(notification: NSNotification){

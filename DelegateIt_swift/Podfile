@@ -11,5 +11,4 @@ target 'DelegateIt' do
   pod "SwiftSpinner"
   pod "Whisper"
   pod 'Google/Analytics'
-  
 end
