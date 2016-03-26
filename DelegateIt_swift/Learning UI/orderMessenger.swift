@@ -210,6 +210,7 @@ class orderMessenger: JSQMessagesViewController {
         self.userName = "customer"
         var index = 0
         for (index = oldMessageCount; index < messageCount; index++){
+            
             if(messagesJSON[index]["type"].stringValue == "receipt"){
                 //let rightBtn = UIBarButtonItem(title: "PAY", style: .Plain, target: self, action: "sayHello:")
                 //self.navigationItem.rightBarButtonItem = rightBtn

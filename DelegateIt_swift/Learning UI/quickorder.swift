@@ -11,7 +11,7 @@ import UIKit
 import Google
 import NMPopUpViewSwift
 
-class quickorder: UIViewController {
+class quickorder: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var myScrollView: UIScrollView!
     var descriptions:[String] = ["I would like to book a paddleboarding trip on Lake Austin","I want Tiff's Treats cookies delivered to me","I would like to book a double decker tour of Austin","I want a large pizza from Austin's Pizza","I would like to have my clothes dry cleaned",""]
@@ -21,6 +21,8 @@ class quickorder: UIViewController {
     var buttonList:[UIButton] = []
     
     var lastPicked = -1;
+    
+    var button:UIButton = UIButton()
 
     
     var popViewController : PopUpViewControllerSwift!
@@ -61,7 +63,7 @@ class quickorder: UIViewController {
         */
         
         let screenSize: CGRect = UIScreen.mainScreen().bounds
-        let myImages = ["new_paddleboarding.png","new_cookies.png","new_toa.png","new_pizza.png","new_drycleaning","new_orderanything.png"]
+        let myImages = ["new_paddleboarding.png","new_cookies.png","new_toa.png","new_pizza.png","new_drycleaning","orderAnythingBtn.png"]
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
         var scrollViewContentSize:CGFloat = 0;
@@ -130,8 +132,23 @@ class quickorder: UIViewController {
             myImageView.userInteractionEnabled = true
             myImageView.addGestureRecognizer(tapGestureRecognizer)
             myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize)
+            
+            
+            myScrollView.delegate = self
+            
+            
         }
         myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize+10)
+        
+        
+        button = UIButton(type: UIButtonType.System) as UIButton
+        button.frame = CGRectMake(20, screenSize.height-200, screenSize.width-40, 60)
+        button.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
+        button.setTitle("Order Anything", forState: .Normal)
+        button.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 24.0)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        button.addTarget(self, action: "customOrder:", forControlEvents:.TouchUpInside)
+        self.view.addSubview(button)
         
         
         RestApiManager.sharedInstance.downloadProfilePic()
@@ -163,6 +180,10 @@ class quickorder: UIViewController {
                 NSNotificationCenter.defaultCenter().postNotificationName("removePOP", object: nil)
             }
         }
+    }
+    
+    func customOrder(sender:UIButton!){
+        self.performSegueWithIdentifier("showText", sender: self)
     }
     
     func btnTouched(sender:UIButton!){
@@ -270,6 +291,18 @@ class quickorder: UIViewController {
         else if(segue.identifier == "goToSettings24"){
             let secondVC: profile = segue.destinationViewController as! profile
             secondVC.hidesBottomBarWhenPushed = true
+        }
+    }
+    
+    func scrollViewDidScroll(myScrollView: UIScrollView){
+        
+        print(myScrollView.contentOffset.y)
+        
+        if(myScrollView.contentOffset.y > 594){
+            button.alpha = 0
+        }
+        else{
+            button.alpha = 1
         }
     }
 

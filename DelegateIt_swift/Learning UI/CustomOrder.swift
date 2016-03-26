@@ -71,7 +71,7 @@ class CustomOrder: JSQMessagesViewController {
             label = UILabel(frame: CGRectMake(0, 0, 300, 300))
             label.center = CGPointMake(screenSize.width/2, 60)
             if(orderText == ""){
-                label.center.y = label.center.y + 60
+                //label.center.y = label.center.y + 60
             }
             label.textAlignment = NSTextAlignment.Center
             label.text = "Please send us a text message with your request or desired item"

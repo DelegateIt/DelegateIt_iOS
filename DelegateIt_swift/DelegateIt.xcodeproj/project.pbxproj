@@ -17,6 +17,7 @@
 		370B9AAB1CA6E3B7006CE9CE /* essentialsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370B9AAA1CA6E3B7006CE9CE /* essentialsForm.swift */; };
 		370B9AC11CA722ED006CE9CE /* PopUpViewControllerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370B9AC01CA722ED006CE9CE /* PopUpViewControllerSwift.swift */; };
 		370B9AC51CA723AB006CE9CE /* PopUpViewController_iPhone6Plus.xib in Resources */ = {isa = PBXBuildFile; fileRef = 370B9AC41CA723AB006CE9CE /* PopUpViewController_iPhone6Plus.xib */; };
+		370B9AC71CA73528006CE9CE /* orderAnythingBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 370B9AC61CA73528006CE9CE /* orderAnythingBtn.png */; };
 		373399331BF27598009B8B14 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 373399321BF27598009B8B14 /* Images.xcassets */; };
 		373399351BF27621009B8B14 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 373399341BF27621009B8B14 /* Default-736h@3x.png */; };
 		3734CAB91C5E127D006968F0 /* orderMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734CAB81C5E127D006968F0 /* orderMessenger.swift */; };
@@ -124,6 +125,7 @@
 		370B9AAA1CA6E3B7006CE9CE /* essentialsForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = essentialsForm.swift; sourceTree = "<group>"; };
 		370B9AC01CA722ED006CE9CE /* PopUpViewControllerSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpViewControllerSwift.swift; sourceTree = "<group>"; };
 		370B9AC41CA723AB006CE9CE /* PopUpViewController_iPhone6Plus.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpViewController_iPhone6Plus.xib; sourceTree = "<group>"; };
+		370B9AC61CA73528006CE9CE /* orderAnythingBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orderAnythingBtn.png; sourceTree = "<group>"; };
 		373399321BF27598009B8B14 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DelegateIt/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		373399341BF27621009B8B14 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		3734CAB81C5E127D006968F0 /* orderMessenger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = orderMessenger.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 		3737AC891C54048100F71E8B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				370B9AC61CA73528006CE9CE /* orderAnythingBtn.png */,
 				370B9AA41CA6E2A0006CE9CE /* e3.png */,
 				370B9AA51CA6E2A0006CE9CE /* e2.png */,
 				370B9AA61CA6E2A0006CE9CE /* e1.png */,
@@ -587,6 +590,7 @@
 				373FF3EE1C8E8C8000F556B9 /* flame@2x.png in Resources */,
 				37444A7C1C7FF184009F0B9B /* order4.png in Resources */,
 				37455A861C637FDD0028A7FF /* yellowBG.png in Resources */,
+				370B9AC71CA73528006CE9CE /* orderAnythingBtn.png in Resources */,
 				3745AAE61CA5745800E5DF89 /* star@2x.png in Resources */,
 				37FBF40A1C688B3E00BC49F3 /* quick1.png in Resources */,
 				370669DF1C9F292F0011940D /* new_toa.png in Resources */,

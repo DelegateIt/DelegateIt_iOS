@@ -34,6 +34,8 @@ import QuartzCore
         self.popUpView.layer.shadowOpacity = 0.8
         self.popUpView.layer.shadowOffset = CGSizeMake(0.0, 0.0)
         
+        self.popUpView.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
+        
         webView.layer.cornerRadius = 8.0
         webView.clipsToBounds = true
         

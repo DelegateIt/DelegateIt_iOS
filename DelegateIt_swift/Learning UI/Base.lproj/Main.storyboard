@@ -76,7 +76,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZAc-mq-HBb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1346" y="298"/>
+            <point key="canvasLocation" x="1298" y="726"/>
         </scene>
         <!--Essentials-->
         <scene sceneID="dVV-kh-Gjf">
@@ -565,11 +565,11 @@
         <image name="star.png" width="28" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="iLt-IS-rad"/>
-        <segue reference="UyD-dK-3O4"/>
-        <segue reference="dQJ-eI-zyO"/>
-        <segue reference="EYs-sc-vWg"/>
+        <segue reference="xRJ-18-r70"/>
+        <segue reference="5Dm-Ka-WH9"/>
+        <segue reference="mWy-JL-R1S"/>
         <segue reference="eoD-qJ-jAY"/>
-        <segue reference="4JS-ob-VsK"/>
+        <segue reference="dQJ-eI-zyO"/>
+        <segue reference="UyD-dK-3O4"/>
     </inferredMetricsTieBreakers>
 </document>
