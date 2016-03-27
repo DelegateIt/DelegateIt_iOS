@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PopUpViewControllerSwift">
@@ -18,42 +19,43 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HxJ-fg-egd">
-                    <rect key="frame" x="39" y="124" width="336" height="509"/>
+                    <rect key="frame" x="39" y="65" width="336" height="509"/>
                     <subviews>
                         <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rrf-gn-eXX">
                             <rect key="frame" x="0.0" y="0.0" width="336" height="457"/>
                             <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="457" id="Cu0-oW-2M8"/>
-                            </constraints>
                         </webView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pdi-P9-XQc">
+                            <rect key="frame" x="132" y="471" width="72" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="72" id="pEM-8J-WWj"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <state key="normal" title="CLOSE">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="hidePopUp:" destination="-1" eventType="touchUpInside" id="s6r-nq-FVS"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstItem="rrf-gn-eXX" firstAttribute="top" secondItem="HxJ-fg-egd" secondAttribute="top" id="F8d-Qk-jFC"/>
-                        <constraint firstAttribute="trailing" secondItem="rrf-gn-eXX" secondAttribute="trailing" id="Q4w-5n-08p"/>
-                        <constraint firstItem="rrf-gn-eXX" firstAttribute="leading" secondItem="HxJ-fg-egd" secondAttribute="leading" id="fft-0O-eL0"/>
+                        <constraint firstItem="Pdi-P9-XQc" firstAttribute="centerX" secondItem="HxJ-fg-egd" secondAttribute="centerX" id="IKr-VE-51M"/>
+                        <constraint firstItem="rrf-gn-eXX" firstAttribute="top" secondItem="HxJ-fg-egd" secondAttribute="top" id="VHF-tq-3he"/>
+                        <constraint firstItem="Pdi-P9-XQc" firstAttribute="bottom" secondItem="HxJ-fg-egd" secondAttribute="bottomMargin" id="aS3-dI-hyc"/>
+                        <constraint firstItem="Pdi-P9-XQc" firstAttribute="top" secondItem="HxJ-fg-egd" secondAttribute="top" constant="471" id="dVb-hi-CHe"/>
+                        <constraint firstItem="Pdi-P9-XQc" firstAttribute="centerX" secondItem="rrf-gn-eXX" secondAttribute="centerX" id="et3-T5-Qh7"/>
+                        <constraint firstItem="rrf-gn-eXX" firstAttribute="leading" secondItem="HxJ-fg-egd" secondAttribute="leading" id="uFM-WX-dp2"/>
+                        <constraint firstItem="Pdi-P9-XQc" firstAttribute="top" secondItem="rrf-gn-eXX" secondAttribute="bottom" constant="14" id="uIM-fx-A5e"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pdi-P9-XQc">
-                    <rect key="frame" x="183" y="592" width="48" height="30"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="CLOSE">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="hidePopUp:" destination="-1" eventType="touchUpInside" id="s6r-nq-FVS"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="HxJ-fg-egd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="124" id="8mI-8q-gEh"/>
-                <constraint firstItem="HxJ-fg-egd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="AdT-vx-tBk"/>
-                <constraint firstAttribute="bottom" secondItem="HxJ-fg-egd" secondAttribute="bottom" constant="103" id="Gdv-9E-TS1"/>
-                <constraint firstAttribute="bottom" secondItem="Pdi-P9-XQc" secondAttribute="bottom" constant="114" id="hHR-lE-Hqa"/>
-                <constraint firstItem="HxJ-fg-egd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="39" id="iXJ-nP-9my"/>
-                <constraint firstItem="Pdi-P9-XQc" firstAttribute="centerX" secondItem="HxJ-fg-egd" secondAttribute="centerX" id="mKb-u1-crF"/>
+                <constraint firstItem="HxJ-fg-egd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="MdC-vs-xm5"/>
+                <constraint firstItem="HxJ-fg-egd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="39" id="YAK-sp-tD6"/>
+                <constraint firstItem="HxJ-fg-egd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="65" id="gya-i4-M55"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
             <point key="canvasLocation" x="349" y="380"/>

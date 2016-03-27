@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import Google
-import NMPopUpViewSwift
 
 class quickorder: UIViewController, UIScrollViewDelegate {
     
@@ -28,7 +27,6 @@ class quickorder: UIViewController, UIScrollViewDelegate {
     var popViewController : PopUpViewControllerSwift!
     
     override func viewWillAppear(animated: Bool) {
-        //self.tabBarController?.tabBar.items![1].title = "ESSENTIALS"
         if(mainInstance.gotoOrders){
             tabBarController?.selectedIndex = 2
         }
@@ -63,7 +61,7 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         */
         
         let screenSize: CGRect = UIScreen.mainScreen().bounds
-        let myImages = ["new_paddleboarding.png","new_cookies.png","new_toa.png","new_pizza.png","new_drycleaning","orderAnythingBtn.png"]
+        let myImages = ["new_paddleboarding.png","new_cookies.png","new_toa.png","new_pizza.png","new_drycleaning","new_orderanything.png"]
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
         var scrollViewContentSize:CGFloat = 0;
@@ -144,7 +142,7 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         button = UIButton(type: UIButtonType.System) as UIButton
         button.frame = CGRectMake(20, screenSize.height-200, screenSize.width-40, 60)
         button.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
-        button.setTitle("Order Anything", forState: .Normal)
+        button.setTitle("ORDER ANYTHING", forState: .Normal)
         button.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 24.0)
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         button.addTarget(self, action: "customOrder:", forControlEvents:.TouchUpInside)
@@ -295,8 +293,7 @@ class quickorder: UIViewController, UIScrollViewDelegate {
     }
     
     func scrollViewDidScroll(myScrollView: UIScrollView){
-        
-        print(myScrollView.contentOffset.y)
+        //print(myScrollView.contentOffset.y)
         
         if(myScrollView.contentOffset.y > 594){
             button.alpha = 0

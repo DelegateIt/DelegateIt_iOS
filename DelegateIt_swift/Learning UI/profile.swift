@@ -46,7 +46,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         print(button.frame.origin.x)
         
         if(mainInstance.comingfrom == "popular"){
-            button.frame.origin.y = button.frame.origin.y - (button.frame.height)
+            button.frame.origin.y = button.frame.origin.y - (button.frame.height*2)
         }
         
         

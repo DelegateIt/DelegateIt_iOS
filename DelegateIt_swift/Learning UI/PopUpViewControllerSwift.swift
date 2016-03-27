@@ -29,12 +29,17 @@ import QuartzCore
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
+        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
         self.popUpView.layer.cornerRadius = 8.0
         self.popUpView.layer.shadowOpacity = 0.8
         self.popUpView.layer.shadowOffset = CGSizeMake(0.0, 0.0)
         
         self.popUpView.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
+        
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        //self.view.frame.origin.y = -70
+        //self.view.frame.origin.x = -30
+        
         
         webView.layer.cornerRadius = 8.0
         webView.clipsToBounds = true
@@ -49,7 +54,7 @@ import QuartzCore
     public func showInView(aView: UIView!, withMessage message: String!, animated: Bool)
     {
         aView.addSubview(self.view)
-        let url = NSURL (string:"http://www.apple.com/");
+        let url = NSURL (string:"http://google.com");
         let requestObj = NSURLRequest(URL: url!);
         webView.loadRequest(requestObj);
         
@@ -61,8 +66,7 @@ import QuartzCore
     
     func showAnimate()
     {
-        let screenSize: CGRect = UIScreen.mainScreen().bounds
-        self.view.frame.origin.y = -70
+        
         self.view.alpha = 0.0;
         UIView.animateWithDuration(0.25, animations: {
             self.view.alpha = 1.0

@@ -181,6 +181,11 @@ class ordersView: UITableViewController {
             let destination = segue.destinationViewController as! orderMessenger
             destination.data = UUIDs[(path?.row)!]
         }
+        else if(segue.identifier == "gotoCompleted"){
+            let path = tableView.indexPathForSelectedRow
+            let destination = segue.destinationViewController as! orderMessenger
+            destination.data = UUIDs[(path?.row)!]
+        }
         else if(segue.identifier == "goToSettings23"){
             let secondVC: profile = segue.destinationViewController as! profile
             secondVC.hidesBottomBarWhenPushed = true
