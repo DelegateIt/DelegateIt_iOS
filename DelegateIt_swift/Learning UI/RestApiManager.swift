@@ -276,7 +276,7 @@ class RestApiManager: NSObject {
         var result:Int = -1
         
         //Actual User
-        let postParams : [String: String] = ["type":"text","content":message,"from_customer":"true"]
+        let postParams : [String: AnyObject] = ["type":"text","content":message,"from_customer":true]
         
         
         // Create the request
