@@ -14,8 +14,13 @@ import Whisper
 import Google
 
 class CustomOrder: JSQMessagesViewController {
-    
     var orderText:String = ""
+    var basicName:String = ""
+    var labelText:String = ""
+    var fromBasic:Bool = false
+    var fromOrders:Bool = false
+    var orderAnything:Bool = false
+    
     var userName = ""
     var messages = [JSQMessage]()
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(red: 229/255, green: 229/255, blue: 234/255, alpha: 1.0))
@@ -69,18 +74,44 @@ class CustomOrder: JSQMessagesViewController {
             
             let screenSize: CGRect = UIScreen.mainScreen().bounds
             label = UILabel(frame: CGRectMake(0, 0, 300, 300))
-            label.center = CGPointMake(screenSize.width/2, 60)
-            if(orderText == ""){
-                //label.center.y = label.center.y + 60
+            label.center = CGPointMake(screenSize.width/2, 100)
+            if(mainInstance.comingfrom == "basics"){
+                if(orderAnything){
+                    label.center.y = label.center.y + 80
+                }
+                else{
+                    label.center.y = label.center.y + 40
+                }
+                
+                
             }
+            
+            if(fromOrders){
+                label.center.y = label.center.y + 80
+            }
+            
             label.textAlignment = NSTextAlignment.Center
-            label.text = "Please send us a text message with your request or desired item"
+            if(fromBasic){
+               label.text = labelText
+                self.title = basicName
+            }
+            else{
+                label.text = "Please send us a text message with your request or desired item"
+                label.center.y = label.center.y - 60
+                self.title = "Order"
+            }
+            
             label.font = UIFont.systemFontOfSize(16, weight: UIFontWeightLight)
-            label.numberOfLines = 2
+            label.numberOfLines = 10
+            label.sendSubviewToBack(self.view)
             self.view.addSubview(label)
+            
+            print("asdfasdfasdf")
+            print(label.text)
         }
         
-        self.title = "ORDER"
+        
+        
         self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.1, 0.1);
         self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1);
         self.userName = "customer"
@@ -116,6 +147,8 @@ class CustomOrder: JSQMessagesViewController {
             
         let builder = GAIDictionaryBuilder.createScreenView()
         tracker.send(builder.build() as [NSObject : AnyObject])
+        
+        mainInstance.autoDismiss = true
     }
     
     func updateText(){
@@ -157,7 +190,16 @@ class CustomOrder: JSQMessagesViewController {
     
     func goHome(sender:UIButton!){
         //print("Going Back")
-        self.performSegueWithIdentifier("cancleOrder", sender: self);
+        self.performSegueWithIdentifier("cancleOrder", sender: self)
+        if(mainInstance.comingfrom == "basics"){
+            //self.tabBarController?.selectedIndex = 1
+        }
+        //
+        
+        
+        
+        //dispatch_async(dispatch_get_main_queue(), {self.performSegueWithIdentifier("cancleOrder", sender: self) })
+        
         //self.performSegueWithIdentifier("backToOrder", sender: self);
         
         //backToOrder

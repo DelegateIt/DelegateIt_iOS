@@ -4,7 +4,7 @@ use_frameworks!
 target 'DelegateIt' do
   pod 'Alamofire', '~> 3.0'
   pod 'SwiftyJSON'
-  pod 'Socket.IO-Client-Swift', '~> 4.1.6' # Or latest version
+  pod 'Socket.IO-Client-Swift', '~> 6.0.0' # Or latest version
   pod 'JSQMessagesViewController' 
   pod 'Stripe'
   pod 'CWStatusBarNotification', '~> 2.3.3'

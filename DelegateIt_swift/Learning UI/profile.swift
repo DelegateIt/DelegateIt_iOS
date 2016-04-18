@@ -26,9 +26,11 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "PROFILE"
+        self.title = "Profile"
         tableView.delegate = self
         tableView.dataSource = self
+        
+        //Change this
         
         //self.tabBarController?.tabBar.hidden = true
         
@@ -40,13 +42,14 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         button.setTitle("LOGOUT", forState: .Normal)
         button.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 16.0)
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
+        button.addTarget(self, action: #selector(profile.btnTouched(_:)), forControlEvents:.TouchUpInside)
         self.view.addSubview(button)
         
         print(button.frame.origin.x)
         
         if(mainInstance.comingfrom == "popular"){
-            button.frame.origin.y = button.frame.origin.y - (button.frame.height*2)
+            print("from popular")
+            button.frame.origin.y = button.frame.origin.y - (button.frame.height*1.02)
         }
         
         
@@ -85,6 +88,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func btnTouched(sender:UIButton!){
         mainInstance.emptyData()
+        socketManager.stopSockets()
         FBSDKLoginManager().logOut()
         self.performSegueWithIdentifier("logout", sender: self);
     }

@@ -17,7 +17,7 @@ class payment: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Loading payment")
-        self.title = "CONFIRM PAYMENT"
+        self.title = "Confirm Payment"
         
         //print(mainInstance.currentTransaction.paymentURL)
         
@@ -32,6 +32,8 @@ class payment: UIViewController {
         
         let builder = GAIDictionaryBuilder.createScreenView()
         tracker.send(builder.build() as [NSObject : AnyObject])
+        
+        mainInstance.autoDismiss = true
     }
     
     override func didReceiveMemoryWarning() {

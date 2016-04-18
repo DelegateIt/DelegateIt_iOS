@@ -45,9 +45,13 @@ class Main {
     
     var isHelpShowing:Bool = false
     
+    var autoDismiss:Bool = false
+    
     //Facebook info
     var fbID:String = ""
     var fbToken:String = ""
+    
+    var loginReady = false
     
     init() {
     }
@@ -101,7 +105,6 @@ class Main {
         return ""
     }
     
-    
     func setToken(token:String) {
         self.token = token
     }
@@ -117,7 +120,7 @@ class Main {
     func findTransaction(UUID:String) -> transaction {
         activeCount = active_transaction_uuids2.count
         var index = 0
-        for(index = 0; index < activeCount; index++){
+        for(index = 0; index < activeCount; index += 1){
             if(active_transaction_uuids2[index].transactionUUID == UUID){
                 return active_transaction_uuids2[index]
             }
@@ -127,7 +130,7 @@ class Main {
     
     func getIndex(UUID:String) -> Int {
         var index = 0
-        for(index = 0; index < active_transaction_uuids2.count; index++){
+        for(index = 0; index < active_transaction_uuids2.count; index += 1){
             if(active_transaction_uuids2[index].transactionUUID == UUID){
                 return index
             }
@@ -141,7 +144,7 @@ class Main {
         //print(newTransaction[0])
         let currentUUID = newTransaction[0]["uuid"].stringValue
         var index = 0
-        for(index = 0; index < active_transaction_uuids2.count; index++){
+        for(index = 0; index < active_transaction_uuids2.count; index += 1){
             if(active_transaction_uuids2[index].transactionUUID == currentUUID){
                 print(newTransaction[0]["status"].stringValue)
                 print(newTransaction[0]["messages"])

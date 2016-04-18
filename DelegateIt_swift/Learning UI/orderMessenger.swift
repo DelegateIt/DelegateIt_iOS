@@ -53,6 +53,8 @@ class orderMessenger: JSQMessagesViewController {
         
         let builder = GAIDictionaryBuilder.createScreenView()
         tracker.send(builder.build() as [NSObject : AnyObject])
+        
+        mainInstance.autoDismiss = true
     }
     
     override func viewDidLoad() {
@@ -103,7 +105,7 @@ class orderMessenger: JSQMessagesViewController {
             counter++
         }
         
-        self.title = "ORDER"
+        self.title = "Order"
         
         self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.1, 0.1)
         self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.1, 0.1)

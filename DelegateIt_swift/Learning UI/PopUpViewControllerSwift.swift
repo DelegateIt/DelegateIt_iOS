@@ -37,14 +37,16 @@ import QuartzCore
         self.popUpView.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
         
         let screenSize: CGRect = UIScreen.mainScreen().bounds
-        //self.view.frame.origin.y = -70
-        //self.view.frame.origin.x = -30
+        if(mainInstance.comingfrom == "basics"){
+            self.view.frame.origin.y = +60
+        }
         
+        //self.view.frame.origin.x = -30
         
         webView.layer.cornerRadius = 8.0
         webView.clipsToBounds = true
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "removePopup:",name:"removePOP", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PopUpViewControllerSwift.removePopup(_:)),name:"removePOP", object: nil)
     }
     
     func removePopup(notification: NSNotification){
@@ -54,7 +56,7 @@ import QuartzCore
     public func showInView(aView: UIView!, withMessage message: String!, animated: Bool)
     {
         aView.addSubview(self.view)
-        let url = NSURL (string:"http://google.com");
+        let url = NSURL (string:"https://www.godelegateit.com/how-it-works.html");
         let requestObj = NSURLRequest(URL: url!);
         webView.loadRequest(requestObj);
         
@@ -66,26 +68,13 @@ import QuartzCore
     
     func showAnimate()
     {
-        
-        self.view.alpha = 0.0;
-        UIView.animateWithDuration(0.25, animations: {
-            self.view.alpha = 1.0
-            self.view.transform = CGAffineTransformMakeScale(1.0, 1.0)
-        });
+        self.view.alpha = 1.0
     }
     
     func removeAnimate()
     {
         mainInstance.isHelpShowing = false
-        UIView.animateWithDuration(0.25, animations: {
-            self.view.transform = CGAffineTransformMakeScale(1.3, 1.3)
-            self.view.alpha = 0.0;
-            }, completion:{(finished : Bool)  in
-                if (finished)
-                {
-                    self.view.removeFromSuperview()
-                }
-        });
+        self.view.alpha = 0.0;
     }
     
 }

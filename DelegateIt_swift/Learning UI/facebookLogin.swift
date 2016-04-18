@@ -22,12 +22,17 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     var moveLogo = true
     var spinning = false
     
+    var count = 0
     
     var first_name:String = ""
     var last_name:String = ""
     var fbID:String = ""
     var email = ""
     var fbToken:String = ""
+    
+    var screenSize: CGRect = UIScreen.mainScreen().bounds
+    
+    var label = UILabel()
     
     
     //load if the user is not logged in
@@ -39,21 +44,19 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         if(FBSDKAccessToken.currentAccessToken() != nil){
             self.returnUserData()
         }else{
-            let screenSize: CGRect = UIScreen.mainScreen().bounds
-            let screenWidth = screenSize.width
-            let screenHeight = screenSize.height
-            
             if(moveLogo){
-                imageView = UIImageView(frame: CGRectMake(0, 0, screenWidth/2, (screenWidth/2)/1.106)) // set as you want
+                imageView = UIImageView(frame: CGRectMake(0, 0, screenSize.width/2, (screenSize.width/2)/1.106)) // set as you want
                 imageView.center = self.view.center
                 let image = UIImage(named: "logo.png")
                 imageView.image = image
                 self.view.addSubview(imageView)
-                self.moveLogoView(CGPointMake(screenSize.width/2, screenHeight * 0.3))
+                self.moveLogoView(CGPointMake(screenSize.width/2, screenSize.height * 0.3))
             }
         }
+        //calltoReload
         moveLogo = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loginUser:",name:"readyToLogin", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(facebookLogin.loggingIn(_:)),name:"readyToLogin", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(facebookLogin.calltoReload(_:)),name:"reloadLogin", object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -73,9 +76,11 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         // Success = didRegisterForRemoteNotificationsWithDeviceToken
         // Fail = didFailToRegisterForRemoteNotificationsWithError
         UIApplication.sharedApplication().registerForRemoteNotifications()
-        self.loginUser()
     }
     
+    func loggingIn(notification: NSNotification) {
+        self.loginUser()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -88,6 +93,17 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 print("The box has moved")
                 self.view.addSubview(self.loginView)
                 self.loginView.center = self.view.center
+                self.loginView.alpha = 1
+                
+                self.label = UILabel(frame: CGRectMake(0, 0, 300, 300))
+                self.label.center = CGPointMake(self.screenSize.width/2, self.screenSize.height - 30)
+                self.label.textAlignment = NSTextAlignment.Center
+                self.label.text = "We will only use your Facebook account to get your name and email address"
+                self.label.font = UIFont.systemFontOfSize(14, weight: UIFontWeightLight)
+                self.label.numberOfLines = 2
+                self.label.textColor = UIColor.whiteColor()
+                self.view.addSubview(self.label)
+                
            self.loginView.readPermissions = ["public_profile", "email"]
            self.loginView.delegate = self
         }
@@ -96,15 +112,28 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     // Facebook Delegate Methods
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         if ((error) != nil){
-            let alertController = UIAlertController(title: "Login Error", message:"Please login with Facebook to continue", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-            self.presentViewController(alertController, animated: true, completion: nil)
+            print("error")
+            FBSDKLoginManager().logOut()
+            self.loadView()
         }
         else if result.isCancelled {
             let alertController = UIAlertController(title: "Login Cancelled", message:"Please login with Facebook to continue", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
             self.presentViewController(alertController, animated: true, completion: nil)
         }
+        else{
+            self.loginView.alpha = 0
+            self.label.alpha = 0
+        }
+    }
+    
+    func calltoReload(notification: NSNotification) {
+        reloadLogin()
+    }
+    
+    func reloadLogin() {
+        FBSDKLoginManager().logOut()
+        self.loadView()
     }
     
     //Logout Function
@@ -122,7 +151,6 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     }
     
     
-    
     //Return data collected from Facebook
     func returnUserData(){
         
@@ -137,7 +165,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                     let Dismiss = UIAlertAction(title: "Dismiss", style: .Default) { (action) in
                         self.internetChecker()
                         self.spinning = true
-                        self.reconnectTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("returnUserData"), userInfo: nil, repeats: true)
+                        self.reconnectTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(facebookLogin.returnUserData), userInfo: nil, repeats: true)
                     }
                     
                     alertController.addAction(Dismiss)
@@ -166,11 +194,9 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 }
                 
                 self.fbToken = FBSDKAccessToken.currentAccessToken().tokenString
+                print(FBSDKAccessToken.currentAccessToken().tokenString)
                 SwiftSpinner.show("Connecting...")
                 mainInstance.fbID = self.fbID
-                
-                //Print Device ID
-                print(UIDevice.currentDevice().identifierForVendor!.UUIDString)
                 
                 self.initializeNotificationServices()
             }
@@ -183,6 +209,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 self.loginView.hidden = true
                 SwiftSpinner.hide()
                 self.reconnectTimer.invalidate()
+                self.count = 0
                 if(self.loggedIn == 0){
                     self.loggedIn = 1
                     self.tabBarController?.selectedIndex = 2
@@ -192,13 +219,9 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                     print("Double call")
                 }
                 
-                
             }else if(response == -1){
                 dispatch_async(dispatch_get_main_queue(), {
                     SwiftSpinner.show("Can't connect to server!")
-                    if(!RestApiManager.sharedInstance.isConnectedToNetwork()){
-                        notificationH.printHello("No Internet Connection")
-                    }
                     NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("loginUser"), userInfo: nil, repeats: false)
                 })
             }

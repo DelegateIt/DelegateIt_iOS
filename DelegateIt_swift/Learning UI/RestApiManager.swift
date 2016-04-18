@@ -37,16 +37,20 @@ class RestApiManager: NSObject {
         }
     }
     
-    
     func loginUser(fbID:String,fbToken:String,first_name:String,last_name:String,email:String,callback: (Int) -> ()) {
         let URLCALL = "/core/login/customer";
         var parameters:[String: String]
+        print(first_name)
+        print("--B---")
         print(mainInstance.deviceID)
-        print("AAAAA")
+        print("--B---")
         if(mainInstance.deviceID != ""){
-            parameters = ["fbuser_id":fbID,"fbuser_token":fbToken,"device_id":mainInstance.deviceID]
+            print("uploading ID")
+            print(mainInstance.deviceID)
+            parameters = ["fbuser_id":fbID,"fbuser_token":fbToken,"device_token":mainInstance.deviceID]
         }
         else{
+            print("not ID")
             parameters = ["fbuser_id":fbID,"fbuser_token":fbToken]
         }
         
@@ -56,7 +60,7 @@ class RestApiManager: NSObject {
             output = response
             //print(output)
             if(output == nil){
-                //Print error to try again
+                //No Internet
                 callback(-1)
                 
             }else{
@@ -79,27 +83,32 @@ class RestApiManager: NSObject {
                     mainInstance.setValues(first_name,last_name:last_name,uuid:uuid,active_transaction_uuids:active_transaction_uuids,activeCount:activeCount,email:email,phone_number:phone_number)
                     
                     self.getAllTransactions(uuid,token: token)
-                    sockets().startSockets()
+                    
                     callback(1)
                 }
                 else if(result == "10"){
                     //print("User is not created")
                     self.createUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
-                        self.loginUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email) { (response) in
-                            callback(response)
+                        if(response == 1){
+                            self.loginUser(fbID as String,fbToken: fbToken,first_name:first_name,last_name:last_name,email:email) { (response) in
+                                callback(response)
+                            }
+                        }
+                        else{
+                            //Go back to login screen
+                            print("FAILED")
+                            NSNotificationCenter.defaultCenter().postNotificationName("reloadLogin", object: nil)
                         }
                         callback(response)
                     }
                 }
                 else{
-                    //login failed
-                    //return 0
+                    //Go back to login screen
+                    NSNotificationCenter.defaultCenter().postNotificationName("reloadLogin", object: nil)
                 }
                 //Result 10 means to create a new user
                 //Result 0 is good
             }
-            
-
         }
     }
     
@@ -155,6 +164,7 @@ class RestApiManager: NSObject {
                         mainInstance.active_transaction_uuids2.append(transaction(dataInput: output["transactions"][index]))
                     }
                     NSNotificationCenter.defaultCenter().postNotificationName("loadbadge", object: nil)
+                    socketManager.startSockets()
                 }
             }
             else{
@@ -221,15 +231,20 @@ class RestApiManager: NSObject {
             do {
                 if let _ = NSString(data:data!, encoding: NSUTF8StringEncoding) {
                     // Print what we got from the call
-                    
-                    
+                                        
                     // Parse the JSON to get the IP
                     let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
                     result = jsonDictionary["result"] as! Int
                     
                     if(result == 0){
                         transactionUUID = jsonDictionary["uuid"] as! String
-                        sockets().startSockets()
+                        if(mainInstance.active_transaction_uuids2.count == 0){
+                            socketManager.startSockets()
+                        }
+                        else{
+                            socketManager.addTransaction(transactionUUID)
+                        }
+                        
                         //print("print_transaction")
                         //print(outputJ["transaction"])
                         //print(jsonDictionary["uuid"])
@@ -241,6 +256,7 @@ class RestApiManager: NSObject {
                         
                         NSNotificationCenter.defaultCenter().postNotificationName("updateTransaction", object: nil)
                         NSNotificationCenter.defaultCenter().postNotificationName("loadbadge", object: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName("load", object: nil)
                     }
                     //print("Got data")
                     

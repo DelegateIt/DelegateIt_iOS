@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         assert(configureError == nil, "Error configuring Google services: \(configureError)")
         
         if NSUserDefaults.standardUserDefaults().objectForKey("launchCount")?.integerValue >= 3{
-            if UIApplication.sharedApplication().respondsToSelector("isRegisteredForRemoteNotifications") {
+            if UIApplication.sharedApplication().respondsToSelector(#selector(UIApplication.isRegisteredForRemoteNotifications)) {
                 UIApplication.sharedApplication().registerUserNotificationSettings(
                     UIUserNotificationSettings(
                         forTypes: [.Alert, .Badge, .Sound],
@@ -50,6 +50,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        
+        //socketManager.socket.disconnect()
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
@@ -68,17 +70,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        socketManager.stopSockets()
     }
     
 
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let deviceTokenStr = convertDeviceTokenToString(deviceToken)
         mainInstance.deviceID = deviceTokenStr
+        
         //callback
         if(!mainInstance.loggingIn){
             mainInstance.loggingIn = true
-            //facebookLogin().loginUser()
+            
         }
+        
+        mainInstance.loginReady = true
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("readyToLogin", object: nil)
+        
+        //facebookLogin().loginUser()
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
@@ -86,10 +96,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //print("Failed")
         if(!mainInstance.loggingIn){
             mainInstance.loggingIn = true
-            //facebookLogin().loginUser()
         }
         
-   
+        mainInstance.loginReady = true
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("readyToLogin", object: nil)
+        
+        //facebookLogin().loginUser()
     }
     
     
@@ -100,22 +113,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if let notification = userInfo["aps"] as? NSDictionary,
             let alert = notification["alert"] as? String {
+
                 let messageText = notification["message"] as? NSString
-                print(messageText)
-                let alertCtrl = UIAlertController(title: "Time Entry", message: alert as String, preferredStyle: UIAlertControllerStyle.Alert)
-                alertCtrl.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                // Find the presented VC...
-                var presentedVC = self.window?.rootViewController
-                while (presentedVC!.presentedViewController != nil)  {
-                    presentedVC = presentedVC!.presentedViewController
+            
+                if(!mainInstance.autoDismiss){
+                    let alertCtrl = UIAlertController(title: "New Message", message: alert as String, preferredStyle: UIAlertControllerStyle.Alert)
+                    alertCtrl.addAction(UIAlertAction(title: "Go to Message", style: UIAlertActionStyle.Default, handler: printH))
+                    alertCtrl.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+                    
+                    // Find the presented VC...
+                    var presentedVC = self.window?.rootViewController
+                    while (presentedVC!.presentedViewController != nil)  {
+                        presentedVC = presentedVC!.presentedViewController
+                    }
+                    presentedVC!.presentViewController(alertCtrl, animated: true, completion: nil)
+                    
+                    mainInstance.gotoOrders = true
                 }
-                presentedVC!.presentViewController(alertCtrl, animated: true, completion: nil)
-                
+            
+            
                 // call the completion handler
                 // -- pass in NoData, since no new data was fetched from the server.
                 completionHandler(UIBackgroundFetchResult.NoData)
         }
-        
+    }
+    
+    func printH(alert: UIAlertAction!){
+        mainInstance.gotoOrders = true
+        let rootVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("tabBarController") as UIViewController
+        rootVC.view.frame = UIScreen.mainScreen().bounds
+        UIView.transitionWithView(self.window!, duration: 0.5, options: .TransitionCrossDissolve, animations: {
+            self.window!.rootViewController = rootVC
+            }, completion: nil)
     }
     
     
@@ -128,6 +157,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Our API returns token in all uppercase, regardless how it was originally sent.
         // To make the two consistent, I am uppercasing the token string here.
         deviceTokenStr = deviceTokenStr.uppercaseString
+        
+        print(deviceTokenStr)
         
         return deviceTokenStr
     }

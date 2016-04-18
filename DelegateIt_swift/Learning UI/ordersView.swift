@@ -12,18 +12,13 @@ import Google
 
 class ordersView: UITableViewController {
     
-    var tableData:[String] = []
-    var detailData:[String] = []
+    var tableData:[[String]] = [[],[]]
+    var detailData:[[String]] = [[],[]]
     var UUIDs:[String] = []
     
+    var sampleList:[Int] = [2,6]
     
-    @IBAction func saveToMainViewController (segue:UIStoryboardSegue) {
-        let detailViewController = segue.sourceViewController as! DetailTableViewController
-        let changedPrice = detailViewController.priceString
-        let index = detailViewController.index
-        detailData[index!] = changedPrice!
-        tableView.reloadData()
-    }
+    var completed:Int = 0
     
     override func viewWillAppear(animated: Bool) {
         let tracker = GAI.sharedInstance().defaultTracker
@@ -31,13 +26,19 @@ class ordersView: UITableViewController {
         
         let builder = GAIDictionaryBuilder.createScreenView()
         tracker.send(builder.build() as [NSObject : AnyObject])
+        
+        mainInstance.autoDismiss = true
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mainInstance.comingfrom = "orders"
+        let helpBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+        helpBtn.setImage(UIImage(named: "help.png"), forState: UIControlState.Normal)
+        helpBtn.addTarget(self, action: Selector("gotoTutorial:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        let item2 = UIBarButtonItem(customView: helpBtn)
+        self.navigationItem.leftBarButtonItem = item2
         
         
         let replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
@@ -66,21 +67,58 @@ class ordersView: UITableViewController {
             self.view.addSubview(button)
             self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
             tableView.alwaysBounceVertical = false;
+            
         }
         else{
             loadTable()
         }
         
-        
-        self.title = "ORDERS"
+        self.title = "Orders"
         print("show tab bar")
         self.tabBarController?.tabBar.hidden = false
-    
+        
     }
     
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel(frame: CGRect(x:40, y: 20, width: 50, height: 50))
+        label.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
+        if(section == 0){
+            label.text = " In Progress"
+        }
+        else{
+            label.text = " Completed"
+        }
+        
+        label.textColor = UIColor.whiteColor()
+        view.addSubview(label)
+        return label
+    }
+    
+    func gotoTutorial(sender:UIButton!){
+        print("Going to settings")
+        //self.tabBarController?.hidesBottomBarWhenPushed = false
+        //self.tabBarController?.tabBar.hidden = true
+        self.performSegueWithIdentifier("showTutorial", sender: self);
+        
+    }
+ 
+ 
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30.0
+    }
+    
+    /*
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "In Progress"
+    }
+    */
+    
     func loadTable(){
-        self.tableData = []
-        self.detailData = []
+        print("loading table")
+        self.tableData = [[],[]]
+        self.detailData = [[],[]]
         self.UUIDs = []
         var date = NSDate().timeIntervalSince1970
         date *= 1000000
@@ -89,17 +127,22 @@ class ordersView: UITableViewController {
         let hourFormat = NSDateFormatter()
         hourFormat.dateFormat = "h:mm a"
         
+        var curIndex = 0
+        
         mainInstance.sortTransaction()
         
         var index = 0
         for (index = 0; index < mainInstance.active_transaction_uuids2.count; index += 1)
         {
-            print(mainInstance.active_transaction_uuids2[index].paymentStatus)
-            if(mainInstance.active_transaction_uuids2[index].paymentStatus == "proposed"){
-                tableData.append("RECEIPT")
+            if(mainInstance.active_transaction_uuids2[index].paymentStatus == "completed"){
+                let messageString = mainInstance.active_transaction_uuids2[index].lastMessage
+                var count = messageString.characters.count
+                tableData[1].append(messageString[messageString.startIndex..<messageString.startIndex.advancedBy(count)])
+                curIndex = 1
             }
-            else if(mainInstance.active_transaction_uuids2[index].paymentStatus == "completed"){
-                tableData.append("COMPLETED")
+            else if(mainInstance.active_transaction_uuids2[index].paymentStatus == "proposed"){
+                curIndex = 0
+                tableData[0].append("RECEIPT")
             }
             else{
                 let messageString = mainInstance.active_transaction_uuids2[index].lastMessage
@@ -107,8 +150,9 @@ class ordersView: UITableViewController {
                 if(messageString.characters.count > 30){
                     count = 30
                 }
-                tableData.append(messageString[messageString.startIndex..<messageString.startIndex.advancedBy(count)])
-                //tableData.append(messageString)
+                curIndex = 0
+                tableData[curIndex].append(messageString[messageString.startIndex..<messageString.startIndex.advancedBy(count)])
+                //tableData[0].append("test")
             }
             
             UUIDs.append(mainInstance.active_transaction_uuids2[index].transactionUUID)
@@ -117,13 +161,19 @@ class ordersView: UITableViewController {
             var dateString = ""
             
             if(date - mainInstance.active_transaction_uuids2[index].lastTimeStamp < 86400000000){
-                 dateString = hourFormat.stringFromDate(day)
+                dateString = hourFormat.stringFromDate(day)
             }
             else{
-                 dateString = dayTimePeriodFormatter.stringFromDate(day)
+                dateString = dayTimePeriodFormatter.stringFromDate(day)
             }
-            detailData.append(dateString)
+            detailData[curIndex].append(dateString)
         }
+        
+        sampleList[0] = mainInstance.active_transaction_uuids2.count - completed
+        sampleList[1] = completed
+        
+        print(completed)
+        print(mainInstance.active_transaction_uuids2.count)
         
         self.tableView.reloadData()
     }
@@ -141,6 +191,7 @@ class ordersView: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         //self.tabBarController?.tabBar.hidden = false
+        mainInstance.comingfrom = "orders"
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ordersView.loadList(_:)),name:"load", object: nil)
     }
     
@@ -158,18 +209,30 @@ class ordersView: UITableViewController {
     
     // MARK: - Table view data source
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        if(mainInstance.active_transaction_uuids2.count == 0){
+           return 0
+        }
+        else{
+            return 2
+        }
+        
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableData.count
+        return tableData[section].count //tableData.count
     }
     
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var offset = 0
         let cell = tableView.dequeueReusableCellWithIdentifier("TextCell", forIndexPath: indexPath)
-        cell.textLabel?.text = tableData[indexPath.row]
-        cell.detailTextLabel?.text = detailData[indexPath.row]
+        print("Length",sampleList[0])
+        print(tableData.count)
+        if(indexPath.section == 1){
+            offset = sampleList[0]
+        }
+        cell.textLabel?.text = tableData[indexPath.section][indexPath.row]
+        cell.detailTextLabel?.text = detailData[indexPath.section][indexPath.row]
         return cell
     }
     
@@ -179,16 +242,26 @@ class ordersView: UITableViewController {
         if segue.identifier == "gotoOrder" {
             let path = tableView.indexPathForSelectedRow
             let destination = segue.destinationViewController as! orderMessenger
-            destination.data = UUIDs[(path?.row)!]
+            destination.data = UUIDs[(path?.row)! + (tableData[0].count * (path?.section)!)]
         }
         else if(segue.identifier == "gotoCompleted"){
             let path = tableView.indexPathForSelectedRow
             let destination = segue.destinationViewController as! orderMessenger
-            destination.data = UUIDs[(path?.row)!]
+            destination.data = UUIDs[(path?.row)! + (tableData[0].count * (path?.section)!)]
         }
         else if(segue.identifier == "goToSettings23"){
             let secondVC: profile = segue.destinationViewController as! profile
             secondVC.hidesBottomBarWhenPushed = true
+        }
+        else if(segue.identifier == "showTutorial"){
+            let secondVC: showTutorial = segue.destinationViewController as! showTutorial
+            secondVC.hidesBottomBarWhenPushed = true
+        }
+        else if(segue.identifier == "makeOrder"){
+            let secondVC: CustomOrder = segue.destinationViewController as! CustomOrder
+            secondVC.hidesBottomBarWhenPushed = true
+            secondVC.labelText = "Please send us a text message with your request or desired item"
+            secondVC.fromOrders = true
         }
     }
     

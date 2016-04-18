@@ -9,11 +9,12 @@
 import Foundation
 import UIKit
 import Google
+import Whisper
 
 class quickorder: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var myScrollView: UIScrollView!
-    var descriptions:[String] = ["I would like to book a paddleboarding trip on Lake Austin","I want Tiff's Treats cookies delivered to me","I would like to book a double decker tour of Austin","I want a large pizza from Austin's Pizza","I would like to have my clothes dry cleaned",""]
+    var descriptions:[String] = ["I would like to book a paddleboarding trip on Lake Austin","I want Tiff's Treats cookies delivered to me","I would like to book a double decker tour of Austin","I want a large pizza from Austin's Pizza","I would like to visit the 512 Brewery!"]
     var extraInformation:[String] = ["Paddle board on the beautiful Lake Austin. We know the best place!","Made from scratch and right out of the oven, these cookies will be sure to delight.","Want to get out and see the town?","The sauce, fresh ingredients, and charmingly local Austin's Pizza has been making our favorite pies since 1999.","Clean and fresh clothes with pick-up and drop-off.","As your personal concierge, we accept any order. Give us a challenge, we dare you."]
     var descrionChosen = ""
     
@@ -22,13 +23,28 @@ class quickorder: UIViewController, UIScrollViewDelegate {
     var lastPicked = -1;
     
     var button:UIButton = UIButton()
-
+    
+    var isRemoved:Bool = true
+    
+    var buttonBG = UIButton()
+    
+    var scrollViewContentSize:CGFloat = 0
+    
+    var screenSize: CGRect = UIScreen.mainScreen().bounds
+    
+    var sOffset:CGFloat = 0
     
     var popViewController : PopUpViewControllerSwift!
     
     override func viewWillAppear(animated: Bool) {
-        if(mainInstance.gotoOrders){
-            tabBarController?.selectedIndex = 2
+        print("-->>>>")
+        print(mainInstance.gotoOrders)
+        if(mainInstance.comingfrom == "basics"){
+            self.tabBarController?.selectedIndex = 1
+        }
+        else if(mainInstance.gotoOrders || mainInstance.comingfrom == "orders"){
+            print("set")
+            self.tabBarController?.selectedIndex = 2
         }
         else{
             let tracker = GAI.sharedInstance().defaultTracker
@@ -37,19 +53,43 @@ class quickorder: UIViewController, UIScrollViewDelegate {
             let builder = GAIDictionaryBuilder.createScreenView()
             tracker.send(builder.build() as [NSObject : AnyObject])
         }
+        
+        if(screenSize.height == 736){
+            sOffset = 44 //iphone 6+
+        }
+        else if(screenSize.height == 568){
+            sOffset = -61.5 //Iphone 5
+        }
+        else if(screenSize.height == 480){
+            sOffset = 26.5 //Iphone 4s
+        }
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.tabBarController?.tabBar.hidden = false
         
-        mainInstance.comingfrom = "popular"
+        print("----LOGIN----")
+        print(mainInstance.deviceID)
+        print("----<LOGIN>----")
+        
+        notifyManager.showBanner()
+        
+        //NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "loadSockets", userInfo: nil, repeats: true)
         
         let replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
         replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
         let item = UIBarButtonItem(customView: replyBtn)
         self.navigationItem.rightBarButtonItem = item
+        
+        buttonBG = UIButton(type: UIButtonType.System) as UIButton
+        buttonBG.frame = CGRectMake(20, self.screenSize.height-140+5, self.screenSize.width-40, 60)
+        buttonBG.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
+        buttonBG.alpha = 0
+        
+        self.view.addSubview(buttonBG)
         
         
         //Make the button yellow
@@ -61,10 +101,10 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         */
         
         let screenSize: CGRect = UIScreen.mainScreen().bounds
-        let myImages = ["new_paddleboarding.png","new_cookies.png","new_toa.png","new_pizza.png","new_drycleaning","new_orderanything.png"]
+        let myImages = ["new_paddleboarding.png","new_cookies.png","new_toa.png","new_pizza.png","brewing_beer.png"]
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
-        var scrollViewContentSize:CGFloat = 0;
+        scrollViewContentSize = 0
 
         for var index = 0; index < myImages.count; index++
         {
@@ -120,8 +160,6 @@ class quickorder: UIViewController, UIScrollViewDelegate {
             
             myScrollView.addSubview(myImageView)
             
-            
-            
             yPosition += imageHeight + 2
             scrollViewContentSize += imageHeight
             
@@ -155,11 +193,11 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         
         let helpBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         helpBtn.setImage(UIImage(named: "help.png"), forState: UIControlState.Normal)
-        helpBtn.addTarget(self, action: Selector("showHelp:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        helpBtn.addTarget(self, action: Selector("gotoTutorial:"), forControlEvents:  UIControlEvents.TouchUpInside)
         let item2 = UIBarButtonItem(customView: helpBtn)
         self.navigationItem.leftBarButtonItem = item2
 
-        
+        //showTutorial
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBadge:",name:"loadbadge", object: nil)
         
@@ -207,7 +245,7 @@ class quickorder: UIViewController, UIScrollViewDelegate {
             mainInstance.isHelpShowing = true
             let bundle = NSBundle(forClass: PopUpViewControllerSwift.self)
             //self.popViewController = PopUpViewControllerSwift(nibName: "essentials", bundle: bundle)
-            self.popViewController = PopUpViewControllerSwift(nibName: "PopUpViewController_iPhone6Plus", bundle: bundle)
+            self.popViewController = PopUpViewControllerSwift(nibName: "PopUpViewController_iPhone6", bundle: bundle)
             //self.popViewController.title = "This is a popup view"
             self.popViewController.showInView(self.view, withMessage: "You just triggered a great popup window", animated: true)
         }
@@ -225,8 +263,6 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         }
         
         
-        
-        
         //self.view.removeFromSuperview()
         
         //self.performSegueWithIdentifier("goToSettings24", sender: self);
@@ -237,6 +273,14 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         //self.tabBarController?.hidesBottomBarWhenPushed = false
         //self.tabBarController?.tabBar.hidden = true
         self.performSegueWithIdentifier("goToSettings24", sender: self);
+        
+    }
+    
+    func gotoTutorial(sender:UIButton!){
+        print("Going to settings")
+        //self.tabBarController?.hidesBottomBarWhenPushed = false
+        //self.tabBarController?.tabBar.hidden = true
+        self.performSegueWithIdentifier("showTutorial", sender: self);
         
     }
     
@@ -268,6 +312,9 @@ class quickorder: UIViewController, UIScrollViewDelegate {
     
     override func viewDidAppear(animated: Bool) {
         //self.tabBarController?.tabBar.hidden = false
+        mainInstance.comingfrom = "popular"
+        
+        mainInstance.autoDismiss = false
     }
     
     
@@ -281,6 +328,41 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func scrollViewDidScroll(eScrollView: UIScrollView){
+        print("-->")
+        print(eScrollView.contentOffset.y)
+        if(eScrollView.contentOffset.y > 600 + self.sOffset){
+            buttonBG.alpha = 1
+            buttonBG.frame = CGRectMake(0, screenSize.height - eScrollView.contentOffset.y+436 + self.sOffset, screenSize.width, eScrollView.contentOffset.y-500)
+        }
+        else{
+            buttonBG.alpha = 0
+        }
+        if(eScrollView.contentOffset.y > 540 + self.sOffset){
+            eScrollView.contentSize = CGSize(width:100, height: scrollViewContentSize + 70)
+            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.button.frame = CGRectMake(0, self.screenSize.height - 174, self.screenSize.width, 60)
+            }) {(completed) -> Void in
+                //done
+            }
+            isRemoved = false
+        }
+        else{
+            button.alpha = 1
+            if(!isRemoved){
+                isRemoved = true
+                UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.button.frame = CGRectMake(20, self.screenSize.height-200, self.screenSize.width-40, 60)
+                    self.button.frame.origin.x = 20
+                    self.button.frame.origin.y = self.screenSize.height-200
+                }) {(completed) -> Void in
+                    //done
+                }
+            }
+        }
+    }
+
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showText" {
             let secondVC: CustomOrder = segue.destinationViewController as! CustomOrder
@@ -290,18 +372,12 @@ class quickorder: UIViewController, UIScrollViewDelegate {
             let secondVC: profile = segue.destinationViewController as! profile
             secondVC.hidesBottomBarWhenPushed = true
         }
-    }
-    
-    func scrollViewDidScroll(myScrollView: UIScrollView){
-        //print(myScrollView.contentOffset.y)
-        
-        if(myScrollView.contentOffset.y > 594){
-            button.alpha = 0
-        }
-        else{
-            button.alpha = 1
+        else if(segue.identifier == "showTutorial"){
+            let secondVC: showTutorial = segue.destinationViewController as! showTutorial
+            secondVC.hidesBottomBarWhenPushed = true
         }
     }
+
 
     
 }
