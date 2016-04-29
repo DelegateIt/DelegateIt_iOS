@@ -36,7 +36,6 @@ import QuartzCore
         
         self.popUpView.backgroundColor = UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1)
         
-        let screenSize: CGRect = UIScreen.mainScreen().bounds
         if(mainInstance.comingfrom == "basics"){
             self.view.frame.origin.y = +60
         }

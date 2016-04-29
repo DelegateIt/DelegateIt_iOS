@@ -13,7 +13,7 @@ import Google
 import UIKit
 
 class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
-
+    
     @IBOutlet weak var bg: UIImageView!
     var imageView = UIImageView()
     var loginView : FBSDKLoginButton = FBSDKLoginButton()
@@ -33,6 +33,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     var screenSize: CGRect = UIScreen.mainScreen().bounds
     
     var label = UILabel()
+    var secondary_label = UILabel()
     
     
     //load if the user is not logged in
@@ -40,6 +41,8 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         super.viewDidAppear(animated)
         config().getConfig()
         loggedIn = 0
+        
+        bg.tintColor = UIColor.blackColor().colorWithAlphaComponent(0.8)
         
         if(FBSDKAccessToken.currentAccessToken() != nil){
             self.returnUserData()
@@ -50,7 +53,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 let image = UIImage(named: "logo.png")
                 imageView.image = image
                 self.view.addSubview(imageView)
-                self.moveLogoView(CGPointMake(screenSize.width/2, screenSize.height * 0.3))
+                self.moveLogoView(CGPointMake(screenSize.width/2, screenSize.height * 0.2))
             }
         }
         //calltoReload
@@ -92,17 +95,33 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
             }) {(completed) -> Void in
                 print("The box has moved")
                 self.view.addSubview(self.loginView)
-                self.loginView.center = self.view.center
+                self.loginView.center = CGPointMake(self.screenSize.width/2, self.screenSize.height*0.9)
                 self.loginView.alpha = 1
                 
-                self.label = UILabel(frame: CGRectMake(0, 0, 300, 300))
-                self.label.center = CGPointMake(self.screenSize.width/2, self.screenSize.height - 30)
+                self.label = UILabel(frame: CGRectMake(0, 0, self.screenSize.width, 300))
+                self.label.center = CGPointMake(self.screenSize.width/2, self.screenSize.height*0.5)
                 self.label.textAlignment = NSTextAlignment.Center
-                self.label.text = "We will only use your Facebook account to get your name and email address"
-                self.label.font = UIFont.systemFontOfSize(14, weight: UIFontWeightLight)
-                self.label.numberOfLines = 2
+                self.label.text = "Your Travel Assistant"
+                self.label.font = UIFont.systemFontOfSize(32, weight: UIFontWeightLight)
+                self.label.numberOfLines = 1
                 self.label.textColor = UIColor.whiteColor()
                 self.view.addSubview(self.label)
+                
+                self.secondary_label = UILabel(frame: CGRectMake(0, 0, self.screenSize.width-50, 300))
+                
+                var four_s_distance:CGFloat = 0.0
+                
+                if(self.screenSize.height == 480){
+                    four_s_distance = 10.0
+                }
+                
+                self.secondary_label.center = CGPointMake(self.screenSize.width/2, self.label.center.y + 45 + four_s_distance)
+                self.secondary_label.textAlignment = NSTextAlignment.Center
+                self.secondary_label.text = "The service that gets you everything from groceries to concert tickets."
+                self.secondary_label.font = UIFont.systemFontOfSize(20, weight: UIFontWeightLight)
+                self.secondary_label.numberOfLines = 3
+                self.secondary_label.textColor = UIColor.whiteColor()
+                self.view.addSubview(self.secondary_label)
                 
            self.loginView.readPermissions = ["public_profile", "email"]
            self.loginView.delegate = self
@@ -124,6 +143,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         else{
             self.loginView.alpha = 0
             self.label.alpha = 0
+            self.secondary_label.alpha = 0
         }
     }
     
@@ -222,7 +242,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
             }else if(response == -1){
                 dispatch_async(dispatch_get_main_queue(), {
                     SwiftSpinner.show("Can't connect to server!")
-                    NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("loginUser"), userInfo: nil, repeats: false)
+                    NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(facebookLogin.loginUser), userInfo: nil, repeats: false)
                 })
             }
         }

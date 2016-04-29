@@ -20,10 +20,8 @@ class sockets{
 
     func startSockets(){
         socket.on("connect") {data, ack in
-            print("socket connected")
-            print(mainInstance.active_transaction_uuids2.count)
-            var index = 0
-            for index = 0; index < mainInstance.active_transaction_uuids2.count; index += 1 {
+            //print("socket connected")
+            for index in 0..<mainInstance.active_transaction_uuids2.count {
                 self.socket.on(mainInstance.active_transaction_uuids2[index].transactionUUID) {data, ack in
                     let json = JSON(data)
                     mainInstance.updateTransaction(json)

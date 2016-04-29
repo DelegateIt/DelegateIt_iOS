@@ -37,8 +37,6 @@ class quickorder: UIViewController, UIScrollViewDelegate {
     var popViewController : PopUpViewControllerSwift!
     
     override func viewWillAppear(animated: Bool) {
-        print("-->>>>")
-        print(mainInstance.gotoOrders)
         if(mainInstance.comingfrom == "basics"){
             self.tabBarController?.selectedIndex = 1
         }
@@ -68,19 +66,12 @@ class quickorder: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.tabBarController?.tabBar.hidden = false
-        
-        print("----LOGIN----")
-        print(mainInstance.deviceID)
-        print("----<LOGIN>----")
         
         notifyManager.showBanner()
         
-        //NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "loadSockets", userInfo: nil, repeats: true)
-        
         let replyBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         replyBtn.setImage(UIImage(named: "profileIcon.png"), forState: UIControlState.Normal)
-        replyBtn.addTarget(self, action: Selector("gotoSettings:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        replyBtn.addTarget(self, action: #selector(quickorder.gotoSettings(_:)), forControlEvents:  UIControlEvents.TouchUpInside)
         let item = UIBarButtonItem(customView: replyBtn)
         self.navigationItem.rightBarButtonItem = item
         
@@ -91,23 +82,13 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         
         self.view.addSubview(buttonBG)
         
-        
-        //Make the button yellow
-        /*
-        let tabItem = self.tabBarController?.tabBar.items![1]
-        tabItem?.image = UIImage(named: "plus.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
-        self.tabBarController?.tabBar.items![1].setTitleTextAttributes([NSForegroundColorAttributeName:UIColor(red: 255/255, green: 199/255, blue: 40/255, alpha: 1.0)], forState: UIControlState.Normal)
-  
-        */
-        
         let screenSize: CGRect = UIScreen.mainScreen().bounds
         let myImages = ["new_paddleboarding.png","new_cookies.png","new_toa.png","new_pizza.png","brewing_beer.png"]
         let imageWidth:CGFloat = screenSize.width
         var yPosition:CGFloat = 0
         scrollViewContentSize = 0
-
-        for var index = 0; index < myImages.count; index++
-        {
+        
+        for index in 0..<myImages.count{
             let myImage:UIImage = UIImage(named: myImages[index])!
             let myImageView:UIImageView = UIImageView()
             
@@ -125,39 +106,6 @@ class quickorder: UIViewController, UIScrollViewDelegate {
             myImageView.frame.origin.y = yPosition
             myImageView.tag = index
             
-            //start
-            
-            /*
-            
-            let button = UIButton(type: UIButtonType.System) as UIButton
-            button.frame = CGRectMake((screenSize.width-(screenSize.width/1.2))/2, 120, screenSize.width/1.2, 100)
-            button.frame.size.height = myImageView.frame.height
-            button.frame.size.width = myImageView.frame.width
-            button.center = myImageView.center
-            //button.center.y = button.center.y - 35
-            button.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-            button.setTitle(extraInformation[index], forState: .Normal)
-            button.titleLabel?.font = UIFont(name:"HelveticaNeue-Light", size: 16.0)
-            button.titleLabel?.numberOfLines = 3
-            button.titleLabel?.textAlignment = NSTextAlignment.Center
-            button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            //button.alpha = 0.4
-            button.tag = index
-            button.addTarget(self, action: "btnTouched:", forControlEvents:.TouchUpInside)
-            //button.hidden = true
-            button.enabled = true
-            button.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0)
-            button.titleLabel?.alpha = 0
-            button.isAccessibilityElement = true
-    
-            buttonList.append(button)
-            
-            myScrollView.addSubview(button) //might need to move back
- 
-            */
-            
-            //end
-            
             myScrollView.addSubview(myImageView)
             
             yPosition += imageHeight + 2
@@ -169,10 +117,7 @@ class quickorder: UIViewController, UIScrollViewDelegate {
             myImageView.addGestureRecognizer(tapGestureRecognizer)
             myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize)
             
-            
             myScrollView.delegate = self
-            
-            
         }
         myScrollView.contentSize = CGSize(width:imageWidth, height: scrollViewContentSize+10)
         
@@ -183,23 +128,18 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         button.setTitle("ORDER ANYTHING", forState: .Normal)
         button.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 24.0)
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        button.addTarget(self, action: "customOrder:", forControlEvents:.TouchUpInside)
+        button.addTarget(self, action: #selector(quickorder.customOrder(_:)), forControlEvents:.TouchUpInside)
         self.view.addSubview(button)
-        
         
         RestApiManager.sharedInstance.downloadProfilePic()
         
-        
-        
         let helpBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         helpBtn.setImage(UIImage(named: "help.png"), forState: UIControlState.Normal)
-        helpBtn.addTarget(self, action: Selector("gotoTutorial:"), forControlEvents:  UIControlEvents.TouchUpInside)
+        helpBtn.addTarget(self, action: #selector(quickorder.gotoTutorial(_:)), forControlEvents:  UIControlEvents.TouchUpInside)
         let item2 = UIBarButtonItem(customView: helpBtn)
         self.navigationItem.leftBarButtonItem = item2
-
-        //showTutorial
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBadge:",name:"loadbadge", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(quickorder.updateBadge(_:)),name:"loadbadge", object: nil)
         
         loadBadge()
     }
@@ -211,8 +151,6 @@ class quickorder: UIViewController, UIScrollViewDelegate {
             print(position.y)
             
             if(mainInstance.isHelpShowing){
-    
-                //self.popViewController.view.removeFromSuperview()
                 NSNotificationCenter.defaultCenter().postNotificationName("removePOP", object: nil)
             }
         }
@@ -238,48 +176,15 @@ class quickorder: UIViewController, UIScrollViewDelegate {
         lastPicked = sender.tag
     }
     
-    func showHelp(sender:UIButton!){
-        print("Show Help")
-        
-        if(!mainInstance.isHelpShowing){
-            mainInstance.isHelpShowing = true
-            let bundle = NSBundle(forClass: PopUpViewControllerSwift.self)
-            //self.popViewController = PopUpViewControllerSwift(nibName: "essentials", bundle: bundle)
-            self.popViewController = PopUpViewControllerSwift(nibName: "PopUpViewController_iPhone6", bundle: bundle)
-            //self.popViewController.title = "This is a popup view"
-            self.popViewController.showInView(self.view, withMessage: "You just triggered a great popup window", animated: true)
-        }
-        else{
-            mainInstance.isHelpShowing = false
-            //self.popViewController.view.removeFromSuperview()
-            
-            UIView.animateWithDuration(0.25, animations: {
-                }, completion:{(finished : Bool)  in
-                    if (finished)
-                    {
-                        self.popViewController.view.removeFromSuperview()
-                    }
-            });
-        }
-        
-        
-        //self.view.removeFromSuperview()
-        
-        //self.performSegueWithIdentifier("goToSettings24", sender: self);
-    }
     
     func gotoSettings(sender:UIButton!){
         print("Going to settings")
-        //self.tabBarController?.hidesBottomBarWhenPushed = false
-        //self.tabBarController?.tabBar.hidden = true
         self.performSegueWithIdentifier("goToSettings24", sender: self);
         
     }
     
     func gotoTutorial(sender:UIButton!){
         print("Going to settings")
-        //self.tabBarController?.hidesBottomBarWhenPushed = false
-        //self.tabBarController?.tabBar.hidden = true
         self.performSegueWithIdentifier("showTutorial", sender: self);
         
     }
@@ -291,7 +196,7 @@ class quickorder: UIViewController, UIScrollViewDelegate {
     func loadBadge(){
         if(mainInstance.active_transaction_uuids2.count != 0){
             var badgeCount = 0
-            for(var index = 0; index < mainInstance.active_transaction_uuids2.count; index++){
+            for index in 0..<mainInstance.active_transaction_uuids2.count{
                 if(mainInstance.active_transaction_uuids2[index].paymentStatus != "completed"){
                     badgeCount++
                 }

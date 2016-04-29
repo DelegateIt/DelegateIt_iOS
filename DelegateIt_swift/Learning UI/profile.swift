@@ -10,6 +10,7 @@
 import Foundation
 import FBSDKLoginKit
 import Google
+import Social
 
 class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -22,17 +23,11 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let swiftBlogs = ["EDIT PROFILE","WEBSITE","FEEDBACK"]
     var choosenRow = ""
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Profile"
         tableView.delegate = self
         tableView.dataSource = self
-        
-        //Change this
-        
-        //self.tabBarController?.tabBar.hidden = true
         
         let screenSize: CGRect = UIScreen.mainScreen().bounds
 
@@ -68,13 +63,26 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.frame.origin.x = screenSize.width/2
         tableView.frame.origin.y = screenSize.height/2
         
-        print(screenSize.height)
+        
+        let shareBtn : UIBarButtonItem = UIBarButtonItem(title: "Share", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(profile.shareBtn(_:)))
+
+        self.navigationItem.rightBarButtonItem = shareBtn
+    }
+    
+    func shareBtn(action:UIBarButtonItem){
+        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook){
+            let facebookSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+            facebookSheet.setInitialText("Share on Facebook //CHANGE")
+            self.presentViewController(facebookSheet, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Accounts", message: "Please login to a Facebook account to share.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         userName.text = mainInstance.first_name + " " + mainInstance.last_name
-        
-        
         
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: "profile")

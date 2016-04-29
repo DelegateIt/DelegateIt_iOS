@@ -125,10 +125,10 @@
                         <viewControllerLayoutGuide type="bottom" id="vPl-vE-jwf"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="z9e-yx-wIL">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" misplaced="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bwP-Kk-EZq">
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bwP-Kk-EZq">
                                 <rect key="frame" x="142" y="28" width="317" height="469"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
@@ -188,7 +188,7 @@
                                         <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R1w-Lt-P6S" id="JgO-ku-Pu9">
-                                            <rect key="frame" x="0.0" y="0.0" width="567" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -329,7 +329,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="VZn-aC-Jwn">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_girl.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="VZn-aC-Jwn">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                         </subviews>
@@ -419,10 +419,10 @@
                             <tableViewSection headerTitle="Price" id="v5e-rA-Rpy">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="y25-S6-jbV">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="y25-S6-jbV" id="jmA-pI-TgG">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="47i-LH-eDu">
@@ -582,18 +582,18 @@
         </scene>
     </scenes>
     <resources>
-        <image name="background.png" width="2484" height="4416"/>
+        <image name="bg_girl.jpg" width="1800" height="1200"/>
         <image name="flame.png" width="20" height="28"/>
         <image name="orders.png" width="26" height="18"/>
         <image name="star.png" width="28" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="a4v-gk-nIc"/>
         <segue reference="UyD-dK-3O4"/>
         <segue reference="dQJ-eI-zyO"/>
         <segue reference="EYs-sc-vWg"/>
         <segue reference="eoD-qJ-jAY"/>
         <segue reference="lJv-P6-vR9"/>
-        <segue reference="sr4-VE-n00"/>
         <segue reference="4JS-ob-VsK"/>
     </inferredMetricsTieBreakers>
 </document>
