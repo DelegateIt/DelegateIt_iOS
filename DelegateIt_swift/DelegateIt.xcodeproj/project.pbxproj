@@ -77,6 +77,7 @@
 		37B7A3051C8517C30034FDBC /* help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37B7A3031C8517C30034FDBC /* help@2x.png */; };
 		37BBC0BB1CC401550036A2CD /* PopUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BBC0BA1CC401550036A2CD /* PopUpViewController.xib */; };
 		37BBC0BD1CC4016D0036A2CD /* PopUpViewController_iPhone6Plus.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BBC0BC1CC4016D0036A2CD /* PopUpViewController_iPhone6Plus.xib */; };
+		37BDC4E61CD54D450047B8F9 /* privacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BDC4E51CD54D450047B8F9 /* privacy.swift */; };
 		37C220961C593A0B0074A96B /* sockets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C220951C593A0B0074A96B /* sockets.swift */; };
 		37C885041C7CEAA900D4191F /* 20x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C885031C7CEAA900D4191F /* 20x.png */; };
 		37C885061C7CEAD100D4191F /* x@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C885051C7CEAD100D4191F /* x@2x.png */; };
@@ -202,6 +203,7 @@
 		37B7A3031C8517C30034FDBC /* help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help@2x.png"; sourceTree = "<group>"; };
 		37BBC0BA1CC401550036A2CD /* PopUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpViewController.xib; sourceTree = "<group>"; };
 		37BBC0BC1CC4016D0036A2CD /* PopUpViewController_iPhone6Plus.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpViewController_iPhone6Plus.xib; sourceTree = "<group>"; };
+		37BDC4E51CD54D450047B8F9 /* privacy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = privacy.swift; sourceTree = "<group>"; };
 		37C220951C593A0B0074A96B /* sockets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sockets.swift; sourceTree = "<group>"; };
 		37C885031C7CEAA900D4191F /* 20x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 20x.png; sourceTree = "<group>"; };
 		37C885051C7CEAD100D4191F /* x@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x@2x.png"; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				376584091BF267DA007DA8A7 /* quickorder.swift */,
 				37EA2FB41CA4A84A0037AFC5 /* essentials.swift */,
 				370B9AAA1CA6E3B7006CE9CE /* essentialsForm.swift */,
+				37BDC4E51CD54D450047B8F9 /* privacy.swift */,
 				370B9AC01CA722ED006CE9CE /* PopUpViewControllerSwift.swift */,
 				37BBC0BA1CC401550036A2CD /* PopUpViewController.xib */,
 				370B9AC41CA723AB006CE9CE /* PopUpViewController_iPhone6.xib */,
@@ -746,6 +749,7 @@
 				37CFB6D91C2B1A5400CCE0A6 /* ordersView.swift in Sources */,
 				3758E8B31C45926C00B8D974 /* transaction.swift in Sources */,
 				37DB5CA81C09AAF10018F09C /* RestApiManager.swift in Sources */,
+				37BDC4E61CD54D450047B8F9 /* privacy.swift in Sources */,
 				37791DE91C2987180082693C /* editUserProfile.swift in Sources */,
 				3734CAB91C5E127D006968F0 /* orderMessenger.swift in Sources */,
 				37791DEB1C298BAD0082693C /* DetailTableViewController.swift in Sources */,

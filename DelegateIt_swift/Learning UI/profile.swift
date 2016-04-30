@@ -72,7 +72,7 @@ class profile: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func shareBtn(action:UIBarButtonItem){
         if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook){
             let facebookSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-            facebookSheet.setInitialText("Share on Facebook //CHANGE")
+            facebookSheet.setInitialText("")
             self.presentViewController(facebookSheet, animated: true, completion: nil)
         } else {
             let alert = UIAlertController(title: "Accounts", message: "Please login to a Facebook account to share.", preferredStyle: UIAlertControllerStyle.Alert)

@@ -297,6 +297,40 @@
             </objects>
             <point key="canvasLocation" x="3107" y="1264"/>
         </scene>
+        <!--Privacy-->
+        <scene sceneID="E5Q-ah-Mhf">
+            <objects>
+                <viewController id="2Ks-c0-tZu" customClass="privacy" customModule="DelegateIt" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="J89-N5-dl2"/>
+                        <viewControllerLayoutGuide type="bottom" id="m53-vV-HRc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cHl-Sb-ifM">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1yN-su-EBq">
+                                <rect key="frame" x="0.0" y="20" width="600" height="504"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="1yN-su-EBq" secondAttribute="trailing" id="9Wc-po-sD4"/>
+                            <constraint firstItem="1yN-su-EBq" firstAttribute="top" secondItem="J89-N5-dl2" secondAttribute="bottom" id="BPC-OJ-vcI"/>
+                            <constraint firstItem="1yN-su-EBq" firstAttribute="leading" secondItem="cHl-Sb-ifM" secondAttribute="leading" id="WZJ-cV-Lsv"/>
+                            <constraint firstItem="m53-vV-HRc" firstAttribute="top" secondItem="1yN-su-EBq" secondAttribute="bottom" constant="76" id="dcG-Q4-oP0"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="1yN-su-EBq" id="DTf-sA-tdr"/>
+                        <segue destination="DEH-AZ-gkv" kind="show" identifier="goHome" id="6D4-ci-wxx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FUX-pF-i7M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1349" y="928"/>
+        </scene>
         <!--tabBarController-->
         <scene sceneID="WlC-ZS-Hgz">
             <objects>
@@ -332,16 +366,28 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_girl.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="VZn-aC-Jwn">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SWf-Sy-BAc">
+                                <rect key="frame" x="253" y="562" width="95" height="30"/>
+                                <state key="normal" title="Privacy Policy">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="2Ks-c0-tZu" kind="show" id="hUN-t2-bGY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="VZn-aC-Jwn" firstAttribute="top" secondItem="LeQ-8l-DMu" secondAttribute="top" id="8EQ-lj-sbk"/>
+                            <constraint firstItem="Lpx-ZE-zde" firstAttribute="top" secondItem="SWf-Sy-BAc" secondAttribute="bottom" constant="8" symbolic="YES" id="AVU-bP-Toz"/>
                             <constraint firstItem="VZn-aC-Jwn" firstAttribute="bottom" secondItem="Lpx-ZE-zde" secondAttribute="top" id="Wtr-sO-yT1"/>
                             <constraint firstItem="VZn-aC-Jwn" firstAttribute="leading" secondItem="LeQ-8l-DMu" secondAttribute="leading" id="bek-qw-hah"/>
                             <constraint firstAttribute="trailing" secondItem="VZn-aC-Jwn" secondAttribute="trailing" id="h0e-Gt-Ms2"/>
+                            <constraint firstItem="SWf-Sy-BAc" firstAttribute="centerX" secondItem="VZn-aC-Jwn" secondAttribute="centerX" id="rVZ-NH-Xfx"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="PrivacyBtn" destination="SWf-Sy-BAc" id="9kX-hu-lLU"/>
                         <outlet property="bg" destination="VZn-aC-Jwn" id="XDR-E1-z2l"/>
                         <segue destination="4Bl-WG-sXP" kind="show" identifier="login" id="a4v-gk-nIc"/>
                     </connections>
@@ -588,12 +634,13 @@
         <image name="star.png" width="28" height="27"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="6D4-ci-wxx"/>
         <segue reference="a4v-gk-nIc"/>
+        <segue reference="4JS-ob-VsK"/>
         <segue reference="UyD-dK-3O4"/>
         <segue reference="dQJ-eI-zyO"/>
         <segue reference="EYs-sc-vWg"/>
         <segue reference="eoD-qJ-jAY"/>
         <segue reference="lJv-P6-vR9"/>
-        <segue reference="4JS-ob-VsK"/>
     </inferredMetricsTieBreakers>
 </document>

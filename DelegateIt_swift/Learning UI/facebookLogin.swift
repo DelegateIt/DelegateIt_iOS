@@ -14,7 +14,11 @@ import UIKit
 
 class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     
+    @IBOutlet weak var PrivacyBtn: UIButton!
     @IBOutlet weak var bg: UIImageView!
+    
+    
+    
     var imageView = UIImageView()
     var loginView : FBSDKLoginButton = FBSDKLoginButton()
     var loggedIn = 0
@@ -63,6 +67,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
+        
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.set(kGAIScreenName, value: "Login")
         
@@ -97,6 +102,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 self.view.addSubview(self.loginView)
                 self.loginView.center = CGPointMake(self.screenSize.width/2, self.screenSize.height*0.9)
                 self.loginView.alpha = 1
+                self.PrivacyBtn.alpha = 1
                 
                 self.label = UILabel(frame: CGRectMake(0, 0, self.screenSize.width, 300))
                 self.label.center = CGPointMake(self.screenSize.width/2, self.screenSize.height*0.5)
@@ -122,6 +128,8 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
                 self.secondary_label.numberOfLines = 3
                 self.secondary_label.textColor = UIColor.whiteColor()
                 self.view.addSubview(self.secondary_label)
+                
+                
                 
            self.loginView.readPermissions = ["public_profile", "email"]
            self.loginView.delegate = self
@@ -174,7 +182,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
     //Return data collected from Facebook
     func returnUserData(){
         
-        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me?fields=id,first_name,last_name,email,picture", parameters: nil)
+        let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me?fields=id,first_name,last_name,picture", parameters: nil)
         graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
             
             //Error With logging into Facebook
@@ -227,6 +235,7 @@ class facebookLogin: UIViewController,FBSDKLoginButtonDelegate {
         RestApiManager.sharedInstance.loginUser(fbID,fbToken:fbToken,first_name:first_name,last_name:last_name,email:email){ (response) in
             if(response == 1){
                 self.loginView.hidden = true
+                self.PrivacyBtn.alpha = 0
                 SwiftSpinner.hide()
                 self.reconnectTimer.invalidate()
                 self.count = 0

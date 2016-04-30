@@ -19,7 +19,6 @@ import Google
 
 class DetailTableViewController: UITableViewController {
     
-    
     @IBOutlet weak var priceTextField: UITextField!
     
     var data:[String]!
