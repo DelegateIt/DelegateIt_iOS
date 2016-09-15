@@ -1,0 +1,59 @@
+PODS:
+  - Alamofire (3.3.1)
+  - CWStatusBarNotification (2.3.4)
+  - Google/Analytics (2.0.3):
+    - Google/Core
+    - GoogleAnalytics (~> 3.12)
+  - Google/Core (2.0.3):
+    - GoogleInterchangeUtilities (~> 1.0)
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.1)
+  - GoogleAnalytics (3.14.0)
+  - GoogleInterchangeUtilities (1.2.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleNetworkingUtilities (1.2.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSymbolUtilities (1.1.0)
+  - GoogleUtilities (1.2.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - JSQMessagesViewController (7.2.0):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
+  - Socket.IO-Client-Swift (6.0.0)
+  - Stripe (6.2.0):
+    - Stripe/Core (= 6.2.0)
+  - Stripe/Core (6.2.0)
+  - SwiftSpinner (0.9.5)
+  - SwiftyJSON (2.3.2)
+  - Whisper (2.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 3.0)
+  - CWStatusBarNotification (~> 2.3.3)
+  - Google/Analytics
+  - JSQMessagesViewController
+  - Socket.IO-Client-Swift (~> 6.0.0)
+  - Stripe
+  - SwiftSpinner
+  - SwiftyJSON
+  - Whisper
+
+SPEC CHECKSUMS:
+  Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
+  CWStatusBarNotification: 3fec41edcb0ae3677d9febfcb9632d8bdf52294c
+  Google: 61379f0072bc561a7e174d23a6cbe41bd6d8599c
+  GoogleAnalytics: 9be1afdb8deeac4bb5f13ca7f7d3b9db2a1f43dc
+  GoogleInterchangeUtilities: 427382e42d8a340038bec37c6fdfd316e14b5fa2
+  GoogleNetworkingUtilities: ec1e9911aca811eb18b7144394fee6168b607785
+  GoogleSymbolUtilities: eb3965ea12710569c7b80db198a39e39b18613f7
+  GoogleUtilities: 85f8ad6b251544286a97163133d042ec95f889c5
+  JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  Socket.IO-Client-Swift: 014fe27dbb8d9d359d09b482309421fb4eccc16c
+  Stripe: 275524137e6c4cc1058f6d32ece248adf30a21f9
+  SwiftSpinner: c6585a0ae5c67eb33e737695cce88f0262008cce
+  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
+  Whisper: 18b574de21a089c0d664b115f26e0d9ccbbadbab
+
+COCOAPODS: 0.39.0

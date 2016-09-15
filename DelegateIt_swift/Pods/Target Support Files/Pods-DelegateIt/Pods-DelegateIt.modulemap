@@ -1,0 +1,6 @@
+framework module Pods_DelegateIt {
+  umbrella header "Pods-DelegateIt-umbrella.h"
+
+  export *
+  module * { export * }
+}

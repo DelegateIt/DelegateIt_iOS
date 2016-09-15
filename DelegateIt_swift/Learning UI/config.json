@@ -1,0 +1,18 @@
+{
+  "mode":"production",
+  "local":{
+       "restURL": "http://192.168.99.100:8000",
+       "socketURL": "http://192.168.99.100:",
+       "debugMode": true
+  },
+  "test":{
+       "restURL": "http://gator-api-test.ixgvzamgqt.us-west-2.elasticbeanstalk.com",
+       "socketURL": "http://gator-notify-test.ixgvzamgqt.us-west-2.elasticbeanstalk.com",
+       "debugMode": false
+  },
+  "production":{
+       "restURL": "https://api.godelegateit.com",
+       "socketURL": "https://notify.godelegateit.com",
+       "debugMode": false
+  },
+} 
